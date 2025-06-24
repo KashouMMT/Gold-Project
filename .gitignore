@@ -1,2 +1,4 @@
 /.metadata/
 logs/
+Gold_Project/logs/
+Gold_Project/logs/*.log
