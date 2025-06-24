@@ -1,0 +1,202 @@
+package com.dev.main.config;
+
+import java.io.IOException;
+import java.util.Set;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.dev.main.model.User;
+import com.dev.main.repository.UserRepository;
+import com.dev.main.security.MyUserDetails;
+import com.dev.main.security.MyUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig{
+
+    private final UserRepository userRepo;
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
+    SecurityConfig(UserRepository userRepo) {
+    	this.userRepo = userRepo;
+    }
+
+	@Bean
+	SecurityFilterChain filter(HttpSecurity http)throws Exception {
+		logger.info("Initializing security filter chain.");
+		http
+			.csrf(AbstractHttpConfigurer::disable)
+			.cors(Customizer.withDefaults())
+			.httpBasic(AbstractHttpConfigurer::disable)
+			.authorizeHttpRequests(auth -> {
+			logger.info("Configuring public and secure endpoints.");
+				auth 
+				.requestMatchers("/public/**","/public/assets/**","/public/assets/images/**",
+									          "/public/frontend/**","/public/frontend/css/**","/public/frontend/js/**",
+							     "/private/**","/private/product-images","/private/user-images",
+							     "/home","/home/**","/auth/**")
+					.permitAll()
+				.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+				.requestMatchers("/user/**").hasAuthority("ROLE_USER")
+				.anyRequest().authenticated();
+			})		
+			.formLogin(form -> {
+			logger.info("Custom login form setup at /auth/login.");
+			logger.debug("Login Page: /auth/login, Login processing URL: /auth/sign-in");
+			logger.debug("Registering SuccessHandler: {}",customAuthenticationSuccessHandler().getClass().getSimpleName());
+			logger.debug("Registering FailureHandler: {}",customAuthenticationFailureHandler().getClass().getSimpleName());
+				form
+				.loginPage("/auth/loign")
+				.loginProcessingUrl("/auth/sign-in")
+				.successHandler(customAuthenticationSuccessHandler())
+				.failureHandler(customAuthenticationFailureHandler())
+				.permitAll();
+			})
+			.logout(logout -> {
+			logger.info("Logout configuration applied.");
+			logger.debug("Logut processing URL: /auth/logout, SuccessURL: /auth/login?logout");
+			logger.debug("Logout configuration details: clearAuthentication=true, invalidateHttpSession=true");
+				logout
+				.logoutUrl("/auth/logout")
+				.logoutSuccessUrl("/auth/login?logout")
+				.clearAuthentication(true)
+				.invalidateHttpSession(true)
+				.permitAll();
+			})
+			.sessionManagement(session -> {
+			logger.info("Session management configured: max 1 session per user, allows re-login, expired sessions redirect to /auth/login?expired");
+			logger.debug("Session configuration details: maximumSessions=1, maxSessionsPreventsLogin=false, expiredUrl=/auth/login?expired");
+				session
+				.maximumSessions(1)
+				.maxSessionsPreventsLogin(false)
+				.expiredUrl("/auth/login?expired");
+			})
+			.exceptionHandling(exceptionHandling -> {
+			logger.info("Setting up exception handlers.");
+			logger.debug("Registering AccessDeniedHandler: {}", customAccessDeniedHandler().getClass().getName());
+		    logger.debug("Registering AuthenticationEntryPoint: {}", customAuthenticationEntryPoint().getClass().getName());
+				exceptionHandling
+				.accessDeniedHandler(customAccessDeniedHandler())
+				.authenticationEntryPoint(customAuthenticationEntryPoint());
+			});
+		
+		return http.build();
+	}
+	
+	@Bean
+	MyUserDetailsService userDetailsService() {
+		return new MyUserDetailsService(userRepo);
+	}
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+	
+    @Bean
+    AuthenticationProvider authenticationProvider() {
+    	DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    	provider.setUserDetailsService(userDetailsService());
+    	provider.setPasswordEncoder(passwordEncoder());
+    	return provider;
+    }
+	
+	@Bean
+	AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+		return new AuthenticationSuccessHandler() {	
+			@Override
+			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+					Authentication authentication) throws IOException, ServletException {
+				MyUserDetails userDetails = ((MyUserDetails) authentication.getPrincipal());
+				User user = userDetails.getUser();
+				
+				Set<String> authorities = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+				if(authorities.contains("ROLE_ADMIN")) {
+					logger.info("Login Success: IP [{}], Username: [{}], Email: [{}] with [ROLE_ADMIN] at: {}",
+							request.getRemoteAddr(),
+							user.getName(),
+							user.getEmail(),
+							new java.util.Date());
+					response.sendRedirect("/admin/dashboard");
+				} else if(authorities.contains("ROLE_USER")) {
+					logger.info("Login Success: IP [{}], Username: [{}], Email: [{}] with [ROLE_USER] at: {}",
+							request.getRemoteAddr(),
+							user.getName(),
+							user.getEmail(),
+							new java.util.Date());
+					response.sendRedirect("/user/dashboard");
+				} else {
+					logger.warn("Login Success: IP [{}], Username: [{}], Email: [{}] with [UNKNOWN ROLE] at: {}",
+							request.getRemoteAddr(),
+							user.getName(),
+							user.getEmail(),
+							new java.util.Date());
+					response.sendRedirect("/home");
+				}
+			}
+		};
+	}
+	
+	@Bean
+	AuthenticationFailureHandler customAuthenticationFailureHandler() {
+		return (request, response, exception) -> {
+			request.getSession().setAttribute("errorMessage", exception);
+			logger.error("Login failed for IP [{}]: {}", 
+					request.getRemoteAddr(), 
+					exception.getMessage());
+			response.sendRedirect("/auth/error");
+		};
+	}
+	
+	@Bean
+	AccessDeniedHandler customAccessDeniedHandler() {
+		return (request, response, accessDeniedException) -> {
+			request.getSession().setAttribute("errorMessage", accessDeniedException);
+			logger.warn("Access denied for IP [{}] on URI [{}]: {}", 
+					request.getRemoteAddr(), 
+					request.getRequestURI(), 
+					accessDeniedException.getMessage());
+			response.sendRedirect("/auth/access-denied");
+		};
+	}
+	
+	@Bean
+	AuthenticationEntryPoint customAuthenticationEntryPoint() {
+		return (request, response, authException) -> {
+			logger.warn("Unauthorized access attempt from IP [{}] to [{}]: {}", 
+                    request.getRemoteAddr(), 
+                    request.getRequestURI(), 
+                    authException.getMessage());
+			response.sendRedirect("/home");
+		};
+	}
+}

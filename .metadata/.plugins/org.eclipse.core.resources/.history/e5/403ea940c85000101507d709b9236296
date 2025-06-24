@@ -1,0 +1,8 @@
+spring.application.name=Online_Shopping
+
+spring.datasource.url=jdbc:mysql://localhost:3306/Online_Shopping?createDatabaseIfNotExist=true
+
+spring.datasource.username=root
+spring.datasource.password=P@ssword925
+
+spring.jpa.hibernate.ddl-auto=update

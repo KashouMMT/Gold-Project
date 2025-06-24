@@ -1,0 +1,21 @@
+package com.dev.main.serviceImpl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.dev.main.model.Role;
+import com.dev.main.repository.RoleRepository;
+import com.dev.main.service.RoleService;
+
+public class RoleServiceImpl implements RoleService{
+	
+	@Autowired
+	private RoleRepository roleRepo;
+	
+	@Override
+	public List<Role> getAllRoles() {
+		return roleRepo.findAll();
+	}
+
+}

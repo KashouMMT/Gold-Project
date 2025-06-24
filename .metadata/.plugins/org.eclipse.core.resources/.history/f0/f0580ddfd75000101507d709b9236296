@@ -1,0 +1,122 @@
+package com.dev.main.config;
+
+import java.io.IOException;
+import java.util.Set;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.dev.main.security.MyUserDetailsService;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig{
+
+	@Bean
+	SecurityFilterChain filter(HttpSecurity http)throws Exception {
+		http
+			.csrf(AbstractHttpConfigurer::disable)
+			.cors(Customizer.withDefaults())
+			.httpBasic(AbstractHttpConfigurer::disable)
+			.authorizeHttpRequests(auth -> auth 
+				.requestMatchers("/public/**","/public/assets/**","/public/assets/images/**",
+									          "/public/frontend/**","/public/frontend/css/**","/public/frontend/js/**",
+							     "/private/**","/private/product-images","/private/user-images",
+							     "/home","/home/**","/auth/**")
+					.permitAll()
+				.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+				.requestMatchers("/user/**").hasAuthority("ROLE_USER")
+				.anyRequest().authenticated())		
+			.formLogin(form -> form
+				.loginPage("/auth/loign")
+				.loginProcessingUrl("/auth/sign-in")
+				.successHandler(customAuthenticationSuccessHandler())
+				.failureHandler(customAuthenticationFailureHandler())
+				.permitAll())
+			.sessionManagement(session -> session
+				.maximumSessions(1)
+				.maxSessionsPreventsLogin(false)
+				.expiredUrl("/auth/login?expired"))
+			.exceptionHandling(exceptionHandling -> exceptionHandling
+				.accessDeniedHandler(customAccessDeniedHandler())
+				.authenticationEntryPoint(customAuthenticationEntryPoint()));
+		
+		return http.build();
+	}
+	
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+	
+	@Bean
+	MyUserDetailsService userDetailsService() {
+		return new MyUserDetailsService();
+	}
+	
+	@Bean
+	static PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+		return new AuthenticationSuccessHandler() {	
+			@Override
+			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+					Authentication authentication) throws IOException, ServletException {
+				
+				Set<String> authorities = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+				if(authorities.contains("ROLE_ADMIN")) {
+					response.sendRedirect("/admin/admin-dashboard");
+				} else if(authorities.contains("ROLE_USER")) {
+					response.sendRedirect("/user/user-dashboard");
+				} else {
+					response.sendRedirect("/home");
+				}
+			}
+		};
+	}
+	
+	@Bean
+	AuthenticationFailureHandler customAuthenticationFailureHandler() {
+		return (request, response, exception) -> {
+			request.getSession().setAttribute("errorMessage", exception);
+			response.sendRedirect("/auth/error");
+		};
+	}
+	
+	@Bean
+	AccessDeniedHandler customAccessDeniedHandler() {
+		return (request, response, accessDeniedException) -> {
+			request.getSession().setAttribute("errorMessage", accessDeniedException);
+			response.sendRedirect("/auth/access-denied");
+		};
+	}
+	
+	@Bean
+	AuthenticationEntryPoint customAuthenticationEntryPoint() {
+		return (request, response, authException) -> {
+			response.sendRedirect("/home");
+		};
+	}
+}

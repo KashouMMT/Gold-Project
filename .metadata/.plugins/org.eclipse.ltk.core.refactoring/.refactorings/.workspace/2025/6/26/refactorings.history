@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;Online_Shopping/src/main/resources/static/private/products/product-images&apos;" deleteContents="false" description="Delete resource &apos;Online_Shopping/src/main/resources/static/private/products/product-images&apos;" element1="/Online_Shopping/src/main/resources/static/private/products/product-images" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1750672616480"/>
+</session>

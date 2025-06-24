@@ -1,0 +1,5 @@
+package com.dev.main.security;
+
+public class MyUserDetails {
+
+}

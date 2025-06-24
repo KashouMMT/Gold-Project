@@ -1,0 +1,42 @@
+package com.dev.main.serviceImpl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
+
+import com.dev.main.model.Role;
+import com.dev.main.repository.RoleRepository;
+import com.dev.main.service.RoleService;
+
+@Service
+public class RoleServiceImpl implements RoleService{
+	
+	private final RoleRepository roleRepo;
+	
+	public RoleServiceImpl(RoleRepository roleRepo) {
+		this.roleRepo = roleRepo;
+	}
+	
+	@Override
+	public List<Role> getAllRoles() {
+		return roleRepo.findAll();
+	}
+
+	@Override
+	public void initializeRoles(List<String> roles) throws Exception {
+		for(String roleName : roles) {
+			try {
+				if(roleRepo.findByRoleName(roleName).isEmpty()) {
+					Role role = new Role();
+					roleRepo.save(role);
+				}
+			} catch(DataAccessException e) {
+				throw new Exception("Error while accessing the database for role: " + roleName, e);
+			} catch (Exception e ) {
+				throw new Exception("Error while accessing the database for role: " + roleName, e);
+			}
+		}
+	}
+}

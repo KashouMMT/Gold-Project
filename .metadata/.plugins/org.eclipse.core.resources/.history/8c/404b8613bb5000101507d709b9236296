@@ -1,0 +1,5 @@
+package com.dev.main.config;
+
+public class DataInitializer {
+
+}

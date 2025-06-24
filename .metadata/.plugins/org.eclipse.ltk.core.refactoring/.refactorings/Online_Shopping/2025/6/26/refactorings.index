@@ -1,0 +1,33 @@
+1750669496506	Move compilation unit
+1750669533829	Rename package 'com.dev.main.controller.user'
+1750669822620	Rename type 'SecurityFilterChain'
+1750672292954	Delete element
+1750672343123	Move 'images' to 'assets'
+1750672356023	Move 'js' to 'frontend'
+1750672357630	Move 'css' to 'frontend'
+1750672501499	Rename resource 'public'
+1750672505846	Rename resource 'private'
+1750672511257	Rename resource 'public2'
+1750672624026	Rename resource 'products'
+1750673105693	Rename resource 'authentication'
+1750673118127	Move 'admin' to 'authenticated-users'
+1750673220361	Rename resource 'user-home.html'
+1750673291250	Rename resource 'auth'
+1750673481441	Rename resource 'authentication'
+1750747330605	Rename type 'HomeController'
+1750747474598	Rename type 'Controller'
+1750752879756	Rename package 'com.dev.main.controller.user'
+1750752909623	Rename package 'com.dev.main.controller.open'
+1750752924104	Rename package 'com.dev.main.controller.customer'
+1750752971278	Rename type 'UserController'
+1750752990500	Rename type 'CustomerController'
+1750753509191	Move 'admin' to 'templates'
+1750753511598	Move 'user' to 'templates'
+1750753538921	Delete element
+1750753558346	Rename resource 'user-profile.html'
+1750760366545	Rename package 'com.dev.main.controller.auth'
+1750760386839	Rename type 'AuthController'
+1750761698517	Delete element
+1750761900510	Rename package 'com.dev.main.dao'
+1750763094474	Delete element
+1750763097778	Delete element

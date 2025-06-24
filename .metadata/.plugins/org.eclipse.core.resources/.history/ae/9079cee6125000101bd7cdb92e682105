@@ -1,0 +1,5 @@
+package com.dev.main.repository;
+
+public class RoleRepository {
+
+}

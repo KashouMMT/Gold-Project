@@ -1,0 +1,157 @@
+package com.dev.main.config;
+
+import java.io.IOException;
+import java.util.Set;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.dev.main.model.User;
+import com.dev.main.repository.UserRepository;
+import com.dev.main.security.MyUserDetails;
+import com.dev.main.security.MyUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig{
+
+    private final UserRepository userRepo;
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
+    SecurityConfig(UserRepository userRepo) {
+    	this.userRepo = userRepo;
+    }
+
+	@Bean
+	SecurityFilterChain filter(HttpSecurity http)throws Exception {
+		http
+			.csrf(AbstractHttpConfigurer::disable)
+			.cors(Customizer.withDefaults())
+			.httpBasic(AbstractHttpConfigurer::disable)
+			.authorizeHttpRequests(auth -> auth 
+				.requestMatchers("/public/**","/public/assets/**","/public/assets/images/**",
+									          "/public/frontend/**","/public/frontend/css/**","/public/frontend/js/**",
+							     "/private/**","/private/product-images","/private/user-images",
+							     "/home","/home/**","/auth/**")
+					.permitAll()
+				.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+				.requestMatchers("/user/**").hasAuthority("ROLE_USER")
+				.anyRequest().authenticated())		
+			.formLogin(form -> form
+				.loginPage("/auth/loign")
+				.loginProcessingUrl("/auth/sign-in")
+				.successHandler(customAuthenticationSuccessHandler())
+				.failureHandler(customAuthenticationFailureHandler())
+				.permitAll())
+			.logout(logout -> logout
+				.logoutUrl("/auth/logout")
+				.logoutSuccessUrl("/auth/login?logout")
+				.clearAuthentication(true)
+				.invalidateHttpSession(true)
+				.permitAll())
+			.sessionManagement(session -> session
+				.maximumSessions(1)
+				.maxSessionsPreventsLogin(false)
+				.expiredUrl("/auth/login?expired"))
+			.exceptionHandling(exceptionHandling -> exceptionHandling
+				.accessDeniedHandler(customAccessDeniedHandler())
+				.authenticationEntryPoint(customAuthenticationEntryPoint()));
+		
+		return http.build();
+	}
+	
+	@Bean
+	MyUserDetailsService userDetailsService() {
+		return new MyUserDetailsService(userRepo);
+	}
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+	
+    @Bean
+    AuthenticationProvider authenticationProvider() {
+    	DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    	provider.setUserDetailsService(userDetailsService());
+    	provider.setPasswordEncoder(passwordEncoder());
+    	return provider;
+    }
+	
+	@Bean
+	AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+		return new AuthenticationSuccessHandler() {	
+			@Override
+			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+					Authentication authentication) throws IOException, ServletException {
+				MyUserDetails userDetails = ((MyUserDetails) authentication.getPrincipal());
+				User user = userDetails.getUser();
+				
+				Set<String> authorities = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+				if(authorities.contains("ROLE_ADMIN")) {
+					logger.info("User name: {}, email: {} has logged in with ROLE_ADMIN at: {}",user.getName(),user.getEmail(),new java.util.Date());
+					response.sendRedirect("/admin/dashboard");
+				} else if(authorities.contains("ROLE_USER")) {
+					logger.info("User name: {}, email: {} has logged in with ROLE_USER at: {}",user.getName(),user.getEmail(),new java.util.Date());
+					response.sendRedirect("/user/dashboard");
+				} else {
+					logger.warn("User name: {}, email: {} has logged in with UNKNOWN_ROLE logged at: {}",user.getName(),user.getEmail(),new java.util.Date());
+					response.sendRedirect("/home");
+				}
+			}
+		};
+	}
+	
+	@Bean
+	AuthenticationFailureHandler customAuthenticationFailureHandler() {
+		return (request, response, exception) -> {
+			request.getSession().setAttribute("errorMessage", exception);
+			System.out.println(exception.toString());
+			response.sendRedirect("/auth/error");
+		};
+	}
+	
+	@Bean
+	AccessDeniedHandler customAccessDeniedHandler() {
+		return (request, response, accessDeniedException) -> {
+			request.getSession().setAttribute("errorMessage", accessDeniedException.toString());
+			System.out.println(accessDeniedException.toString());
+			response.sendRedirect("/auth/access-denied");
+		};
+	}
+	
+	@Bean
+	AuthenticationEntryPoint customAuthenticationEntryPoint() {
+		return (request, response, authException) -> {
+			response.sendRedirect("/home");
+		};
+	}
+}

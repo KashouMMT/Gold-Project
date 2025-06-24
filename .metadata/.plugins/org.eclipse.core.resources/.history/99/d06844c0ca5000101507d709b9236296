@@ -1,0 +1,50 @@
+package com.dev.main.serviceImpl;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dev.main.model.Role;
+import com.dev.main.model.User;
+import com.dev.main.repository.RoleRepository;
+import com.dev.main.repository.UserRepository;
+import com.dev.main.service.UserService;
+
+@Service
+public class UserServiceImpl implements UserService{
+
+	@Autowired
+	private UserRepository userRepo;
+	
+	@Autowired
+	private RoleRepository roleRepo;
+	
+	@Override
+	public List<User> getAllUsers() {
+		return userRepo.findAll();
+	}
+
+	@Override
+	public List<User> getAllUsersByName(String name) {
+		return userRepo.findByName(name);
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		return userRepo.findByEmail(email).orElse(null);
+	}
+
+	@Override
+	public void initializeDefaultAdminUser(String name) {
+		if (userRepo.findAll().isEmpty()) {
+			User user = new User();
+			Set<Role> role = new HashSet<>();
+			role.add(roleRepo.findByRoleName("ROLE_ADMIN").orElse(null));
+			user.setRoles(role);
+			userRepo.save(user);
+		}
+	}
+}
