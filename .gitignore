@@ -1,4 +1,25 @@
-/.metadata/
+# Java / Maven / Gradle
+/target
+/.classpath
+/.project
+/.settings
+
+# Eclipse
+.metadata/
+
+# Node
+node_modules/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
 logs/
 Gold_Project/logs/
 Gold_Project/logs/*.log
+
+# Keys 
+Gold_Project/keys/
+Gold_Project/keys/*key

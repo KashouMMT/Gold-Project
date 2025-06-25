@@ -36,6 +36,8 @@ public class AdminController {
 		logger.debug("Added attribute to model: key='role', value='{}'", user.getName());
 		logger.info("Rendering admin dashboard for user: {}", user.getName());
 		
-		return "admin/admin-dashboard";
+		model.addAttribute("content","admin/content/admin-dashboard");
+		
+		return "admin/admin-layout";
 	}
 }

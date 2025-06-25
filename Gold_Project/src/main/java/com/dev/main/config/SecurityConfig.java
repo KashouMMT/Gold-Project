@@ -1,7 +1,6 @@
 package com.dev.main.config;
 
-import java.io.IOException;
-import java.util.Set;
+import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +12,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -22,27 +19,33 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import com.dev.main.model.User;
+import com.dev.main.components.CustomAccessDeniedHandler;
+import com.dev.main.components.CustomAuthenticationEntryPoint;
+import com.dev.main.components.CustomAuthenticationFailureHandler;
+import com.dev.main.components.CustomAuthenticationSuccessHandler;
 import com.dev.main.repository.UserRepository;
-import com.dev.main.security.MyUserDetails;
 import com.dev.main.security.MyUserDetailsService;
+import com.dev.main.utils.MyRememberMeConfigurer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig{
 
+    private final MyUserDetailsService myUserDetailsService;
     private final UserRepository userRepo;
+    private final DataSource dataSource;
+    
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
-    SecurityConfig(UserRepository userRepo) {
+    SecurityConfig(UserRepository userRepo, MyUserDetailsService myUserDetailsService,DataSource dataSource) {
     	this.userRepo = userRepo;
+    	this.myUserDetailsService = myUserDetailsService;
+    	this.dataSource = dataSource;
     }
 
 	@Bean
@@ -53,7 +56,7 @@ public class SecurityConfig{
 			.cors(Customizer.withDefaults())
 			.httpBasic(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> {
-			logger.info("Configuring public and secure endpoints.");
+			logger.info("Configuring public and secure endpoints");
 				auth 
 				.requestMatchers("/public/**","/public/assets/**","/public/assets/images/**",
 									          "/public/frontend/**","/public/frontend/css/**","/public/frontend/js/**",
@@ -65,19 +68,19 @@ public class SecurityConfig{
 				.anyRequest().authenticated();
 			})		
 			.formLogin(form -> {
-			logger.info("Custom login form setup at /auth/login.");
+			logger.info("Custom login form setup at /auth/login");
 			logger.debug("Login Page: /auth/login, Login processing URL: /auth/sign-in");
-			logger.debug("Registering SuccessHandler: {}",customAuthenticationSuccessHandler().getClass().getSimpleName());
-			logger.debug("Registering FailureHandler: {}",customAuthenticationFailureHandler().getClass().getSimpleName());
+			logger.debug("Registering SuccessHandler: {}",authenticationSuccessHandler().getClass().getSimpleName());
+			logger.debug("Registering FailureHandler: {}",authenticationFailureHandler().getClass().getSimpleName());
 				form
-				.loginPage("/auth/loign")
+				.loginPage("/auth/login")
 				.loginProcessingUrl("/auth/sign-in")
-				.successHandler(customAuthenticationSuccessHandler())
-				.failureHandler(customAuthenticationFailureHandler())
+				.successHandler(authenticationSuccessHandler())
+				.failureHandler(authenticationFailureHandler())
 				.permitAll();
 			})
 			.logout(logout -> {
-			logger.info("Logout configuration applied.");
+			logger.info("Logout configuration applied");
 			logger.debug("Logut processing URL: /auth/logout, SuccessURL: /auth/login?logout");
 			logger.debug("Logout configuration details: clearAuthentication=true, invalidateHttpSession=true");
 				logout
@@ -97,13 +100,14 @@ public class SecurityConfig{
 			})
 			.exceptionHandling(exceptionHandling -> {
 			logger.info("Setting up exception handlers.");
-			logger.debug("Registering AccessDeniedHandler: {}", customAccessDeniedHandler().getClass().getName());
-		    logger.debug("Registering AuthenticationEntryPoint: {}", customAuthenticationEntryPoint().getClass().getName());
+			logger.debug("Registering AccessDeniedHandler: {}", accessDeniedHandler().getClass().getName());
+		    logger.debug("Registering AuthenticationEntryPoint: {}", authenticationEntryPoint().getClass().getName());
 				exceptionHandling
-				.accessDeniedHandler(customAccessDeniedHandler())
-				.authenticationEntryPoint(customAuthenticationEntryPoint());
+				.accessDeniedHandler(accessDeniedHandler())
+				.authenticationEntryPoint(authenticationEntryPoint());
 			});
-		
+		logger.info("Configuring Remember-Me functionality");
+		myRememberMeConfigurer().configure(http);
 		return http.build();
 	}
 	
@@ -131,72 +135,38 @@ public class SecurityConfig{
     }
 	
 	@Bean
-	AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
-		return new AuthenticationSuccessHandler() {	
-			@Override
-			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-					Authentication authentication) throws IOException, ServletException {
-				MyUserDetails userDetails = ((MyUserDetails) authentication.getPrincipal());
-				User user = userDetails.getUser();
-				
-				Set<String> authorities = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-				if(authorities.contains("ROLE_ADMIN")) {
-					logger.info("Login Success: IP [{}], Username: [{}], Email: [{}] with [ROLE_ADMIN] at: {}",
-							request.getRemoteAddr(),
-							user.getName(),
-							user.getEmail(),
-							new java.util.Date());
-					response.sendRedirect("/admin/dashboard");
-				} else if(authorities.contains("ROLE_USER")) {
-					logger.info("Login Success: IP [{}], Username: [{}], Email: [{}] with [ROLE_USER] at: {}",
-							request.getRemoteAddr(),
-							user.getName(),
-							user.getEmail(),
-							new java.util.Date());
-					response.sendRedirect("/user/dashboard");
-				} else {
-					logger.warn("Login Success: IP [{}], Username: [{}], Email: [{}] with [UNKNOWN ROLE] at: {}",
-							request.getRemoteAddr(),
-							user.getName(),
-							user.getEmail(),
-							new java.util.Date());
-					response.sendRedirect("/home");
-				}
-			}
-		};
+	AuthenticationSuccessHandler authenticationSuccessHandler() {
+		return new CustomAuthenticationSuccessHandler();
 	}
 	
 	@Bean
-	AuthenticationFailureHandler customAuthenticationFailureHandler() {
-		return (request, response, exception) -> {
-			request.getSession().setAttribute("errorMessage", exception);
-			logger.error("Login failed for IP [{}]: {}", 
-					request.getRemoteAddr(), 
-					exception.getMessage());
-			response.sendRedirect("/auth/error");
-		};
+	AuthenticationFailureHandler authenticationFailureHandler() {
+		return new CustomAuthenticationFailureHandler();
 	}
 	
 	@Bean
-	AccessDeniedHandler customAccessDeniedHandler() {
-		return (request, response, accessDeniedException) -> {
-			request.getSession().setAttribute("errorMessage", accessDeniedException);
-			logger.warn("Access denied for IP [{}] on URI [{}]: {}", 
-					request.getRemoteAddr(), 
-					request.getRequestURI(), 
-					accessDeniedException.getMessage());
-			response.sendRedirect("/auth/access-denied");
-		};
+	AccessDeniedHandler accessDeniedHandler() {
+		return new CustomAccessDeniedHandler();
 	}
 	
 	@Bean
-	AuthenticationEntryPoint customAuthenticationEntryPoint() {
-		return (request, response, authException) -> {
-			logger.warn("Unauthorized access attempt from IP [{}] to [{}]: {}", 
-                    request.getRemoteAddr(), 
-                    request.getRequestURI(), 
-                    authException.getMessage());
-			response.sendRedirect("/home");
-		};
+	AuthenticationEntryPoint authenticationEntryPoint() {
+		return new CustomAuthenticationEntryPoint();
 	}
+	
+	@Bean
+	PersistentTokenRepository persistentTokenRepository() {
+		return MyRememberMeConfigurer.createTokenRepository(dataSource);
+	}
+
+	@Bean
+	MyRememberMeConfigurer myRememberMeConfigurer() {
+		logger.debug("Remember-Me configuration details: tokenValiditySeconds=1209600");
+		return new MyRememberMeConfigurer(
+			myUserDetailsService,
+			persistentTokenRepository()
+		);
+	}
+	
+	
 }

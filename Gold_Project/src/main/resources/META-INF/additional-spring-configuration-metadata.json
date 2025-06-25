@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "security.rememberme.token-validity",
+  "type": "java.lang.Integer",
+  "description": "A description for 'security.rememberme.token-validity'"
+}]}
