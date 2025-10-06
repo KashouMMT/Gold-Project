@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="public-navbar">
+<header class="site-header">
+    <nav id="siteNav" class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav py-2 py-lg-3">
+        <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <span class="fw-semibold">Silver Moon</span>
+            </a>
+
+            <!-- Mobile menu toggle -->
+            <div class="d-flex d-lg-none align-items-center gap-2">
+                <button class="btn icon-btn text-light" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"
+                    aria-label="Open menu">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
+            </div>
+
+            <!-- Desktop nav -->
+            <div class="collapse navbar-collapse justify-content-lg-end" id="navbarSupportedContent">
+                <ul class="navbar-nav align-items-lg-center mb-0 gap-lg-2">
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-underline dropdown-toggle px-2" href="#" id="collectionDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Collection
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark mt-2 shadow"
+                            aria-labelledby="collectionDropdown">
+                            <li><a class="dropdown-item" href="/category/necklaces">Necklaces</a></li>
+                            <li><a class="dropdown-item" href="/category/rings">Rings</a></li>
+                            <li><a class="dropdown-item" href="/category/bracelets">Bracelets</a></li>
+                            <li><a class="dropdown-item" href="/category/earrings">Earrings</a></li>
+                            <li><a class="dropdown-item" href="/category/tiaras">Tiaras</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-underline px-2" th:href="@{home/about}">About Us</a>
+                    </li>
+                </ul>
+
+                <!-- Right-side social / CTA -->
+                <div class="d-none d-lg-flex align-items-center ms-3 gap-2">
+                    <!-- Added Icons -->
+                    <a href="/cart" class="btn icon-btn" aria-label="Shopping Cart"><i class="bi bi-cart"></i></a>
+                    <a href="/profile" class="btn icon-btn" aria-label="Profile"><i class="bi bi-person-circle"></i></a>
+                    <a href="/language" class="btn icon-btn" aria-label="Language"><i class="bi bi-globe"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile offcanvas -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="mobileMenu"
+        aria-labelledby="mobileMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column gap-3">
+            <!-- Dropdown for mobile -->
+            <div class="accordion accordion-flush" id="mobileAccordion">
+                <div class="accordion-item bg-dark border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-dark text-white px-0" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#mobileCollection" aria-expanded="false">
+                            Collection
+                        </button>
+                    </h2>
+                    <div id="mobileCollection" class="accordion-collapse collapse"
+                        data-bs-parent="#mobileAccordion">
+                        <div class="accordion-body p-0 d-flex flex-column gap-2">
+                            <a class="nav-link text-white-50 ps-2" href="/category/necklaces">Necklaces</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/rings">Rings</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/bracelets">Bracelets</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/earrings">Earrings</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/tiaras">Tiaras</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a class="nav-link text-white fs-6" href="/about">About Us</a>
+
+            <hr class="border-secondary">
+
+            <div class="d-flex gap-3 mt-2">
+
+                <!-- Added Icons for Mobile -->
+                <a href="/cart" class="text-white-50"><i class="bi bi-cart fs-5"></i></a>
+                <a href="/profile" class="text-white-50"><i class="bi bi-person-circle fs-5"></i></a>
+                <a href="/language" class="text-white-50"><i class="bi bi-globe fs-5"></i></a>
+            </div>
+        </div>
+    </div>
+</header>
+</th:block>
+</html>

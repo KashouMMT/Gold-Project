@@ -161,7 +161,6 @@ public class SecurityConfig{
 
 	@Bean
 	MyRememberMeConfigurer myRememberMeConfigurer() {
-		logger.debug("Remember-Me configuration details: tokenValiditySeconds=1209600");
 		return new MyRememberMeConfigurer(
 			myUserDetailsService,
 			persistentTokenRepository()

@@ -17,7 +17,7 @@ public class AdminController {
 	
 	private final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
-	@GetMapping("/dashboard")
+	@GetMapping({"/dashboard",""})
 	public String adminDashboardPage(Model model, Authentication authentication) {
 		logger.info("GET request received for /admin/dashboard");
 		
@@ -36,7 +36,7 @@ public class AdminController {
 		logger.debug("Added attribute to model: key='role', value='{}'", user.getName());
 		logger.info("Rendering admin dashboard for user: {}", user.getName());
 		
-		model.addAttribute("content","admin/content/admin-dashboard");
+		//model.addAttribute("content","admin/content/admin-dashboard");
 		
 		return "admin/admin-layout";
 	}

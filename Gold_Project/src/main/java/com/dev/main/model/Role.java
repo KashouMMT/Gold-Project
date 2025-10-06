@@ -17,18 +17,29 @@ public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	private String roleName;
 
 	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
 	private Set<User> users = new HashSet<User>();
 
-	public long getId() {
+	public Role() {
+		
+	}
+	
+	public Role(Long id, String roleName, Set<User> users) {
+		super();
+		this.id = id;
+		this.roleName = roleName;
+		this.users = users;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -46,16 +57,5 @@ public class Role {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
-	}
-
-	public Role(long id, String roleName, Set<User> users) {
-		super();
-		this.id = id;
-		this.roleName = roleName;
-		this.users = users;
-	}
-	
-	public Role() {
-		
 	}
 }

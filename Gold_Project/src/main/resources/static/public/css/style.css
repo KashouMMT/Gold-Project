@@ -1,0 +1,477 @@
+/* Hide scrollbar across browsers */
+html, body {
+  overflow-x: hidden;     /* stop horizontal scroll */
+  overflow-y: auto;       /* keep vertical scroll working */
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: none;  /* hide scrollbar but still allow scroll */
+}
+
+/* For WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+.absolute-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(51, 51, 51, 0.8);
+  z-index: 1030;
+}
+
+/* Offcanvas tweaks */
+.offcanvas.text-bg-dark {
+  background: #121212;
+}
+.offcanvas .nav-link {
+  padding-left: 0;
+}
+.offcanvas .nav-link:hover {
+  color: #fff !important;
+}
+
+/* Nav Css*/
+
+.glass-nav {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: padding .2s ease, background .25s ease, box-shadow .25s ease;
+}
+
+.navbar-slim { /* applied on scroll */
+  padding-top: .25rem !important;
+  padding-bottom: .25rem !important;
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 4px 14px rgba(0,0,0,.25);
+}
+
+/* Smooth dropdown fade + slide */
+.navbar .dropdown-menu {
+  display: block;            /* always block, but invisible until shown */
+  opacity: 0;
+  transform: translateY(10px);
+  visibility: hidden;
+  transition: all 0.25s ease;
+  pointer-events: none;       /* prevent accidental hover when invisible */
+}
+
+.navbar .dropdown.show .dropdown-menu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+
+/* Underline hover for nav links */
+.nav-underline {
+  position: relative;
+}
+.nav-underline::after {
+  content: "";
+  position: absolute;
+  left: .6rem; right: .6rem; bottom: .3rem;
+  height: 2px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.nav-underline:hover::after,
+.nav-underline.active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Tiny helpers for hover blur + smooth transitions */
+.hover-zoom-blur img {
+  transition: transform .35s ease, filter .35s ease, opacity .35s ease;
+}
+.hover-zoom-blur:hover img,
+.hover-zoom-blur:focus-visible img {
+  transform: scale(1.03);
+  filter: blur(2px) brightness(.85);
+  opacity: .95;
+}
+.fade-overlay {
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.hover-zoom-blur:hover .fade-overlay,
+.hover-zoom-blur:focus-visible .fade-overlay {
+  opacity: 1;
+}
+
+/* Icon buttons */
+.icon-btn {
+  --size: 2.25rem;
+  width: var(--size);
+  height: var(--size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
+}
+.icon-btn:hover {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.12);
+  transform: translateY(-1px);
+}
+
+/* Tiny brand dot (optional logo accent) */
+.brand-dot {
+  width: 18px; height: 18px;
+  background: linear-gradient(135deg, #ffb3b3, #c41c1c);
+  box-shadow: 0 0 0 2px rgba(255,255,255,.25) inset;
+}
+
+/* Footer Css*/
+
+.footer h6 {
+  letter-spacing: .05em;
+}
+.footer a:hover {
+  color: #fff !important;
+}
+.footer .bi {
+  transition: transform .2s ease, color .2s ease;
+}
+.footer .bi:hover {
+  transform: scale(1.2);
+  color: #dc3545; /* example hover color (red) */
+}
+
+/* ===== Full-width one-per-row gallery (Our Selections) ===== */
+.fullwidth-gallery .gallery-item {
+  position: relative;
+  height: 100vh;                 /* full screen height */
+  min-height: 420px;             /* sensible floor on small laptops */
+  overflow: hidden;
+  background: #000;              /* prevents flash under images */
+}
+
+/* Image pane takes full width by default */
+.fullwidth-gallery .media-pane {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  transition: width .45s ease, transform .45s ease, filter .35s ease;
+}
+.fullwidth-gallery .media-pane img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+/* Info pane is off-screen-ish by default (transparent + slight offset) */
+.fullwidth-gallery .info-pane {
+  position: absolute;
+  top: 0; bottom: 0;
+  display: flex; align-items: center;
+  width: 40%;                     /* space revealed on hover */
+  max-width: 720px;
+  padding-inline: clamp(1rem, 3vw, 2rem);
+  opacity: 0;
+  transform: translateX(16px);
+  transition: opacity .35s ease, transform .45s ease;
+  background: linear-gradient(to var(--bg-dir, right),
+              rgba(0,0,0,.0) 0%,
+              rgba(0,0,0,.55) 60%,
+              rgba(0,0,0,.65) 100%);
+}
+
+/* Inner content width control */
+.fullwidth-gallery .info-inner {
+  max-width: 520px;
+}
+
+/* Directions (where text sits) */
+.fullwidth-gallery .info-right { right: 0; left: auto; --bg-dir: left; text-align: left; }
+.fullwidth-gallery .info-left  { left: 0;  right: auto; --bg-dir: right; text-align: left; }
+
+/* HOVER BEHAVIOR */
+/* When .item-left: image shrinks LEFT, revealing RIGHT text */
+.fullwidth-gallery .item-left:hover .media-pane,
+.fullwidth-gallery .item-left:focus-within .media-pane {
+  width: 60%;
+  transform: translateX(0); /* pinned to left by default */
+  filter: brightness(.9);
+}
+.fullwidth-gallery .item-left:hover .info-right,
+.fullwidth-gallery .item-left:focus-within .info-right {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* When .item-right: image shrinks RIGHT, revealing LEFT text */
+.fullwidth-gallery .item-right .media-pane {
+  left: auto; right: 0;          /* start anchored at right */
+}
+.fullwidth-gallery .item-right:hover .media-pane,
+.fullwidth-gallery .item-right:focus-within .media-pane {
+  width: 60%;
+  transform: translateX(0);      /* pinned to right */
+  filter: brightness(.9);
+}
+.fullwidth-gallery .item-right:hover .info-left,
+.fullwidth-gallery .item-right:focus-within .info-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Buttons over images: subtle glass effect */
+.fullwidth-gallery .btn {
+  backdrop-filter: blur(2px);
+}
+
+/* Base indicators: circles with dark outline */
+#heroCarousel .carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 6px;
+  background-color: transparent;
+  border: 2px solid #333;       /* dark outline */
+  opacity: 1;
+  position: relative;           /* for inner circle positioning */
+}
+
+/* Active indicator: add a smaller inner filled circle */
+#heroCarousel .carousel-indicators .active::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;                   /* smaller size = inner circle */
+  height: 8px;
+  border-radius: 50%;
+  background-color: #000;       /* dark fill */
+}
+
+#heroCarousel .carousel-item {
+    height: 100vh;
+    min-height: 600px;
+}
+
+#heroCarousel .carousel-item > .container {
+  height: 100%;
+  display: flex;
+  align-items: center;          /* vertically center text + image */
+}
+
+/* SVG size reduced (and responsive) */
+#our-features .feature-icon {
+    width: 32px;
+    height: 32px;
+}
+
+/* ===== Our Selections polish ===== */
+#our-selections .hover-zoom img {
+  transition: transform .35s ease, filter .35s ease, opacity .35s ease;
+}
+#our-selections .hover-zoom:hover img,
+#our-selections .hover-zoom:focus-within img {
+  transform: scale(1.03);
+  filter: brightness(.9);
+}
+
+#our-selections .fade-overlay {
+  background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.0) 45%);
+  opacity: 0;
+  transition: opacity .28s ease;
+}
+#our-selections .selection-card:hover .fade-overlay,
+#our-selections .selection-card:focus-within .fade-overlay {
+  opacity: 1;
+}
+
+#our-selections .badge { letter-spacing: .02em; }
+#our-selections .selection-card .btn {
+  backdrop-filter: blur(2px);
+}
+
+/* Smaller text */
+#our-features .feature-title {
+    font-size: .98rem;
+    font-weight: 600;
+}
+
+#our-features .feature-desc {
+    font-size: .85rem;
+    opacity: .85;
+}
+
+/* Subtle hover lift */
+#our-features .p-3 {
+    transition: transform .15s ease, opacity .2s ease;
+    background: rgba(255, 255, 255, .03);
+    border-radius: .75rem;
+}
+
+#our-features .p-3:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, .06);
+}
+
+/* ===== About Us polish ===== */
+#about-us .about-photo .ratio { background: rgba(255,255,255,.03); }
+#about-us .about-avatar {
+  width: 44px; height: 44px; object-fit: cover;
+  border: 2px solid rgba(255,255,255,.35);
+}
+#about-us .about-stat .card-body {
+  background: rgba(255,255,255,.05);
+  border-radius: .75rem;
+  padding: 1.1rem .75rem;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+}
+#about-us .about-stat .display-6 { line-height: 1; }
+
+#about-us .timeline {
+  position: relative;
+  padding-left: 1.25rem;
+  border-left: 1px dashed rgba(255,255,255,.25);
+}
+#about-us .timeline-item { position: relative; padding: .35rem 0 .35rem 0; }
+#about-us .timeline-dot {
+  position: absolute; left: -7px; top: .7rem;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #dc3545; box-shadow: 0 0 0 3px rgba(220,53,69,.25);
+}
+#about-us .timeline-content { margin-left: .25rem; }
+
+#about-us .about-check {
+  width: 16px; height: 16px; border-radius: 50%;
+  display: inline-block; flex: 0 0 16px;
+  background: radial-gradient(circle at 50% 50%, #fff 0 35%, transparent 36%) , #28a745;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.18) inset;
+}
+
+/* Subtle hover lift for cards */
+#about-us .about-stat .card-body { transition: transform .15s ease, background .2s ease; }
+#about-us .about-stat .card-body:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.07);
+}
+
+/* Tighten letter spacing in small all-caps */
+.tracking-tight { letter-spacing: .06em; }
+
+
+/* ==== Scroll Animations (no library) ==== */
+/* Base: everything starts hidden and offset; when .in is present, it's visible */
+.anim {
+  --from-transform: translateY(24px);   /* default: fade-up */
+  --from-opacity: 0;
+  --to-transform: none;
+  --to-opacity: 1;
+  --duration: 700ms;
+  --easing: cubic-bezier(.22,.61,.36,1); /* nice "standard" ease-out */
+  --delay: 0ms;
+
+  opacity: var(--from-opacity);
+  transform: var(--from-transform);
+  transition:
+    opacity var(--duration) var(--easing) var(--delay),
+    transform var(--duration) var(--easing) var(--delay);
+  will-change: opacity, transform;
+}
+
+.anim.in {
+  opacity: var(--to-opacity);
+  transform: var(--to-transform);
+}
+
+/* Variants via data-anim (you can apply to any tag, especially <section>) */
+[data-anim="fade"]        { --from-transform: none; }
+[data-anim="fade-up"]     { --from-transform: translateY(24px); }
+[data-anim="fade-down"]   { --from-transform: translateY(-24px); }
+[data-anim="fade-left"]   { --from-transform: translateX(24px); }
+[data-anim="fade-right"]  { --from-transform: translateX(-24px); }
+
+[data-anim="slide-up"]    { --from-transform: translateY(40px); }
+[data-anim="slide-down"]  { --from-transform: translateY(-40px); }
+[data-anim="slide-left"]  { --from-transform: translateX(60px); }
+[data-anim="slide-right"] { --from-transform: translateX(-60px); }
+
+[data-anim="zoom-in"]     { --from-transform: scale(.92); }
+[data-anim="zoom-out"]    { --from-transform: scale(1.06); }
+
+/* Optional: softer look */
+[data-anim] { filter: blur(0.2px); }
+.anim.in[data-anim] { filter: none; transition-property: opacity, transform, filter; }
+
+/* Stagger helper: add .stagger to a parent and children get increasing delays */
+.stagger > *              { --delay: 0ms; }
+.stagger > *.step-1       { --delay: 80ms; }
+.stagger > *.step-2       { --delay: 160ms; }
+.stagger > *.step-3       { --delay: 240ms; }
+.stagger > *.step-4       { --delay: 320ms; }
+
+/* Reduce motion respect */
+@media (prefers-reduced-motion: reduce) {
+  .anim, .anim.in {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  #our-features .feature-icon {
+      width: 40px;
+      height: 40px;
+  }
+}
+
+/* Touch & small screens: no shrink (hover is unreliable); show overlay at bottom */
+@media (max-width: 991.98px) {
+  .fullwidth-gallery .gallery-item { height: 70vh; }
+  .fullwidth-gallery .media-pane,
+  .fullwidth-gallery .item-right .media-pane {
+    left: 0; right: 0; width: 100%;
+  }
+  .fullwidth-gallery .info-pane {
+    width: 100%;
+    max-width: none;
+    padding-inline: 1rem;
+    align-items: flex-end;
+    padding-bottom: 1rem;
+    background: linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0) 60%);
+    opacity: 1;                  /* always visible on mobile */
+    transform: none;
+    text-align: left;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fullwidth-gallery .media-pane,
+  .fullwidth-gallery .info-pane {
+    transition: none !important;
+  }
+}
+
+/* Ensure hero content isn't hidden under fixed nav */
+body { padding-top: 68px; }       /* default nav height */
+@media (min-width: 992px) {
+  body { padding-top: 76px; }     /* slightly taller on lg+ */
+}
+
+/* Dropdown hover on desktop */
+@media (min-width: 992px) {
+  .navbar .dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: .25rem;
+  }
+}

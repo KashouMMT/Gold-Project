@@ -1,30 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="goldproject.com">
-    <meta name="description" content="Gold Project">
-    <title>Gold Project</title>
-    <th:block th:insert="~{fragments/stylesheets :: stylesheets}"></th:block>
-</head>
-
-<body>
-    <th:block th:insert="~{admin/components/admin-navbar}"></th:block>
-    <main>
-    	<div class="container-fluid">
-	        <div class="row">
-	        	<div>
-	        	
-	        	</div>
-	            <th:block th:insert="~{admin/components/admin-sidebar}"></th:block>
-	            <th:block th:insert="~{${content}}"></th:block>
-	        </div>
-    	</div>
-    </main>
-    <th:block th:insert="~{admin/components/admin-footer}"></th:block>
-    <th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
-</body>
-
+<html xmlns:th="http://www.thymeleaf.org"lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard - SB Admin</title>
+		<th:block th:insert="~{admin/components/admin-stylesheets :: stylesheets}"></th:block>
+    </head>
+    <body class="sb-nav-fixed">
+		<th:block th:insert="~{admin/components/admin-navbar}"></th:block>
+        <div id="layoutSidenav">
+        
+			<th:block th:replace="~{admin/components/admin-sidebar}"></th:block>
+			
+            <div id="layoutSidenav_content">
+            
+				<th:block th:insert="~{admin/content/admin-dashboard}"></th:block>
+				<th:block th:insert="~{admin/components/admin-footer}"></th:block>
+				
+            </div>
+        </div>
+		<th:block th:insert="~{admin/components/admin-scripts :: scripts}"></th:block>
+    </body>
 </html>

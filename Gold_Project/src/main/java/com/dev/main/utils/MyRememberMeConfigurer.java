@@ -50,7 +50,7 @@ public class MyRememberMeConfigurer {
 	public void configure(HttpSecurity http) throws Exception {
 		http.rememberMe(rememberMe -> {
 			logger.info("Configuring Remember-Me functionality");
-			logger.debug("Remember-Me configuration details: tokenValiditySeconds=1209600");
+			logger.debug("Remember-Me configuration details: tokenValiditySeconds={}",tokenValiditySeconds);
 			rememberMe
 			.key(rememberMeKey)
 			.rememberMeParameter("remember-me")

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Item</title>
+
+    <!-- Bootstrap Icons-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-- Bootstrap Stylesheet-->
+    <link rel="stylesheet" href="/assets/bootstrap-5.3.8-dist/css/bootstrap.css">
+</head>
+
+
+<header class="site-header">
+    <nav id="siteNav" class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav py-2 py-lg-3">
+        <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <span class="brand-dot d-inline-block rounded-circle"></span>
+                <span class="fw-semibold">MyShop</span>
+            </a>
+
+            <!-- Mobile menu toggle -->
+            <div class="d-flex d-lg-none align-items-center gap-2">
+                <button class="btn icon-btn text-light" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"
+                    aria-label="Open menu">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
+            </div>
+
+            <!-- Desktop nav -->
+            <div class="collapse navbar-collapse justify-content-lg-end" id="navbarSupportedContent">
+                <ul class="navbar-nav align-items-lg-center mb-0 gap-lg-2">
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-underline dropdown-toggle px-2" href="#" id="collectionDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Collection
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark mt-2 shadow" aria-labelledby="collectionDropdown">
+                            <li><a class="dropdown-item" href="/category/necklaces">Necklaces</a></li>
+                            <li><a class="dropdown-item" href="/category/rings">Rings</a></li>
+                            <li><a class="dropdown-item" href="/category/bracelets">Bracelets</a></li>
+                            <li><a class="dropdown-item" href="/category/earrings">Earrings</a></li>
+                            <li><a class="dropdown-item" href="/category/tiaras">Tiaras</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-underline px-2" href="/about">About Us</a>
+                    </li>
+                </ul>
+
+                <!-- Right-side social / CTA -->
+                <div class="d-none d-lg-flex align-items-center ms-3 gap-2">
+                    <a href="https://facebook.com/" class="btn icon-btn" aria-label="Facebook"><i
+                            class="bi bi-facebook"></i></a>
+                    <a href="https://instagram.com/" class="btn icon-btn" aria-label="Instagram"><i
+                            class="bi bi-instagram"></i></a>
+                    <a href="https://x.com/" class="btn icon-btn" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile offcanvas -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column gap-3">
+            <!-- Dropdown for mobile -->
+            <div class="accordion accordion-flush" id="mobileAccordion">
+                <div class="accordion-item bg-dark border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-dark text-white px-0" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#mobileCollection" aria-expanded="false">
+                            Collection
+                        </button>
+                    </h2>
+                    <div id="mobileCollection" class="accordion-collapse collapse" data-bs-parent="#mobileAccordion">
+                        <div class="accordion-body p-0 d-flex flex-column gap-2">
+                            <a class="nav-link text-white-50 ps-2" href="/category/necklaces">Necklaces</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/rings">Rings</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/bracelets">Bracelets</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/earrings">Earrings</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/tiaras">Tiaras</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a class="nav-link text-white fs-6" href="/about">About Us</a>
+
+            <hr class="border-secondary">
+
+            <div class="d-flex gap-3 mt-2">
+                <a href="https://facebook.com/" class="text-white-50"><i class="bi bi-facebook fs-5"></i></a>
+                <a href="https://instagram.com/" class="text-white-50"><i class="bi bi-instagram fs-5"></i></a>
+                <a href="https://x.com/" class="text-white-50"><i class="bi bi-twitter fs-5"></i></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <!-- Product section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0"
+                        src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." /></div>
+                <div class="col-md-6">
+                    <div class="small mb-1">SKU: BST-498</div>
+                    <h1 class="display-5 fw-bolder">Shop item template</h1>
+                    <div class="fs-5 mb-5">
+                        <span class="text-decoration-line-through">$45.00</span>
+                        <span>$40.00</span>
+                    </div>
+                    <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem
+                        quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis
+                        delectus ipsam minima ea iste laborum vero?</p>
+                    <div class="d-flex">
+                        <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                            <i class="bi-cart-fill me-1"></i>
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Related items section-->
+    <section class="py-5 bg-light">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Related products</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+                <!-- Card 1 -->
+                <div class="col mb-5">
+                    <div class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+                        <!-- Image (fixed ratio like Categories) -->
+                        <div class="ratio ratio-4x3">
+                            <img class="card-img object-fit-cover"
+                                src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg" alt="Fancy Product">
+                        </div>
+
+                        <!-- Overlay (like Categories) -->
+                        <div class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+                            style="background: linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.65));">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <h5 class="fw-bold mb-0">Fancy Product</h5>
+                            </div>
+
+                            <div class="small opacity-75">Premium picks for everyday style.</div>
+
+                            <!-- Price row -->
+                            <div class="mt-2">
+                                <span class="fw-semibold">$40.00 – $80.00</span>
+                            </div>
+
+                            <!-- Make whole card clickable -->
+                            <a class="stretched-link" href="#" aria-label="View Fancy Product options"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 (with SALE + stars + crossed price) -->
+                <div class="col mb-5">
+                    <div class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+                        <!-- Sale badge (kept from your original) -->
+                        <div class="badge bg-dark text-white position-absolute" style="top: .5rem; right: .5rem;">
+                            Sale</div>
+
+                        <div class="ratio ratio-4x3">
+                            <img class="card-img object-fit-cover"
+                                src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg" alt="Special Item">
+                        </div>
+
+                        <div class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+                            style="background: linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.65));">
+                            <h5 class="fw-bold mb-1">Special Item</h5>
+
+                            <!-- Stars -->
+                            <div class="d-flex justify-content-start small text-warning mb-1">
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                            </div>
+
+                            <!-- Price -->
+                            <div>
+                                <span class="text-muted text-decoration-line-through me-2">$20.00</span>
+                                <span class="fw-semibold">$18.00</span>
+                            </div>
+
+                            <a class="stretched-link" href="#" aria-label="Add Special Item to cart"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col mb-5">
+                    <div class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+                        <div class="badge bg-dark text-white position-absolute" style="top: .5rem; right: .5rem;">
+                            Sale</div>
+
+                        <div class="ratio ratio-4x3">
+                            <img class="card-img object-fit-cover"
+                                src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg" alt="Sale Item">
+                        </div>
+
+                        <div class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+                            style="background: linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.65));">
+                            <h5 class="fw-bold mb-1">Sale Item</h5>
+                            <div>
+                                <span class="text-muted text-decoration-line-through me-2">$50.00</span>
+                                <span class="fw-semibold">$25.00</span>
+                            </div>
+                            <a class="stretched-link" href="#" aria-label="Add Sale Item to cart"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="col mb-5">
+                    <div class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+                        <div class="ratio ratio-4x3">
+                            <img class="card-img object-fit-cover"
+                                src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg" alt="Popular Item">
+                        </div>
+
+                        <div class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+                            style="background: linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.65));">
+                            <h5 class="fw-bold mb-1">Popular Item</h5>
+                            <!-- Stars -->
+                            <div class="d-flex justify-content-start small text-warning mb-1">
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                            </div>
+                            <div><span class="fw-semibold">$40.00</span></div>
+                            <a class="stretched-link" href="#" aria-label="Add Popular Item to cart"></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer bg-dark text-light pt-5 pb-4">
+    <div class="container">
+        <div class="row gy-4">
+            <!-- Brand -->
+            <div class="col-12 col-md-3">
+                <a href="/" class="d-flex align-items-center mb-3 text-decoration-none">
+                    <span class="fs-4 fw-bold text-light">My Shop</span>
+                </a>
+                <p class="small text-secondary">Timeless jewelry designed with care and crafted to last.</p>
+            </div>
+
+            <!-- About -->
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase small">About</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="#" class="text-decoration-none text-secondary">About L&amp;Co.TOKYO</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary">Privacy Policy</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary">Terms of Service</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary">Sustainability</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase small">Support</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="#" class="text-decoration-none text-secondary">Q&amp;A</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary">Size Chart</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary">Refund Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Shop -->
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase small">Shop</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="#" class="text-decoration-none text-secondary">Studio in Yamanashi</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary">Our Stores</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary">Official Site</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary">Online Store</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary">Tokyo Store</a></li>
+                </ul>
+            </div>
+
+            <!-- Social -->
+            <div class="col-6 col-md-3">
+                <h6 class="fw-bold text-uppercase small">Follow Us</h6>
+                <div class="d-flex gap-3 mt-2">
+                    <a href="#" class="text-light" aria-label="Facebook">
+                        <i class="bi bi-facebook fs-5"></i>
+                    </a>
+                    <a href="#" class="text-light" aria-label="Instagram">
+                        <i class="bi bi-instagram fs-5"></i>
+                    </a>
+                    <a href="#" class="text-light" aria-label="Twitter">
+                        <i class="bi bi-twitter fs-5"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom -->
+        <div class="border-top border-secondary mt-4 pt-3 text-center small text-secondary">
+            © 2025 My Shop. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap Scripts-->
+<script src="/assets/bootstrap-5.3.8-dist/js/bootstrap.js"></script>
+<!-- Core Scripts-->
+<script src="/assets/js/script.js"></script>
+
+</html>

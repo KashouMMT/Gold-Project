@@ -7,8 +7,12 @@
 	<meta name="author" content="goldproject.com">
 	<meta name="description" content="Gold Project">
 	<title>Login</title>
-    <th:block th:replace="~{fragments/stylesheets :: stylesheets}"></th:block>
-    <link rel="stylesheet" href="/public/bootstrap-5.3.7-dist/css/bootstrap.css">
+    <!-- Bootstrap -->
+   	<link rel="stylesheet" type="text/css" th:href="@{/public/bootstrap-5.3.7-dist/css/bootstrap.css}">
+   	<link rel="stylesheet" type="text/css" th:href="@{/public/css/style.css}">
+	
+	<!-- Bootstrap Icons-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
     <main class="container">
@@ -43,7 +47,8 @@
     <footer>
 
     </footer>
-    <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
-    <script src="/public/bootstrap-5.3.7-dist/js/bootstrap.js"></script>
+    <!-- Bootstrap -->
+    <script th:src="@{/public/bootstrap-5.3.7-dist/js/bootstrap.js}"></script>
+    <script th:src="@{/public/js/script.js}"></script>
 </body>
 </html>
