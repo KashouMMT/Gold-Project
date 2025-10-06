@@ -1,4 +1,4 @@
-package com.dev.main.controller.admin;
+package com.dev.main.controller.unauthenticated;
 
 import java.util.Set;
 
