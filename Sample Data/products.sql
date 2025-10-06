@@ -1,0 +1,60 @@
+INSERT INTO products (id, price, summary, title, category_id) VALUES
+(1, 32000.00, 'Helios 44-2 58mm f/2 M42 mount.', 'Helios 44-2 58mm f/2', 1),
+(2, 45000.00, 'Canon FD 50mm f/1.4 with smooth bokeh.', 'Canon FD 50mm f/1.4', 1),
+(3, 52000.00, 'Nikon AI-S 105mm f/2.5 portrait lens.', 'Nikon 105mm f/2.5 AI-S', 1),
+(4, 64000.00, 'Minolta MC Rokkor 58mm f/1.2, legendary lens.', 'Minolta Rokkor 58mm f/1.2', 1),
+(5, 22000.00, 'Pentax SMC 50mm f/1.7, excellent clarity.', 'Pentax SMC 50mm f/1.7', 1),
+
+(6, 88000.00, 'Fully working Nikon FM2 body.', 'Nikon FM2 Film Camera', 2),
+(7, 74000.00, 'Canon AE-1 Program body with minor wear.', 'Canon AE-1 Program', 2),
+(8, 95000.00, 'Leica M3 body, perfect for collectors.', 'Leica M3 Classic', 2),
+(9, 65000.00, 'Olympus OM-1n 35mm SLR film camera.', 'Olympus OM-1n', 2),
+(10, 40000.00, 'Minolta X-700 film body with case.', 'Minolta X-700', 2),
+
+(11, 55000.00, 'Sony A6000 mirrorless body.', 'Sony Alpha A6000', 3),
+(12, 120000.00, 'Canon EOS 6D full-frame DSLR.', 'Canon EOS 6D', 3),
+(13, 99000.00, 'Nikon D750 used body, clean condition.', 'Nikon D750', 3),
+(14, 75000.00, 'Fujifilm X-T2 mirrorless, excellent.', 'Fujifilm X-T2', 3),
+(15, 68000.00, 'Panasonic Lumix G7 body only.', 'Panasonic Lumix G7', 3),
+
+(16, 2400.00, '49mm UV filter for lenses.', 'Kenko 49mm UV Filter', 4),
+(17, 4800.00, 'Canon FD to Sony E-mount adapter.', 'FD to E Adapter', 4),
+(18, 3200.00, 'Vintage leather camera strap.', 'Leather Strap Vintage', 4),
+(19, 4200.00, 'Lens hood for M42 mount.', 'Metal Lens Hood M42', 4),
+(20, 3500.00, 'Camera cleaning cloth pack.', 'Microfiber Cloth x3', 4),
+
+(21, 12000.00, 'Carbon fiber travel tripod.', 'Manfrotto Travel Tripod', 5),
+(22, 8800.00, 'Small table tripod for vloggers.', 'Mini Table Tripod', 5),
+(23, 15000.00, 'Aluminum tripod with ball head.', 'Neewer Tripod BH40', 5),
+(24, 19500.00, 'Monopod for sports photography.', 'Sirui Monopod P-326', 5),
+(25, 28000.00, 'Professional tripod with bag.', 'Gitzo Mountaineer', 5),
+
+(26, 6500.00, 'Godox TT600 manual flash.', 'Godox TT600', 6),
+(27, 9800.00, 'Neewer LED panel with stand.', 'Neewer LED Panel', 6),
+(28, 14500.00, 'Yongnuo YN560 IV flash.', 'Yongnuo YN560 IV', 6),
+(29, 19900.00, 'Godox V1 round head flash.', 'Godox V1 Flash', 6),
+(30, 8500.00, 'Diffuser softbox for speedlight.', 'Softbox 60x60cm', 6),
+
+(31, 6200.00, 'Canvas camera bag small.', 'Canvas Bag Small', 7),
+(32, 8200.00, 'Waterproof backpack for cameras.', 'Waterproof Camera Bag', 7),
+(33, 9200.00, 'Hard shell protective case.', 'Pelican Case 1400', 7),
+(34, 6800.00, 'Compact shoulder bag.', 'Compact Shoulder Bag', 7),
+(35, 10400.00, 'Rolling camera bag.', 'ThinkTank Roller', 7),
+
+(36, 3200.00, 'Lens cleaning pen & brush.', 'Cleaning Pen Kit', 8),
+(37, 2800.00, 'Sensor swab cleaning kit.', 'Sensor Swab Kit', 8),
+(38, 4800.00, 'Multi-tool for lens repair.', 'Lens Repair Tool', 8),
+(39, 2200.00, 'Air blower for dust removal.', 'Camera Air Blower', 8),
+(40, 3100.00, 'Screwdriver kit for cameras.', 'Precision Screwdriver Set', 8),
+
+(41, 15000.00, 'Pure silver 99.9% necklace 24in.', 'Silver Chain 24in', 9),
+(42, 12000.00, 'Pure silver bracelet handmade.', 'Silver Bracelet', 9),
+(43, 22000.00, 'Silver ring with black onyx.', 'Silver Ring Onyx', 9),
+(44, 25000.00, 'Silver necklace 100g weight.', 'Silver Necklace 100g', 9),
+(45, 17500.00, 'Silver chain thin design.', 'Thin Silver Chain', 9),
+
+(46, 55000.00, '18k gold ring.', '18K Gold Ring', 10),
+(47, 95000.00, '24k gold chain 50g.', '24K Gold Chain', 10),
+(48, 72000.00, 'Gold bracelet classic.', 'Gold Bracelet Classic', 10),
+(49, 65000.00, 'Gold pendant small.', 'Gold Pendant Small', 10),
+(50, 87000.00, '18k gold necklace 40cm.', '18K Gold Necklace', 10);

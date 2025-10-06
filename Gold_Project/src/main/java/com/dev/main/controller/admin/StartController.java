@@ -34,8 +34,7 @@ public class StartController {
 		Set<String> authorities = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 		if(authorities.contains("ROLE_ADMIN")) {
 			logger.debug("Authenticated admin user: name={}, email={}, role={}",user.getName(),user.getEmail(),user.getRoles());
-			model.addAttribute("content","admin/content/admin-dashboard");
-			return "admin/admin-layout";
+			return "redirect:/admin/dashboard";
 		} else if(authorities.contains("ROLE_USER")) {
 			logger.debug("Authenticated user: name={}, email={}, role={}",user.getName(),user.getEmail(),user.getRoles());
 			model.addAttribute("content","user/content/user-dashboard");
