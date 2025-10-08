@@ -22,7 +22,14 @@ public class AdminDashboardController {
 		this.otherUtility = otherUtility;
 	}
 	
-	@GetMapping({"/dashboard",""})
+	@GetMapping({"","/"})
+	public String redirectToAdminDashboard() {
+		logger.info("GET request received for /admin");
+		
+		return "redirect:/admin/dashboard";
+	}
+	
+	@GetMapping("/dashboard")
 	public String adminDashboardPage(Model model, Authentication authentication) {
 		logger.info("GET request received for /admin/dashboard");
 		
@@ -49,4 +56,15 @@ public class AdminDashboardController {
 		
 		return "admin/admin-layout";
 	}
+	
+	@GetMapping("/admin-form")
+	public String adminFormTestPage(Model model) {
+		logger.info("GET request received for /admin/admin-form");
+		
+		model.addAttribute("content","admin/content/admin-form");
+		
+		return "admin/admin-layout";
+	}
+	
+
 }

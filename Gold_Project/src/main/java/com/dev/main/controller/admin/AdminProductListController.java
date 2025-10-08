@@ -13,8 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dev.main.dto.CategoryDto;
+import com.dev.main.dto.ProductDto;
 import com.dev.main.model.Product;
+import com.dev.main.service.CategoryService;
 import com.dev.main.service.ProductService;
+import com.dev.main.utils.FieldSpec;
 import com.dev.main.utils.OtherUtility;
 
 @Controller
@@ -25,11 +29,14 @@ private final Logger logger = LoggerFactory.getLogger(AdminDashboardController.c
 	
 	private ProductService productService;
 	
+	private CategoryService categoryService;
+	
 	private OtherUtility otherUtility;
 	
-	public AdminProductListController(ProductService productService,OtherUtility otherUtility) {
+	public AdminProductListController(ProductService productService,OtherUtility otherUtility,CategoryService categoryService) {
 		this.productService = productService;
 		this.otherUtility = otherUtility;
+		this.categoryService = categoryService;
 	}
 	
 	@GetMapping("/product")
@@ -42,7 +49,7 @@ private final Logger logger = LoggerFactory.getLogger(AdminDashboardController.c
 			return "redirect:/auth/login";
 		}
 		
-		List<String> columns = List.of("ID","Title","Summary","Price");
+		List<String> columns = List.of("ID","Title","Summary","Price","Category");
 		logger.debug("ProductList Page Columns defined: {}", columns);
 		
 		List<Product> products = productService.getAllProducts();
@@ -53,6 +60,7 @@ private final Logger logger = LoggerFactory.getLogger(AdminDashboardController.c
 				Map<String,Object> m = new LinkedHashMap<>();
 				m.put("id", p.getId());
 	            m.put("title", p.getTitle());
+	            m.put("summary", p.getSummary());
 	            m.put("price", p.getPrice());
 	            m.put("category", p.getCategory() != null ? p.getCategory().getCategory_name() : null);
 	            return m;
@@ -73,5 +81,41 @@ private final Logger logger = LoggerFactory.getLogger(AdminDashboardController.c
 		
 		
 		return "admin/admin-layout";
+	}
+	
+	@GetMapping("/product/add-product")
+	public String addProductPage(Model model, Authentication authentication) {
+		logger.info("GET request received for /admin/add-category");
+		
+		String username = otherUtility.authentication(authentication);
+		
+		if (username.equals("failed")) {
+			return "redirect:/auth/login";
+		}
+		
+		model.addAttribute("objectDto",new ProductDto());
+		
+	    // Options for selects
+	    model.addAttribute("formOptions", Map.of(
+	        "categories", categoryService.getAllCategories() // List<Category>
+	    ));
+		
+		List<FieldSpec> fields = List.of(
+		        new FieldSpec("title", "Title", "text", true, 150, null, null),
+		        new FieldSpec("summary", "Summary", "textarea", false, 255, null, null),
+		        new FieldSpec("price", "Price", "number", true, null, "0.01", null),
+		        new FieldSpec("category", "Category", "select", true, null, null, "categories")
+			);
+		
+		model.addAttribute("fields", fields);
+
+	    // Where to POST and button label
+		model.addAttribute("formAction","/admin/add-product");
+		model.addAttribute("submitLabel","Save Product");
+		model.addAttribute("formTitle","Add Product");
+		
+		model.addAttribute("content","admin/content/admin-form");
+
+	    return "admin/admin-layout";
 	}
 }

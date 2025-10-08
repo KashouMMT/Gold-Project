@@ -11,12 +11,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dev.main.dto.CategoryDto;
 import com.dev.main.model.Category;
 import com.dev.main.service.CategoryService;
+import com.dev.main.utils.FieldSpec;
 import com.dev.main.utils.OtherUtility;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminCategoryListController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminCategoryListController.class);
@@ -65,6 +69,33 @@ public class AdminCategoryListController {
 		model.addAttribute("username",username);
 		logger.debug("Added attribute to model: key='username', value='{}'", username);
 		model.addAttribute("content","admin/content/admin-tables");
+		
+		return "admin/admin-layout";
+	}
+	
+	@GetMapping("/category/add-category")
+	public String addProductPage(Model model, Authentication authentication) {
+		logger.info("GET request received for /admin/add-category");
+		
+		String username = otherUtility.authentication(authentication);
+		
+		if (username.equals("failed")) {
+			return "redirect:/auth/login";
+		}
+		
+		model.addAttribute("objectDto",new CategoryDto());
+		
+		List<FieldSpec> fields = List.of(
+			new FieldSpec("category_name", "Category name", "text", true, 150, null, null),
+			new FieldSpec("description", "Description", "textarea", false, 255, null, null)
+		);
+		model.addAttribute("fields",fields);
+		
+		model.addAttribute("formAction","/admin/add-category");
+		model.addAttribute("submitLabel","Save Category");
+		model.addAttribute("formTitle","Add Category");
+		
+		model.addAttribute("content","admin/content/admin-form");
 		
 		return "admin/admin-layout";
 	}

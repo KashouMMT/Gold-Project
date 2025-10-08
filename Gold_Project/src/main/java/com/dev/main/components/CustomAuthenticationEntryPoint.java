@@ -24,7 +24,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint{
                 request.getRemoteAddr(), 
                 request.getRequestURI(), 
                 authException.getMessage());
-		response.sendRedirect("/home");
+		response.sendRedirect("/auth/login");
 	}
 	
 }
