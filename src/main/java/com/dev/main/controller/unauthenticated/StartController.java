@@ -23,25 +23,27 @@ public class StartController {
 		
 		logger.info("GET request received for Default URL at: {}",new java.util.Date());
 		
-		MyUserDetails userDetails = (MyUserDetails)authentication.getPrincipal();
-		User user = userDetails.getUser();
-		
 		if (authentication == null || !authentication.isAuthenticated()) {
 			logger.warn("Unauthenticated access attempt to /admin/dashboard");
 			return "redirect:/auth/login";
 		}
 		
+		MyUserDetails userDetails = (MyUserDetails)authentication.getPrincipal();
+		User user = userDetails.getUser();
+		
 		Set<String> authorities = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 		if(authorities.contains("ROLE_ADMIN")) {
 			logger.debug("Authenticated admin user: name={}, email={}, role={}",user.getName(),user.getEmail(),user.getRoles());
 			return "redirect:/admin/dashboard";
-		} else if(authorities.contains("ROLE_USER")) {
+		}
+		
+		if(authorities.contains("ROLE_USER")) {
 			logger.debug("Authenticated user: name={}, email={}, role={}",user.getName(),user.getEmail(),user.getRoles());
 			model.addAttribute("content","user/content/user-dashboard");
 			return "user/user-layout";
-		} else {
-			logger.debug("Authenticated admin user: name={}, email={}, role=[UNKNOWN ROLE]",user.getName(),user.getEmail(),user.getRoles());
-			return "redirect:/home";
 		}
+		
+		logger.debug("Authenticated admin user: name={}, email={}, role=[UNKNOWN ROLE]",user.getName(),user.getEmail(),user.getRoles());
+		return "redirect:/home";
 	}
 }
