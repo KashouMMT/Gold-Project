@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block th:fragment="admin-table(items, columns)">
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4" th:text="${table_name}"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+            <li class="breadcrumb-item active" th:text="${table_name}"></li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                <span th:text="${table_name}"></span>
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th th:each="col : ${columns}" th:text="${col}"></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+						<tr>
+                            <th th:each="col : ${columns}" th:text="${col}"></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr th:each="item : ${items}">
+                            <td th:each="col : ${columns}" 
+                            	th:text="${item[#strings.toLowerCase(col)]}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+			<div class="card-footer bg-light border-0 py-4">
+			  <a class="btn btn-primary px-5 py-2 shadow-sm fw-semibold rounded-pill hover-glow"
+			  th:href="@{${buttonActions['addAction']}}">
+			    <i class="fas fa-plus-circle me-2" ></i>
+			  	<span th:text="${buttonActions['addActionText']}"></span>
+			  </a>
+			</div>
+        </div>
+    </div>
+</main>
+</th:block>
+</html>

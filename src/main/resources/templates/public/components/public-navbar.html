@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	  xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<th:block th:fragment="public-navbar">
+<header class="site-header">
+	<nav id="siteNav" class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav py-2 py-lg-3 px-0 m-0">
+		<div class="container-fluid gx-0 px-4">
+            <!-- Brand -->
+            <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/home}">
+                <span class="fw-semibold">Silver Moon</span>
+            </a>
+
+            <!-- Mobile menu toggle -->
+            <div class="d-flex d-lg-none align-items-center gap-2">
+
+				<!-- Mobile profile image -->
+	            <a href="/profile" class="btn icon-btn" aria-label="Profile" sec:authorize="isAuthenticated()">
+				    <img src="/images/profile-placeholder.jpg" alt="Profile" 
+				         class="rounded-circle" width="28" height="28">
+				</a>
+
+				<a th:href="@{/auth/sign-up}" class="btn btn-secondary btn-outline-light" sec:authorize="isAnonymous()">
+				    Sign Up
+				</a>
+                <button class="btn icon-btn text-light" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"
+                    aria-label="Open menu">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
+               
+            </div>
+
+            <!-- Desktop nav -->
+            <div class="collapse navbar-collapse justify-content-lg-end" id="navbarSupportedContent">
+                <ul class="navbar-nav align-items-lg-center mb-0 gap-lg-2">
+                    <!-- Dropdown -->
+                    <li class="nav-item">
+                        <a class="nav-link nav-underline px-2" th:href="@{/home/collection}">Collection</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-underline px-2" th:href="@{/home/about}">About Us</a>
+                    </li>
+                </ul>
+
+				<!-- Desktop and Mobile Search Bar -->
+				<form class="d-flex ms-3 my-2 my-lg-0" th:action="@{/search}" method="get" style="max-width: 250px; width: 100%;">
+				    <div class="input-group input-group-sm">
+				        <input type="text" class="form-control bg-white text-dark border-0 rounded-start" 
+				            name="q" placeholder="Search..." aria-label="Search">
+				        <button class="btn btn-dark rounded-end" type="submit">
+				            <i class="bi bi-search"></i>
+				        </button>
+				    </div>
+				</form>
+
+                <!-- Right-side social / CTA -->
+                <div class="d-none d-lg-flex align-items-center ms-3 gap-2">
+               		<ul class="navbar-nav align-items-lg-center mb-0 gap-lg-2">
+						<!-- Language Dropdown -->
+						<li class="nav-item dropdown">
+						    <a class="btn icon-btn nav-link dropdown-toggle" href="#" id="languageDropdown"
+						       role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Language">
+						        <i class="bi bi-globe"></i>
+						    </a>
+						    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end mt-2 shadow"
+						        style="min-width:120px; padding:0.25rem 0; font-size:0.9rem;"
+						        aria-labelledby="languageDropdown">
+						        <li><a class="dropdown-item" href="/language?lang=en">English</a></li>
+						        <li><a class="dropdown-item" href="/language?lang=ja">Japanese</a></li>
+						        <li><a class="dropdown-item" href="/language?lang=th">Thai</a></li>
+						    </ul>
+						</li>
+					</ul>
+                    <a href="/cart" class="btn icon-btn" aria-label="Shopping Cart">
+                        <i class="bi bi-cart"></i>
+                    </a>
+                    <!-- Profile image placeholder -->
+		            <a href="/profile" class="btn icon-btn" aria-label="Profile" sec:authorize="isAuthenticated()">
+					    <img src="/images/profile-placeholder.jpg" alt="Profile" 
+					         class="rounded-circle" width="28" height="28">
+					</a>
+	
+					<a href="/register" class="btn btn-secondary btn-outline-light" sec:authorize="isAnonymous()">
+					    Sign Up
+					</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile offcanvas -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="mobileMenu"
+        aria-labelledby="mobileMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column gap-3">
+            <!-- Dropdown for mobile -->
+            <div class="accordion accordion-flush" id="mobileAccordion">
+                <div class="accordion-item bg-dark border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-dark text-white px-0" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#mobileCollection" aria-expanded="false">
+                            Collection
+                        </button>
+                    </h2>
+                    <div id="mobileCollection" class="accordion-collapse collapse"
+                        data-bs-parent="#mobileAccordion">
+                        <div class="accordion-body p-0 d-flex flex-column gap-2">
+                            <a class="nav-link text-white-50 ps-2" href="/category/necklaces">Necklaces</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/rings">Rings</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/bracelets">Bracelets</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/earrings">Earrings</a>
+                            <a class="nav-link text-white-50 ps-2" href="/category/tiaras">Tiaras</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a class="nav-link text-white fs-6" th:href="@{/home/about}">About Us</a>
+
+            <hr class="border-secondary">
+
+            <div class="d-flex gap-3 mt-2">
+                <a href="/cart" class="text-white-50"><i class="bi bi-cart fs-5"></i></a>
+                <a href="/language" class="text-white-50"><i class="bi bi-globe fs-5"></i></a>
+            </div>
+        </div>
+    </div>
+</header>
+</th:block>
+</html>
