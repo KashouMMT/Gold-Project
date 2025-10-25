@@ -13,10 +13,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "categories")
+@Table(
+	name = "categories",
+	uniqueConstraints = @UniqueConstraint(
+		name = "uk_categories_name",
+		columnNames = "category_name"
+	)
+)
 public class Category {
 	
 	@Id
@@ -24,16 +31,13 @@ public class Category {
 	private Long id;
 	
 	@NotBlank
-	@Column(nullable = false, unique = true, length = 100)
-	private String category_name;
-	
-	@Column(length = 255)
-	private String description;
+	@Column(name="category_name",nullable = false, unique = true, length = 100)
+	private String categoryName;
 	
 	@OneToMany(
 		mappedBy = "category",
-		cascade = CascadeType.ALL,
-		orphanRemoval = true
+		cascade = {CascadeType.PERSIST,CascadeType.MERGE},
+		orphanRemoval = false
 	)
 	@JsonManagedReference
 	List<Product> products = new ArrayList<>();
@@ -41,12 +45,11 @@ public class Category {
 	public Category() {
 		
 	}
-	
-	public Category(Long id, @NotBlank String category_name, String description, List<Product> products) {
+
+	public Category(Long id, @NotBlank String categoryName, List<Product> products) {
 		super();
 		this.id = id;
-		this.category_name = category_name;
-		this.description = description;
+		this.categoryName = categoryName;
 		this.products = products;
 	}
 
@@ -58,20 +61,12 @@ public class Category {
 		this.id = id;
 	}
 
-	public String getCategory_name() {
-		return category_name;
+	public String getCategoryName() {
+		return categoryName;
 	}
 
-	public void setCategory_name(String category_name) {
-		this.category_name = category_name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	public List<Product> getProducts() {

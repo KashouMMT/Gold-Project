@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -43,7 +42,6 @@ public class SecurityConfig{
     private final UserRepository userRepo;
     private final DataSource dataSource;
     private final AppSecretRepository appSecretRepo;
-    
     
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
@@ -162,12 +160,7 @@ public class SecurityConfig{
 	
 	@Bean
 	PersistentTokenRepository persistentTokenRepository(Environment env) {
-	    var repo = MyRememberMeConfigurer.createTokenRepository(dataSource);
-	    if (env.acceptsProfiles(Profiles.of("dev"))) {
-	        ((org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl) repo)
-	            .setCreateTableOnStartup(true);
-	    }
-	    return repo;
+	    return MyRememberMeConfigurer.createTokenRepository(dataSource);
 	}
 
 	@Bean

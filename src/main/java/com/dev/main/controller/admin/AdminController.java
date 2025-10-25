@@ -1,5 +1,6 @@
 package com.dev.main.controller.admin;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,15 +20,15 @@ import com.dev.main.utils.OtherUtility;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminListController {
+public class AdminController {
 
-	private static final Logger logger = LoggerFactory.getLogger(AdminListController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
 	private UserService userService;
 	
 	private OtherUtility otherUtility;
 	
-	public AdminListController(UserService userService,OtherUtility otherUtility) {
+	public AdminController(UserService userService,OtherUtility otherUtility) {
 		this.userService = userService;
 		this.otherUtility = otherUtility;
 	}
@@ -42,12 +43,11 @@ public class AdminListController {
 			return "redirect:/auth/login";
 		}
 		
-		List<String> columns = List.of("ID","Name","Email","Enabled");
-		logger.debug("ProductList Page Columns defined: {}", columns);
-		
+		List<String> columns = List.of("ID","Name","Email","Enabled","Actions");
 		List<User> users = userService.getAllUsers();
-		logger.info("Retrieved {} users from productService", users.size());
-		
+	    Map<String, Object> buttonActions = new HashMap<>();
+	    buttonActions.put("deleteAction", "/admin/delete-user/{id}");
+	    buttonActions.put("deleteActionText", "Delete User");
 		List<Map<String,Object>> items = users.stream()
 			    .filter(u -> u.getRoles().stream()
 			        .anyMatch(r -> r.getRoleName().equals("ROLE_ADMIN")))
@@ -57,23 +57,16 @@ public class AdminListController {
 			    	  m.put("name", u.getName());
 			    	  m.put("email", u.getEmail());
 			    	  m.put("enabled", u.isEnabled());
+			    	  m.put("actions", buttonActions);
 			    	  return m;
-			    })
-			    .collect(Collectors.toList());
-		logger.debug("Transformed {} products into display maps", items.size());
-
+			    }).collect(Collectors.toList());
+	    model.addAttribute("addAction", "/admin/add-user");
+	    model.addAttribute("addActionText", "Add New Admin");
 		model.addAttribute("items",items);
-		logger.debug("Added attribute to model: key='items', value='{}'", items.toString());
 		model.addAttribute("columns",columns);
-		logger.debug("Added attribute to model: key='columns', value='{}'", columns.toString());
-		model.addAttribute("table_name","Admin Table");
-		logger.debug("Added attribute to model: key='table_name', value='{}'", "Admin Table");
+		model.addAttribute("tableName","Admin Table");
 		model.addAttribute("username",username);
-		logger.debug("Added attribute to model: key='username', value='{}'", username);
-		logger.info("Rendering admin dashboard for user: {}", username);
-		
 		model.addAttribute("content","admin/content/admin-tables");
-		
 		
 		return "admin/admin-layout";
 	}

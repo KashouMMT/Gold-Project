@@ -1,9 +1,12 @@
 package com.dev.main.model;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,9 +16,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
@@ -29,29 +34,64 @@ public class Product {
 	@Column(nullable = false, length = 150)
 	private String title;
 	
+	@Size(max = 255)
 	@Column(length = 255)
-	private String summary;
+	private String description;
 	
-	@NotNull
-	@Column(nullable = false, precision = 12, scale = 2)
-	private BigDecimal price;
+	@NotBlank
+	@Column(nullable = false, length = 100)
+	private String material;
 	
+	@NotBlank
+	@Column(nullable = false, length = 100)
+	private String theme;
+	
+	@NotBlank
+	@Column(nullable = false, length = 100)
+	private String occasion;
+	
+	// For testing purposes
+	//@NotBlank
+	//@Column(name="product_image",nullable = false, length = 1000)
+	@Column(nullable = true)
+	private String productImage;
+	
+	// Many products belong to one category
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "category_id",nullable = false, foreignKey = @ForeignKey(name = "fk_product_category"))
-	@JsonManagedReference
+	@JoinColumn(
+		name = "category_id",
+		nullable = false, 
+		foreignKey = @ForeignKey(name = "fk_product_category")
+	)
+	@JsonBackReference
 	private Category category;
-
-	public Product() {
-		
-	}
 	
-	public Product(Long id, @NotBlank String title, String summary, @NotNull BigDecimal price, Category category) {
+	@OneToMany(
+		mappedBy = "product",
+		cascade = {CascadeType.PERSIST,CascadeType.MERGE},
+		orphanRemoval = false
+	)
+	@OrderBy("width ASC")
+	@JsonManagedReference
+	private List<ProductWidth> productWidths = new ArrayList<>();
+	
+	public Product(Long id, @NotBlank String title, @Size(max = 255) String description, @NotBlank String material,
+			@NotBlank String theme, @NotBlank String occasion, @NotBlank String productImage, Category category,
+			List<ProductWidth> productWidths) {
 		super();
 		this.id = id;
 		this.title = title;
-		this.summary = summary;
-		this.price = price;
+		this.description = description;
+		this.material = material;
+		this.theme = theme;
+		this.occasion = occasion;
+		this.productImage = productImage;
 		this.category = category;
+		this.productWidths = productWidths;
+	}
+
+	public Product() {
+		
 	}
 
 	public Long getId() {
@@ -70,20 +110,44 @@ public class Product {
 		this.title = title;
 	}
 
-	public String getSummary() {
-		return summary;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setSummary(String summary) {
-		this.summary = summary;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public BigDecimal getPrice() {
-		return price;
+	public String getMaterial() {
+		return material;
 	}
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
+	public void setMaterial(String material) {
+		this.material = material;
+	}
+
+	public String getTheme() {
+		return theme;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}
+
+	public String getOccasion() {
+		return occasion;
+	}
+
+	public void setOccasion(String occasion) {
+		this.occasion = occasion;
+	}
+
+	public String getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(String productImage) {
+		this.productImage = productImage;
 	}
 
 	public Category getCategory() {
@@ -92,5 +156,13 @@ public class Product {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public List<ProductWidth> getProductWidths() {
+		return productWidths;
+	}
+
+	public void setProductWidths(List<ProductWidth> productWidths) {
+		this.productWidths = productWidths;
 	}
 }

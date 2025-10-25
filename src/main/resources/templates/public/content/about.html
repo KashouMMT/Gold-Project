@@ -1,366 +1,379 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="public-about">
-    <main id="about-us">
-        <!-- Title Section (kept) -->
-        <section id="page-title" class="bg-dark py-5 anim" data-anim="fade-up" data-duration="1s">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="justify-content-start text-start text-white">
-                    <h1 class="display-4 fw-bolder anim" data-anim="fade-right" data-duration="1s" data-delay="0.2s">
-                        About Us
-                    </h1>
-                    <p class="lead fw-normal text-white-50 mb-0 anim" data-anim="fade-right" data-duration="1s"
-                        data-delay="0.4s">
-                        Home &gt; About Us
-                    </p>
-                </div>
-            </div>
-        </section>
+	<main id="about-us">
+		<!-- Title Section (kept) -->
+		<section id="page-title" class="bg-dark py-5 anim" data-anim="fade-up"
+			data-duration="1s">
+			<div class="container px-4 px-lg-5 my-5">
+				<div class="justify-content-start text-start text-white">
+					<h1 class="display-4 fw-bolder anim" data-anim="fade-right"
+						data-duration="1s" data-delay="0.2s">About Us</h1>
+					<p class="lead fw-normal text-white-50 mb-0 anim"
+						data-anim="fade-right" data-duration="1s" data-delay="0.4s">
+						Home &gt; About Us</p>
+				</div>
+			</div>
+		</section>
 
-        <!-- Intro / Story -->
-        <section class="py-5 anim" data-anim="fade-up" data-duration="900ms">
-            <div class="container">
-                <div class="row align-items-center gy-4">
-                    <div class="col-lg-6">
-                        <div class="ratio ratio-16x9 rounded-3 overflow-hidden shadow about-photo anim"
-                            data-anim="zoom-in" data-duration="900ms" data-delay="100ms">
-                            <img src="/assets/images/workbench.jpg" alt="Crafting jewelry at the bench"
-                                class="w-100 h-100 object-fit-cover">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <h2 class="fw-bold mb-3 anim" data-anim="fade-right" data-duration="800ms">Crafted to last.
-                            Designed to be worn.</h2>
-                        <p class="text-secondary anim" data-anim="fade-right" data-delay="80ms">
-                            We’re a small team obsessed with timeless design and honest materials. Every piece is made
-                            with
-                            thoughtful details—balanced proportions, smooth edges, and finishes that age beautifully.
-                        </p>
+		<!-- Intro / Story -->
+		<section class="py-5 anim" data-anim="fade-up" data-duration="900ms">
+			<div class="container">
+				<div class="row align-items-center gy-4">
+					<div class="col-lg-6">
+						<div
+							class="ratio ratio-16x9 rounded-3 overflow-hidden shadow about-photo anim"
+							data-anim="zoom-in" data-duration="900ms" data-delay="100ms">
+							<img src="/assets/images/workbench.jpg"
+								alt="Crafting jewelry at the bench"
+								class="w-100 h-100 object-fit-cover">
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<h2 class="fw-bold mb-3 anim" data-anim="fade-right"
+							data-duration="800ms">Crafted to last. Designed to be worn.</h2>
+						<p class="text-secondary anim" data-anim="fade-right"
+							data-delay="80ms">We’re a small team obsessed with timeless
+							design and honest materials. Every piece is made with thoughtful
+							details—balanced proportions, smooth edges, and finishes that age
+							beautifully.</p>
 
-                        <ul class="list-unstyled d-grid gap-2 mt-3">
-                            <li class="d-flex align-items-start gap-2 anim" data-anim="fade-right" data-delay="140ms">
-                                <span class="about-check me-1"></span>
-                                <span>Ethical sourcing &amp; traceable materials</span>
-                            </li>
-                            <li class="d-flex align-items-start gap-2 anim" data-anim="fade-right" data-delay="220ms">
-                                <span class="about-check me-1"></span>
-                                <span>Sterling silver &amp; premium alloys only</span>
-                            </li>
-                            <li class="d-flex align-items-start gap-2 anim" data-anim="fade-right" data-delay="300ms">
-                                <span class="about-check me-1"></span>
-                                <span>Lifetime care guidance &amp; easy repairs</span>
-                            </li>
-                        </ul>
+						<ul class="list-unstyled d-grid gap-2 mt-3">
+							<li class="d-flex align-items-start gap-2 anim"
+								data-anim="fade-right" data-delay="140ms"><span
+								class="about-check me-1"></span> <span>Ethical sourcing
+									&amp; traceable materials</span></li>
+							<li class="d-flex align-items-start gap-2 anim"
+								data-anim="fade-right" data-delay="220ms"><span
+								class="about-check me-1"></span> <span>Sterling silver
+									&amp; premium alloys only</span></li>
+							<li class="d-flex align-items-start gap-2 anim"
+								data-anim="fade-right" data-delay="300ms"><span
+								class="about-check me-1"></span> <span>Lifetime care
+									guidance &amp; easy repairs</span></li>
+						</ul>
 
-                        <div class="mt-4 d-flex gap-2">
-                            <a href="/shop" class="btn btn-dark">Our collection</a>
-                            <a href="/contact" class="btn btn-outline-dark">Talk to us</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+						<div class="mt-4 d-flex gap-2">
+							<a href="/shop" class="btn btn-dark">Our collection</a> <a
+								href="/contact" class="btn btn-outline-dark">Talk to us</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-        <!-- Values -->
-        <section class="py-5 bg-light anim" data-anim="fade-up">
-            <div class="container">
-                <div class="row mb-4">
-                    <div class="col">
-                        <h3 class="fw-bold">Our Values</h3>
-                        <p class="text-secondary mb-0">Simple principles that guide everything we make.</p>
-                    </div>
-                </div>
+		<!-- Values -->
+		<section class="py-5 bg-light anim" data-anim="fade-up">
+			<div class="container">
+				<div class="row mb-4">
+					<div class="col">
+						<h3 class="fw-bold">Our Values</h3>
+						<p class="text-secondary mb-0">Simple principles that guide
+							everything we make.</p>
+					</div>
+				</div>
 
-                <div class="row g-3">
-                    <div class="col-6 col-lg-3">
-                        <div class="p-3 h-100">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="bi bi-gem"></i>
-                                <span class="fw-semibold">Quality</span>
-                            </div>
-                            <p class="small text-secondary mb-0">Meticulous finishing and durable constructions.</p>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="p-3 h-100">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="bi bi-brilliance"></i>
-                                <span class="fw-semibold">Design</span>
-                            </div>
-                            <p class="small text-secondary mb-0">Balanced forms that feel good every day.</p>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="p-3 h-100">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="bi bi-recycle"></i>
-                                <span class="fw-semibold">Responsibility</span>
-                            </div>
-                            <p class="small text-secondary mb-0">Ethical sourcing &amp; mindful production.</p>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="p-3 h-100">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="bi bi-heart"></i>
-                                <span class="fw-semibold">Care</span>
-                            </div>
-                            <p class="small text-secondary mb-0">Support that lasts long after purchase.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+				<div class="row g-3">
+					<div class="col-6 col-lg-3">
+						<div class="p-3 h-100">
+							<div class="d-flex align-items-center gap-2 mb-2">
+								<i class="bi bi-gem"></i> <span class="fw-semibold">Quality</span>
+							</div>
+							<p class="small text-secondary mb-0">Meticulous finishing and
+								durable constructions.</p>
+						</div>
+					</div>
+					<div class="col-6 col-lg-3">
+						<div class="p-3 h-100">
+							<div class="d-flex align-items-center gap-2 mb-2">
+								<i class="bi bi-brilliance"></i> <span class="fw-semibold">Design</span>
+							</div>
+							<p class="small text-secondary mb-0">Balanced forms that feel
+								good every day.</p>
+						</div>
+					</div>
+					<div class="col-6 col-lg-3">
+						<div class="p-3 h-100">
+							<div class="d-flex align-items-center gap-2 mb-2">
+								<i class="bi bi-recycle"></i> <span class="fw-semibold">Responsibility</span>
+							</div>
+							<p class="small text-secondary mb-0">Ethical sourcing &amp;
+								mindful production.</p>
+						</div>
+					</div>
+					<div class="col-6 col-lg-3">
+						<div class="p-3 h-100">
+							<div class="d-flex align-items-center gap-2 mb-2">
+								<i class="bi bi-heart"></i> <span class="fw-semibold">Care</span>
+							</div>
+							<p class="small text-secondary mb-0">Support that lasts long
+								after purchase.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-        <!-- Stats (uses your count-up JS for #about-us [data-count-to]) -->
-        <section class="py-5 anim" data-anim="fade-up" data-duration="900ms">
-            <div class="container">
-                <div class="row g-3 about-stat">
-                    <div class="col-6 col-md-3">
-                        <div class="card-body text-center">
-                            <div class="display-6 fw-bold" data-count-to="120">0</div>
-                            <div class="small text-secondary">Designs released</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="card-body text-center">
-                            <div class="display-6 fw-bold" data-count-to="8">0</div>
-                            <div class="small text-secondary">Years crafting</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="card-body text-center">
-                            <div class="display-6 fw-bold" data-count-to="24">0</div>
-                            <div class="small text-secondary">Countries shipped</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="card-body text-center">
-                            <div class="display-6 fw-bold" data-count-to="4.9">0</div>
-                            <div class="small text-secondary">Avg. customer rating</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+		<!-- Stats (uses your count-up JS for #about-us [data-count-to]) -->
+		<section class="py-5 anim" data-anim="fade-up" data-duration="900ms">
+			<div class="container">
+				<div class="row g-3 about-stat">
+					<div class="col-6 col-md-3">
+						<div class="card-body text-center">
+							<div class="display-6 fw-bold" data-count-to="120">0</div>
+							<div class="small text-secondary">Designs released</div>
+						</div>
+					</div>
+					<div class="col-6 col-md-3">
+						<div class="card-body text-center">
+							<div class="display-6 fw-bold" data-count-to="8">0</div>
+							<div class="small text-secondary">Years crafting</div>
+						</div>
+					</div>
+					<div class="col-6 col-md-3">
+						<div class="card-body text-center">
+							<div class="display-6 fw-bold" data-count-to="24">0</div>
+							<div class="small text-secondary">Countries shipped</div>
+						</div>
+					</div>
+					<div class="col-6 col-md-3">
+						<div class="card-body text-center">
+							<div class="display-6 fw-bold" data-count-to="4.9">0</div>
+							<div class="small text-secondary">Avg. customer rating</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-        <!-- Timeline -->
-        <section class="py-5 bg-light anim" data-anim="fade-up">
-            <div class="container">
-                <div class="row mb-4">
-                    <div class="col">
-                        <h3 class="fw-bold">Our Journey</h3>
-                        <p class="text-secondary mb-0">Milestones that shaped who we are today.</p>
-                    </div>
-                </div>
+		<!-- Timeline -->
+		<section class="py-5 bg-light anim" data-anim="fade-up">
+			<div class="container">
+				<div class="row mb-4">
+					<div class="col">
+						<h3 class="fw-bold">Our Journey</h3>
+						<p class="text-secondary mb-0">Milestones that shaped who we
+							are today.</p>
+					</div>
+				</div>
 
-                <div class="timeline">
-                    <div class="timeline-item anim" data-anim="fade-right" data-delay="50ms">
-                        <span class="timeline-dot"></span>
-                        <div class="timeline-content">
-                            <h6 class="mb-1 fw-semibold">2017 — First sketch</h6>
-                            <p class="small text-secondary mb-0">From a small desk and a single torch, our first ring
-                                was born.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item anim" data-anim="fade-right" data-delay="130ms">
-                        <span class="timeline-dot"></span>
-                        <div class="timeline-content">
-                            <h6 class="mb-1 fw-semibold">2019 — Studio opened</h6>
-                            <p class="small text-secondary mb-0">We opened our workshop and began taking custom
-                                commissions.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item anim" data-anim="fade-right" data-delay="210ms">
-                        <span class="timeline-dot"></span>
-                        <div class="timeline-content">
-                            <h6 class="mb-1 fw-semibold">2022 — Going global</h6>
-                            <p class="small text-secondary mb-0">Worldwide shipping and a growing community of
-                                collectors.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item anim" data-anim="fade-right" data-delay="290ms">
-                        <span class="timeline-dot"></span>
-                        <div class="timeline-content">
-                            <h6 class="mb-1 fw-semibold">2025 — Today</h6>
-                            <p class="small text-secondary mb-0">Focused on timeless pieces and meaningful
-                                collaborations.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+				<div class="timeline">
+					<div class="timeline-item anim" data-anim="fade-right"
+						data-delay="50ms">
+						<span class="timeline-dot"></span>
+						<div class="timeline-content">
+							<h6 class="mb-1 fw-semibold">2017 — First sketch</h6>
+							<p class="small text-secondary mb-0">From a small desk and a
+								single torch, our first ring was born.</p>
+						</div>
+					</div>
+					<div class="timeline-item anim" data-anim="fade-right"
+						data-delay="130ms">
+						<span class="timeline-dot"></span>
+						<div class="timeline-content">
+							<h6 class="mb-1 fw-semibold">2019 — Studio opened</h6>
+							<p class="small text-secondary mb-0">We opened our workshop
+								and began taking custom commissions.</p>
+						</div>
+					</div>
+					<div class="timeline-item anim" data-anim="fade-right"
+						data-delay="210ms">
+						<span class="timeline-dot"></span>
+						<div class="timeline-content">
+							<h6 class="mb-1 fw-semibold">2022 — Going global</h6>
+							<p class="small text-secondary mb-0">Worldwide shipping and a
+								growing community of collectors.</p>
+						</div>
+					</div>
+					<div class="timeline-item anim" data-anim="fade-right"
+						data-delay="290ms">
+						<span class="timeline-dot"></span>
+						<div class="timeline-content">
+							<h6 class="mb-1 fw-semibold">2025 — Today</h6>
+							<p class="small text-secondary mb-0">Focused on timeless
+								pieces and meaningful collaborations.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-        <!-- Team -->
-        <section class="py-5 anim" data-anim="fade-up">
-            <div class="container">
-                <div class="row mb-4">
-                    <div class="col">
-                        <h3 class="fw-bold">Meet the Team</h3>
-                        <p class="text-secondary mb-0">Designers, makers, and customer champions.</p>
-                    </div>
-                </div>
+		<!-- Team -->
+		<section class="py-5 anim" data-anim="fade-up">
+			<div class="container">
+				<div class="row mb-4">
+					<div class="col">
+						<h3 class="fw-bold">Meet the Team</h3>
+						<p class="text-secondary mb-0">Designers, makers, and customer
+							champions.</p>
+					</div>
+				</div>
 
-                <div class="row g-3">
-                    <div class="col-6 col-lg-3">
-                        <div class="card rounded-3 shadow h-100">
-                            <div class="ratio ratio-4x3">
-                                <img th:src="@{/public/assets/images/team-1.jpg}" alt="Founder"
-                                    class="card-img-top object-fit-cover">
-                            </div>
-                            <div class="card-body">
-                                <h6 class="mb-0">Aki</h6>
-                                <small class="text-secondary">Founder &amp; Designer</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="card rounded-3 shadow h-100">
-                            <div class="ratio ratio-4x3">
-                                <img th:src="@{/public/assets/images/team-2.jpg}" alt="Head of Craft"
-                                    class="card-img-top object-fit-cover">
-                            </div>
-                            <div class="card-body">
-                                <h6 class="mb-0">Mina</h6>
-                                <small class="text-secondary">Head of Craft</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="card rounded-3 shadow h-100">
-                            <div class="ratio ratio-4x3">
-                                <img src="/assets/images/team-3.jpg" alt="Customer Care"
-                                    class="card-img-top object-fit-cover">
-                            </div>
-                            <div class="card-body">
-                                <h6 class="mb-0">Ken</h6>
-                                <small class="text-secondary">Customer Care</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="card rounded-3 shadow h-100">
-                            <div class="ratio ratio-4x3">
-                                <img src="/assets/images/team-4.jpg" alt="Operations"
-                                    class="card-img-top object-fit-cover">
-                            </div>
-                            <div class="card-body">
-                                <h6 class="mb-0">Linh</h6>
-                                <small class="text-secondary">Operations</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+				<div class="row g-3">
+					<div class="col-6 col-lg-3">
+						<div class="card rounded-3 shadow h-100">
+							<div class="ratio ratio-4x3">
+								<img th:src="@{/public/assets/images/team-1.jpg}" alt="Founder"
+									class="card-img-top object-fit-cover">
+							</div>
+							<div class="card-body">
+								<h6 class="mb-0">Aki</h6>
+								<small class="text-secondary">Founder &amp; Designer</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 col-lg-3">
+						<div class="card rounded-3 shadow h-100">
+							<div class="ratio ratio-4x3">
+								<img th:src="@{/public/assets/images/team-2.jpg}"
+									alt="Head of Craft" class="card-img-top object-fit-cover">
+							</div>
+							<div class="card-body">
+								<h6 class="mb-0">Mina</h6>
+								<small class="text-secondary">Head of Craft</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 col-lg-3">
+						<div class="card rounded-3 shadow h-100">
+							<div class="ratio ratio-4x3">
+								<img src="/assets/images/team-3.jpg" alt="Customer Care"
+									class="card-img-top object-fit-cover">
+							</div>
+							<div class="card-body">
+								<h6 class="mb-0">Ken</h6>
+								<small class="text-secondary">Customer Care</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 col-lg-3">
+						<div class="card rounded-3 shadow h-100">
+							<div class="ratio ratio-4x3">
+								<img src="/assets/images/team-4.jpg" alt="Operations"
+									class="card-img-top object-fit-cover">
+							</div>
+							<div class="card-body">
+								<h6 class="mb-0">Linh</h6>
+								<small class="text-secondary">Operations</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-        <!-- Contact Us (inside About page) -->
-        <section id="contact-us" class="py-5 bg-light anim" data-anim="fade-up">
-            <div class="container">
-                <div class="row mb-4">
-                    <div class="col">
-                        <h3 class="fw-bold">Contact Us</h3>
-                        <p class="text-secondary mb-0">Questions, custom requests, or wholesale? We’d love to hear from
-                            you.</p>
-                    </div>
-                </div>
+		<!-- Contact Us (inside About page) -->
+		<section id="contact-us" class="py-5 bg-light anim"
+			data-anim="fade-up">
+			<div class="container">
+				<div class="row mb-4">
+					<div class="col">
+						<h3 class="fw-bold">Contact Us</h3>
+						<p class="text-secondary mb-0">Questions, custom requests, or
+							wholesale? We’d love to hear from you.</p>
+					</div>
+				</div>
 
-                <div class="row g-4">
-                    <!-- Info cards -->
-                    <div class="col-lg-5">
-                        <div class="d-grid gap-3">
-                            <div class="card rounded-3 shadow-sm">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <div class="brand-dot rounded-circle flex-shrink-0"></div>
-                                    <div>
-                                        <div class="fw-semibold">Email</div>
-                                        <a href="mailto:hello@myshop.com"
-                                            class="text-decoration-none">hello@myshop.com</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card rounded-3 shadow-sm">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-telephone fs-5"></i>
-                                    <div>
-                                        <div class="fw-semibold">Phone</div>
-                                        <a href="tel:+66999999999" class="text-decoration-none">+66 99 999 9999</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card rounded-3 shadow-sm">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-geo-alt fs-5"></i>
-                                    <div>
-                                        <div class="fw-semibold">Studio</div>
-                                        <div class="text-secondary small mb-1">Bangkok, Thailand</div>
-                                        <a href="#map" class="small text-decoration-none">View on map →</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+				<div class="row g-4">
+					<!-- Info cards -->
+					<div class="col-lg-5">
+						<div class="d-grid gap-3">
+							<div class="card rounded-3 shadow-sm">
+								<div class="card-body d-flex align-items-center gap-3">
+									<div class="brand-dot rounded-circle flex-shrink-0"></div>
+									<div>
+										<div class="fw-semibold">Email</div>
+										<a href="mailto:hello@myshop.com" class="text-decoration-none">hello@myshop.com</a>
+									</div>
+								</div>
+							</div>
+							<div class="card rounded-3 shadow-sm">
+								<div class="card-body d-flex align-items-center gap-3">
+									<i class="bi bi-telephone fs-5"></i>
+									<div>
+										<div class="fw-semibold">Phone</div>
+										<a href="tel:+66999999999" class="text-decoration-none">+66
+											99 999 9999</a>
+									</div>
+								</div>
+							</div>
+							<div class="card rounded-3 shadow-sm">
+								<div class="card-body d-flex align-items-center gap-3">
+									<i class="bi bi-geo-alt fs-5"></i>
+									<div>
+										<div class="fw-semibold">Studio</div>
+										<div class="text-secondary small mb-1">Bangkok, Thailand</div>
+										<a href="#map" class="small text-decoration-none">View on
+											map →</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                    <!-- Contact form -->
-                    <div class="col-lg-7">
-                        <div class="card rounded-3 shadow">
-                            <div class="card-body p-4 p-lg-5">
-                                <form action="#" method="post" novalidate>
-                                    <!-- Honeypot -->
-                                    <input type="text" name="website" class="d-none" tabindex="-1" autocomplete="off">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label small">Your name</label>
-                                            <input type="text" name="name" class="form-control"
-                                                placeholder="John Appleseed" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label small">Email</label>
-                                            <input type="email" name="email" class="form-control"
-                                                placeholder="you@example.com" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label small">Topic</label>
-                                            <select name="topic" class="form-select">
-                                                <option value="general">General</option>
-                                                <option value="custom">Custom order</option>
-                                                <option value="wholesale">Wholesale</option>
-                                                <option value="support">Order support</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label small">Order # (optional)</label>
-                                            <input type="text" name="order" class="form-control"
-                                                placeholder="e.g., #MS-1042">
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="form-label small">Message</label>
-                                            <textarea name="message" class="form-control" rows="5"
-                                                placeholder="How can we help?" required></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-3 mt-4">
-                                        <button type="submit" class="btn btn-dark">Send message</button>
-                                        <small class="text-secondary">We reply within 1–2 business days.</small>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+					<!-- Contact form -->
+					<div class="col-lg-7">
+						<div class="card rounded-3 shadow">
+							<div class="card-body p-4 p-lg-5">
+								<form action="#" method="post" novalidate>
+									<!-- Honeypot -->
+									<input type="text" name="website" class="d-none" tabindex="-1"
+										autocomplete="off">
+									<div class="row g-3">
+										<div class="col-md-6">
+											<label class="form-label small">Your name</label> <input
+												type="text" name="name" class="form-control"
+												placeholder="John Appleseed" required>
+										</div>
+										<div class="col-md-6">
+											<label class="form-label small">Email</label> <input
+												type="email" name="email" class="form-control"
+												placeholder="you@example.com" required>
+										</div>
+										<div class="col-md-6">
+											<label class="form-label small">Topic</label> <select
+												name="topic" class="form-select">
+												<option value="general">General</option>
+												<option value="custom">Custom order</option>
+												<option value="wholesale">Wholesale</option>
+												<option value="support">Order support</option>
+											</select>
+										</div>
+										<div class="col-md-6">
+											<label class="form-label small">Order # (optional)</label> <input
+												type="text" name="order" class="form-control"
+												placeholder="e.g., #MS-1042">
+										</div>
+										<div class="col-12">
+											<label class="form-label small">Message</label>
+											<textarea name="message" class="form-control" rows="5"
+												placeholder="How can we help?" required></textarea>
+										</div>
+									</div>
+									<div class="d-flex align-items-center gap-3 mt-4">
+										<button type="submit" class="btn btn-dark">Send
+											message</button>
+										<small class="text-secondary">We reply within 1–2
+											business days.</small>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 
-                    <!-- Map -->
-                    <div class="col-12" id="map">
-                        <div class="ratio ratio-21x9 rounded-3 overflow-hidden shadow">
-                            <!-- Replace src with your precise location if you like -->
-                            <iframe title="MyShop Studio — Bangkok"
-                                src="https://www.google.com/maps?q=Bangkok%2C%20Thailand&output=embed" loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+					<!-- Map -->
+					<div class="col-12" id="map">
+						<div class="ratio ratio-21x9 rounded-3 overflow-hidden shadow">
+							<!-- Replace src with your precise location if you like -->
+							<iframe title="MyShop Studio — Bangkok"
+								src="https://www.google.com/maps?q=Bangkok%2C%20Thailand&output=embed"
+								loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+							</iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
 </th:block>
 </html>

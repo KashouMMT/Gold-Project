@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.dev.main.utils.OtherUtility;
 
@@ -30,9 +31,10 @@ public class AdminDashboardController {
 	}
 	
 	@GetMapping("/dashboard")
-	public String adminDashboardPage(Model model, Authentication authentication) {
+	public String adminDashboardPage(Model model, Authentication authentication,SessionStatus status) {
 		logger.info("GET request received for /admin/dashboard");
-		
+		status.setComplete();
+		logger.debug("Session Attribute cleared");
 		String username = otherUtility.authentication(authentication);
 		
 		if (username.equals("failed")) {

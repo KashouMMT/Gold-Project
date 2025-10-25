@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="author" content="goldproject.com">
-	<meta name="description" content="Gold Project">
-	<title>User Dashboard</title>
-    <th:block th:replace="~{fragments/stylesheets :: stylesheets}"></th:block>
-    <link rel="stylesheet" href="/public/bootstrap-5.3.7-dist/css/bootstrap.css">
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="goldproject.com">
+<meta name="description" content="Gold Project">
+<title>User Dashboard</title>
+<th:block th:replace="~{fragments/stylesheets :: stylesheets}"></th:block>
+<link rel="stylesheet"
+	href="/public/bootstrap-5.3.7-dist/css/bootstrap.css">
 </head>
 <body>
-    <main class="container">
-        <div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 50vh;">
-            <h3 class="mt-3 mb-4">User Dashboard Page</h3>
-            <p>Only User can freely access this User Dashboard Page.</p>
-            <a th:href="@{/home}">Home</a>  
-            <a th:href="@{/home/about}">About</a>
-            <a th:href="@{/admin/admin-dashboard}">Admin Dashboard</a>
-            <a th:href="@{/user/user-dashboard}">User Dashboard</a>   
-        </div>
-    </main>
-    <footer>
-
-    </footer>
-    <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
-    <script src="/public/bootstrap-5.3.7-dist/js/bootstrap.js"></script>
+	<main class="container">
+		<div
+			class="d-flex flex-column justify-content-center align-items-center"
+			style="min-height: 50vh;">
+			<h3 class="mt-3 mb-4">User Dashboard Page</h3>
+			<p>Only User can freely access this User Dashboard Page.</p>
+			<a th:href="@{/home}">Home</a> <a th:href="@{/home/about}">About</a>
+			<a th:href="@{/admin/admin-dashboard}">Admin Dashboard</a> <a
+				th:href="@{/user/user-dashboard}">User Dashboard</a>
+		</div>
+	</main>
+	<footer> </footer>
+	<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+	<script src="/public/bootstrap-5.3.7-dist/js/bootstrap.js"></script>
 </body>
 </html>

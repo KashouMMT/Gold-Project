@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block th:fragment="admin-table">
+	<main>
+		<div class="container-fluid px-4">
+			<h1 class="mt-4">Variation - <span th:text="${product.title}"></span></h1>
+			<ol class="breadcrumb mb-4">
+				<li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+				<li class="breadcrumb-item"><a th:href="@{/admin/product}">Product</a></li>
+				<li class="breadcrumb-item"><a th:href="@{/admin/product/view-variation/{id}(id=${product.id})}">View Variation</a></li>
+				<li class="breadcrumb-item active"><span th:text="${product.title}"></span></li>
+			</ol>
+			<div class="card mb-4">
+				<div class="card-header">
+					<i class="fas fa-table me-1"></i>Variation - <span th:text="${product.title}"></span>
+				</div>
+				<div class="card-body">
+					<table id="datatablesSimple">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Product</th>
+								<th>Width</th>
+								<th>Length</th>
+								<th>Price</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th>Id</th>
+								<th>Product</th>
+								<th>Width</th>
+								<th>Length</th>
+								<th>Price</th>
+							</tr>
+						</tfoot>
+						<tbody>
+						  <tr th:each="productWidth,stat : ${productWidths}">
+						  	<td th:text="${productWidth.product.id}"></td>
+						  	<td th:text="${productWidth.product.title}"></td>
+						    <td><a th:href="@{/admin/product/view-variation/edit-width/{productId}/{widthId}(productId=${productWidth.product.id}, widthId=${productWidth.id})}" 
+						    	th:text="${productWidth.width}"></a></td>
+						    	<td>
+						    		<ul>
+							    		<li th:each="productLength : ${productWidth.productLengths}">
+								    		<a th:href="@{/admin/product/view-variation/edit-length/{productId}/{widthId}/{lengthId}(productId=${productWidth.product.id}, widthId=${productWidth.id}, lengthId=${productLength.id})}" 
+								    		th:text="${productLength.length}"></a>
+							    		</li>
+						    		</ul>
+						    	</td>
+						    	<td>
+						    		<ul>
+						    			<li th:each="productLength : ${productWidth.productLengths}">
+						    				<a th:href="@{/admin/product/view-variation/edit-length/{productId}/{widthId}/{lengthId}(productId=${productWidth.product.id}, widthId=${productWidth.id}, lengthId=${productLength.id})}" 
+						    				th:text="${productLength.price}"></a>
+						    			</li>
+						    		</ul>
+								</td>
+						  </tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="card-footer bg-light border-0 py-4">
+					<a
+						class="btn btn-primary px-5 py-2 shadow-sm fw-semibold rounded-pill hover-glow"
+						th:href="@{/admin/product}">
+						<span>Back to Product</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</main>
+</th:block>
+</html>

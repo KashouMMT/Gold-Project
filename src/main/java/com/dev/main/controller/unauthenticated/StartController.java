@@ -37,11 +37,11 @@ public class StartController {
 			return "redirect:/admin/dashboard";
 		}
 		
-		if(authorities.contains("ROLE_USER")) {
-			logger.debug("Authenticated user: name={}, email={}, role={}",user.getName(),user.getEmail(),user.getRoles());
-			model.addAttribute("content","user/content/user-dashboard");
-			return "user/user-layout";
-		}
+//		if(authorities.contains("ROLE_USER")) {
+//			logger.debug("Authenticated user: name={}, email={}, role={}",user.getName(),user.getEmail(),user.getRoles());
+//			model.addAttribute("content","user/content/user-dashboard");
+//			return "user/user-layout";
+//		}
 		
 		logger.debug("Authenticated admin user: name={}, email={}, role=[UNKNOWN ROLE]",user.getName(),user.getEmail(),user.getRoles());
 		return "redirect:/home";

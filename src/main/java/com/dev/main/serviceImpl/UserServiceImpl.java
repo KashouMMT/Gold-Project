@@ -61,17 +61,20 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void initializeDefaultAdminUser(String name) {
+	public void initializeDefaultAdminUser(String email) {
 		logger.info("Checking if default admin user needs to be initialized.");
-		if (userRepo.findAll().isEmpty()) {
+		
+		User existing = getUserByEmail(email);
+		
+		if (existing == null) {
 			logger.debug("No users found. Creating default admin user.");
+			Set<Role> role = new HashSet<>();
+			role.add(roleRepo.findByRoleName("ROLE_ADMIN").orElseThrow(() -> new IllegalStateException()));
 			User user = new User();
-			user.setEmail("admin@admin.com");
+			user.setEmail(email);
 			user.setName("admin");
 			user.setEnabled(true);
 			user.setPassword(encoder.encode("admin111"));
-			Set<Role> role = new HashSet<>();
-			role.add(roleRepo.findByRoleName("ROLE_ADMIN").orElse(null));
 			user.setRoles(role);
 			userRepo.save(user);
 			logger.info("Default admin user initialized with username: admin");

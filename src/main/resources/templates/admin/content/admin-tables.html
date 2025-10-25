@@ -1,47 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <th:block th:fragment="admin-table(items, columns)">
-<main>
-    <div class="container-fluid px-4">
-        <h1 class="mt-4" th:text="${table_name}"></h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
-            <li class="breadcrumb-item active" th:text="${table_name}"></li>
-        </ol>
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                <span th:text="${table_name}"></span>
-            </div>
-            <div class="card-body">
-                <table id="datatablesSimple">
-                    <thead>
-                        <tr>
-                            <th th:each="col : ${columns}" th:text="${col}"></th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-						<tr>
-                            <th th:each="col : ${columns}" th:text="${col}"></th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        <tr th:each="item : ${items}">
-                            <td th:each="col : ${columns}" 
-                            	th:text="${item[#strings.toLowerCase(col)]}"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-			<div class="card-footer bg-light border-0 py-4">
-			  <a class="btn btn-primary px-5 py-2 shadow-sm fw-semibold rounded-pill hover-glow"
-			  th:href="@{${buttonActions['addAction']}}">
-			    <i class="fas fa-plus-circle me-2" ></i>
-			  	<span th:text="${buttonActions['addActionText']}"></span>
-			  </a>
+	<main>
+		<div class="container-fluid px-4">
+			<h1 class="mt-4" th:text="${tableName}"></h1>
+			<ol class="breadcrumb mb-4">
+				<li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+				<li class="breadcrumb-item active" th:text="${tableName}"></li>
+			</ol>
+			<div class="card mb-4">
+				<div class="card-header">
+					<i class="fas fa-table me-1"></i> <span th:text="${tableName}"></span>
+				</div>
+				<div class="card-body">
+					<table id="datatablesSimple">
+						<thead>
+							<tr>
+								<th th:each="col : ${columns}" th:text="${col}"></th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th th:each="col : ${columns}" th:text="${col}"></th>
+							</tr>
+						</tfoot>
+						<tbody>
+						  <tr th:each="item : ${items}">
+						    <td th:each="col : ${columns}">
+						      	<th:block 
+						      		th:with="val=${item[#strings.toLowerCase(col)]},
+						      		kind=${val == null ? 'NULL'
+						      			: (val instanceof T(java.util.List) ? 'LIST'
+						      			: (val instanceof T(java.util.Map) ? 'MAP'
+						      			: 'SCALAR'))}"
+						      		th:switch="${kind}">
+						      		<th:block th:case="'SCALAR'">
+						      			<span th:text="${val}"></span>
+						      		</th:block>
+							        <!-- If the value is a list -->
+							        <th:block th:case="'LIST'">
+						          		<ul class="list mb-0">
+						            		<li th:each="p : ${val}" th:text="${p.title}"></li>
+						          		</ul>
+							        </th:block>
+							        <th:block th:case="'MAP'">
+							        	<a 
+							        	class="fw-semibold hover-glow"
+							        	th:href="@{${val['editAction']}(id=${item['id']})}">
+							        		<span th:text="${val['editActionText']}"></span>
+							        	</a>
+							        	<br>
+							        	<a class="fw-semibold hover-glow"
+							        	th:href="@{${val['deleteAction']}(id=${item['id']})}">
+							        		<span th:text="${val['deleteActionText']}"></span>
+							        	</a>
+							        </th:block>
+						      </th:block>
+						    </td>
+						  </tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="card-footer bg-light border-0 py-4">
+					<a
+						class="btn btn-primary px-5 py-2 shadow-sm fw-semibold rounded-pill hover-glow"
+						th:href="@{${addAction}}"> <i
+						class="fas fa-plus-circle me-2"></i> <span
+						th:text="${addActionText}"></span>
+					</a>
+				</div>
 			</div>
-        </div>
-    </div>
-</main>
+		</div>
+	</main>
 </th:block>
 </html>

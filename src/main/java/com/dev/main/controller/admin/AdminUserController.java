@@ -1,5 +1,6 @@
 package com.dev.main.controller.admin;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,15 +20,15 @@ import com.dev.main.utils.OtherUtility;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminUserListController {
+public class AdminUserController {
 
-	private static final Logger logger = LoggerFactory.getLogger(AdminUserListController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminUserController.class);
 
 	private UserService userService;
 	
 	private OtherUtility otherUtility;
 	
-	public AdminUserListController(UserService userService, OtherUtility otherUtility) {
+	public AdminUserController(UserService userService, OtherUtility otherUtility) {
 		this.userService = userService;
 		this.otherUtility = otherUtility;
 	}
@@ -43,12 +44,11 @@ public class AdminUserListController {
 			return "redirect:/auth/login";
 		}
 		
-		List<String> columns = List.of("ID","Name","Email","Enabled");
-		logger.debug("ProductList Page Columns defined: {}", columns);
-		
+		List<String> columns = List.of("ID","Name","Email","Enabled","Actions");
 		List<User> users = userService.getAllUsers();
-		logger.info("Retrieved {} users from userService", users.size());
-		
+	    Map<String, Object> buttonActions = new HashMap<>();
+	    buttonActions.put("deleteAction", "/admin/delete-user/{id}");
+	    buttonActions.put("deleteActionText", "Delete User");
 		List<Map<String,Object>> items = users.stream()
 			    .filter(u -> u.getRoles().stream()
 			        .anyMatch(r -> r.getRoleName().equals("ROLE_USER")))
@@ -58,23 +58,28 @@ public class AdminUserListController {
 			    	  m.put("name", u.getName());
 			    	  m.put("email", u.getEmail());
 			    	  m.put("enabled", u.isEnabled());
+			    	  m.put("actions", buttonActions);
 			    	  return m;
 			    })
 			    .collect(Collectors.toList());
-		logger.debug("Transformed {} users into display maps", items.size());
-
+		
+	    model.addAttribute("addAction", "/admin/add-user-why-not-just-redirect");
+	    model.addAttribute("addActionText", "Add New User");
 		model.addAttribute("items",items);
-		logger.debug("Added attribute to model: key='items', value='{}'", items.toString());
 		model.addAttribute("columns",columns);
-		logger.debug("Added attribute to model: key='columns', value='{}'", columns.toString());
-		model.addAttribute("table_name","User Table");
-		logger.debug("Added attribute to model: key='table_name', value='{}'", "User Table");
+		model.addAttribute("tableName","User Table");
 		model.addAttribute("username",username);
-		logger.debug("Added attribute to model: key='username', value='{}'", username);
-		logger.info("Rendering admin dashboard for user: {}", username);
 		
 		model.addAttribute("content","admin/content/admin-tables");
 				
 		return "admin/admin-layout";
+	}
+	
+	@GetMapping("/add-user-why-not-just-redirect")
+	public String addUserPage(Model model,Authentication authentication) {
+		
+		logger.info("GET request received for /admin/add-user-why-not-just-redirect");
+		
+		return "redirect:/auth/sign-up";
 	}
 }

@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="author" content="goldproject.com">
-	<meta name="description" content="Gold Project">
-	<title>Home</title>
-    <th:block th:insert="~{public/components/public-stylesheets :: stylesheets}"></th:block>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="goldproject.com">
+<meta name="description" content="Gold Project">
+<title>Home</title>
+<th:block
+	th:insert="~{public/components/public-stylesheets :: stylesheets}"></th:block>
 </head>
 <body>
 	<th:block th:insert="~{public/components/public-navbar}"></th:block>
-    
+
 	<th:block th:insert="~{${content}}"></th:block>
 
 	<th:block th:insert="~{public/components/public-footer}"></th:block>
-	
-    <th:block th:insert="~{public/components/public-scripts :: scripts}"></th:block>
+
+	<th:block th:insert="~{public/components/public-scripts :: scripts}"></th:block>
 </body>
 </html>

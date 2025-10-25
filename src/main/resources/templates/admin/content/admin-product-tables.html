@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block th:fragment="admin-table">
+	<main>
+		<div class="container-fluid px-4">
+			<h1 class="mt-4">Product Table</h1>
+			<ol class="breadcrumb mb-4">
+				<li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+				<li class="breadcrumb-item active">Product Table</li>
+			</ol>
+			<div class="card mb-4">
+				<div class="card-header">
+					<i class="fas fa-table me-1"></i> <span>Product Table</span>
+				</div>
+				<div class="card-body">
+					<table id="datatablesSimple">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Title</th>
+								<th>Material</th>
+								<th>Occasion</th>
+								<th>Theme</th>
+								<th>Category</th>
+								<th>Description</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th>ID</th>
+								<th>Title</th>
+								<th>Material</th>
+								<th>Occasion</th>
+								<th>Theme</th>
+								<th>Category</th>
+								<th>Description</th>
+								<th>Actions</th>
+							</tr>
+						</tfoot>
+						<tbody>
+						  <tr th:each="p : ${products}">
+						    <td th:text="${p.id}"></td>
+						    <td th:text="${p.title}"></td>
+						    <td th:text="${p.material}"></td>
+						    <td th:text="${p.occasion}"></td>
+						    <td th:text="${p.theme}"></td>
+						    <td th:text="${p.category != null ? p.category.categoryName : '-'}"></td>
+						    <td th:text="${p.description}"></td>
+						    <td>
+						     	<a
+									class="px-5 py-2 fw-semibold hover-glow"
+									th:href="@{/admin/edit-product/{id}(id=${p.id})}">
+									<span>Edit Product</span>
+								</a>
+								<br>
+								<a
+									class="mt-2 px-5 py-2 fw-semibold hover-glow"
+									th:href="@{/admin/product/view-variation/{id}(id=${p.id})}">
+									<span>View Variations</span>
+								</a>
+								<br>
+								<a
+									class="mt-2 px-5 py-2 fw-semibold hover-glow"
+									th:href="@{/admin/delete-product/{id}(id=${p.id})}">
+									<span>Delete Product</span>
+								</a>
+								<br>
+								<a
+									class="mt-2 px-5 py-2 fw-semibold hover-glow"
+									th:href="@{/admin/edit-product/${p.id}}">
+									<span>Product Page</span>
+								</a>
+						    </td>
+						  </tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="card-footer bg-light border-0 py-4">
+					<a
+						class="btn btn-primary px-5 py-2 shadow-sm fw-semibold rounded-pill hover-glow"
+						th:href="@{/admin/add-product}">
+						<span>Add Product</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</main>
+</th:block>
+</html>

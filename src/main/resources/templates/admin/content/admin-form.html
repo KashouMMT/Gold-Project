@@ -2,96 +2,121 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <body>
-  <th:block th:fragment="admin-form(objectDto, fields, formAction, submitLabel, formOptions, formTitle)">
-    <main>
-      <div class="container-fluid">
-        <div class="card shadow-lg border-0 rounded-lg mt-5">
-          <div class="card-header">
-            <h3 class="font-weight-light my-4" th:text="${formTitle}"></h3>
-          </div>
+	<th:block th:fragment="admin-form">
+		<main>
+			<div class="container-fluid px-4">
+				<h1 class="mt-4" th:text="${formTitle}"></h1>
+				<ol class="breadcrumb mb-4">
+					<li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+					<li class="breadcrumb-item"><a th:href="@{${tableLink}}" th:text="${tableName}"></a></li>
+					<li class="breadcrumb-item" th:text="${formTitle}"></li>
+				</ol>
+				<div class="card shadow-lg border-0 rounded-lg mt-5">
+					<div class="card-header">
+						<h3 class="font-weight-light my-4" th:text="${formTitle}"></h3>
+					</div>
 
-          <div class="card-body">
-            <form th:action="@{${formAction}}" th:object="${objectDto}" method="post" novalidate>
+					<div class="card-body">
+						<form th:action="@{${formAction}}" th:object="${objectDto}"
+							method="post" novalidate>
 
-              <div class="row g-3" th:each="f : ${fields}">
-                <div class="col-12" th:switch="${f.type()}">
+							<div class="row g-3" th:each="f : ${fields}">
+								<div class="col-12" th:switch="${f.type()}">
 
-                  <!-- text / number / password -->
-                  <div th:case="'text'">
-                    <label class="form-label" th:for="${f.name()}" th:text="${f.label()}"></label>
-                    <input class="form-control" th:type="${f.type()}" th:field="*{__${f.name()}__}"
-                      th:attr="maxlength=${f.maxLength()}, step=${f.step()}, required=${f.required()} ? 'required' : null"
-                      th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'">
+									<!-- text / number / password -->
+									<div th:case="'text'">
+										<label class="form-label" th:for="${f.name()}"
+											th:text="${f.label()}"></label> <input class="form-control"
+											th:type="${f.type()}" th:field="*{__${f.name()}__}"
+											th:attr="maxlength=${f.maxLength()}, step=${f.step()}, required=${f.required()} ? 'required' : null"
+											th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'">
 
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('__${f.name()}__')}"
-                      th:errors="*{__${f.name()}__}">Error</div>
-                  </div>
+										<div class="invalid-feedback"
+											th:if="${#fields.hasErrors('__${f.name()}__')}"
+											th:errors="*{__${f.name()}__}">Error</div>
+									</div>
 
-                  <div th:case="'number'">
-                    <label class="form-label" th:for="${f.name()}" th:text="${f.label()}"></label>
-                    <input class="form-control" type="number" th:field="*{__${f.name()}__}"
-                      th:attr="step=${f.step()}, maxlength=${f.maxLength()}, required=${f.required()} ? 'required' : null"
-                      th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'">
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('__${f.name()}__')}"
-                      th:errors="*{__${f.name()}__}">Error</div>
-                  </div>
+									<div th:case="'number'">
+										<label class="form-label" th:for="${f.name()}"
+											th:text="${f.label()}"></label> <input class="form-control"
+											type="number" th:field="*{__${f.name()}__}"
+											th:attr="step=${f.step()}, maxlength=${f.maxLength()}, required=${f.required()} ? 'required' : null"
+											th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'">
+										<div class="invalid-feedback"
+											th:if="${#fields.hasErrors('__${f.name()}__')}"
+											th:errors="*{__${f.name()}__}">Error</div>
+									</div>
 
 
-                  <!-- textarea -->
-                  <div th:case="'textarea'">
-                    <label class="form-label" th:for="${f.name()}" th:text="${f.label()}"></label>
-                    <textarea class="form-control" rows="4" th:field="*{__${f.name()}__}"
-                      th:attr="maxlength=${f.maxLength()}, required=${f.required()} ? 'required' : null"
-                      th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'"></textarea>
+									<!-- textarea -->
+									<div th:case="'textarea'">
+										<label class="form-label" th:for="${f.name()}"
+											th:text="${f.label()}"></label>
+										<textarea class="form-control" rows="4"
+											th:field="*{__${f.name()}__}"
+											th:attr="maxlength=${f.maxLength()}, required=${f.required()} ? 'required' : null"
+											th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'"></textarea>
 
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('__${f.name()}__')}"
-                      th:errors="*{__${f.name()}__}">Error</div>
-                  </div>
+										<div class="invalid-feedback"
+											th:if="${#fields.hasErrors('__${f.name()}__')}"
+											th:errors="*{__${f.name()}__}">Error</div>
+									</div>
 
-                  <!-- select (guard formOptions lookups) -->
-                  <div th:case="'select'">
-                    <label class="form-label" th:for="${f.name()}" th:text="${f.label()}"></label>
-                    <select class="form-select" th:field="*{__${f.name()}__}"
-                      th:attr="required=${f.required()} ? 'required' : null"
-                      th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'">
-                      <option value="" disabled th:selected="*{__${f.name()}__} == null">Select...</option>
-                      <option th:if="${formOptions != null and f.optionsKey() != null}"
-                        th:each="opt : ${formOptions[f.optionsKey()]}" th:value="${opt.id}" th:text="${opt.category_name}">
-                      </option>
-                    </select>
+									<!-- select (guard formOptions lookups) -->
+									<div th:case="'select'">
+										<label class="form-label" th:for="${f.name()}"
+											th:text="${f.label()}"></label> <select class="form-select"
+											th:field="*{__${f.name()}__}"
+											th:attr="required=${f.required()} ? 'required' : null"
+											th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'">
+											<option value="" disabled
+												th:selected="*{__${f.name()}__} == null">Select...</option>
+											<option
+												th:if="${formOptions != null and f.optionsKey() != null}"
+												th:each="opt : ${formOptions[f.optionsKey()]}"
+												th:value="${opt.id}" th:text="${opt.category_name}">
+											</option>
+										</select>
 
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('__${f.name()}__')}"
-                      th:errors="*{__${f.name()}__}">Error</div>
-                  </div>
+										<div class="invalid-feedback"
+											th:if="${#fields.hasErrors('__${f.name()}__')}"
+											th:errors="*{__${f.name()}__}">Error</div>
+									</div>
 
-                  <!-- checkbox -->
-                  <div class="form-check" th:case="'checkbox'">
-                    <input class="form-check-input" type="checkbox" th:field="*{__${f.name()}__}">
-                    <label class="form-check-label" th:for="${f.name()}" th:text="${f.label()}"></label>
-                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('__${f.name()}__')}"
-                      th:errors="*{__${f.name()}__}">Error</div>
-                  </div>
+									<!-- checkbox -->
+									<div class="form-check" th:case="'checkbox'">
+										<input class="form-check-input" type="checkbox"
+											th:field="*{__${f.name()}__}"> <label
+											class="form-check-label" th:for="${f.name()}"
+											th:text="${f.label()}"></label>
+										<div class="invalid-feedback d-block"
+											th:if="${#fields.hasErrors('__${f.name()}__')}"
+											th:errors="*{__${f.name()}__}">Error</div>
+									</div>
 
-                </div>
-              </div>
+								</div>
+							</div>
 
-              <!-- CSRF (if Spring Security is on) -->
-              <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}"
-                th:value="${_csrf.token}" />
+							<!-- CSRF (if Spring Security is on) -->
+							<input type="hidden" th:if="${_csrf != null}"
+								th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-              <div class="mt-4 mb-0">
-                <button class="btn btn-primary" type="submit" th:text="${submitLabel}">Save</button>
-              </div>
-            </form>
-          </div>
+							<div class="mt-4 mb-0">
+								<button class="btn btn-primary" type="submit"
+									th:text="${submitLabel}">Save</button>
+							</div>
+						</form>
+					</div>
 
-          <div class="card-footer text-center py-3">
-            <div class="small"><a th:href="@{/admin/dashboard}">Back to dashboard</a></div>
-          </div>
-        </div>
-      </div>
-    </main>
-  </th:block>
+					<div class="card-footer text-center py-3">
+						<div class="small">
+							<a th:href="@{/admin/dashboard}">Back to dashboard</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</th:block>
 </body>
 
 </html>

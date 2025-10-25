@@ -1,51 +1,61 @@
 package com.dev.main.dto;
 
-import java.math.BigDecimal;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.dev.main.model.Product;
+import com.dev.main.model.Category;
+import com.dev.main.validation.FileSize;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class ProductDto {
 	
 	private Long id;
 	
-	@NotBlank
-	@Column(nullable = false, length = 150)
+	private Category category;
+	
+	@NotBlank(message = "Title is required")
+	@Size(message = "Title must be less than 150",max = 150)
 	private String title;
 	
-	@Column(length = 255)
-	private String summary;
+	@Size(message = "Description must be less than 255",max = 255)
+	private String description;
 	
-	@NotNull
-	@Column(nullable = false, precision = 12, scale = 2)
-	private BigDecimal price;
+	@NotBlank(message = "Material is required")
+	private String material;
 	
-	@NotNull
-	private Long category;
-
-	public ProductDto(Long id, @NotBlank String title, String summary, @NotNull BigDecimal price,
-			@NotNull Long category) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.summary = summary;
-		this.price = price;
-		this.category = category;
-	}
-
-	public ProductDto(Product product) {
-		this.id = product.getId();
-		this.title = product.getTitle();
-		this.summary = product.getSummary();
-		this.price = product.getPrice();
-		this.category = product.getCategory().getId();
-	}
+	@NotBlank(message = "Theme is required")
+	@Size(message = "Theme must be less than 100",max=100)
+	private String theme;
+	
+	@NotBlank(message = "Occasion is required")
+	@Size(message = "Occasion must be less than 100",max=100)
+	private String occasion;
+	
+	//@NotBlank(message = "Product image is required")
+	//@FileSize(max = 10 * 1024 * 1024, message = "Image must be less than 10MB")
+	private MultipartFile productImage;
 	
 	public ProductDto() {
 		
+	}
+
+	public ProductDto(Long id, Category category,
+			@NotBlank(message = "Title is required") @Size(message = "Title must be less than 150", max = 150) String title,
+			@Size(message = "Description must be less than 255", max = 255) String description,
+			@NotBlank(message = "Material is required") String material,
+			@NotBlank(message = "Theme is required") @Size(message = "Theme must be less than 100", max = 100) String theme,
+			@NotBlank(message = "Occasion is required") @Size(message = "Occasion must be less than 100", max = 100) String occasion,
+			@NotBlank(message = "Product image is required") MultipartFile productImage) {
+		super();
+		this.id = id;
+		this.category = category;
+		this.title = title;
+		this.description = description;
+		this.material = material;
+		this.theme = theme;
+		this.occasion = occasion;
+		this.productImage = productImage;
 	}
 
 	public Long getId() {
@@ -56,6 +66,14 @@ public class ProductDto {
 		this.id = id;
 	}
 
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -64,27 +82,45 @@ public class ProductDto {
 		this.title = title;
 	}
 
-	public String getSummary() {
-		return summary;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setSummary(String summary) {
-		this.summary = summary;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public BigDecimal getPrice() {
-		return price;
+	public String getMaterial() {
+		return material;
 	}
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
+	public void setMaterial(String material) {
+		this.material = material;
 	}
 
-	public Long getCategory() {
-		return category;
+	public String getTheme() {
+		return theme;
 	}
 
-	public void setCategory(Long category) {
-		this.category = category;
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}
+
+	public String getOccasion() {
+		return occasion;
+	}
+
+	public void setOccasion(String occasion) {
+		this.occasion = occasion;
+	}
+
+	public MultipartFile getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(MultipartFile productImage) {
+		this.productImage = productImage;
 	}
 }
+
+

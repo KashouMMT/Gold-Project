@@ -24,6 +24,6 @@ public class DataInitializer {
 	@PostConstruct
 	public void init() throws Exception {
 		roleService.initializeRoles(Arrays.asList("ROLE_ADMIN","ROLE_USER"));
-		userService.initializeDefaultAdminUser("admin");
+		userService.initializeDefaultAdminUser("admin@admin.com");
 	}
 }

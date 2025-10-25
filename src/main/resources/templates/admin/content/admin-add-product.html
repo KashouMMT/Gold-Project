@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<th:block th:fragment="admin-form">
+		<main>
+			<div class="container-fluid px-4">
+				<h1 class="mt-4" th:if="${formTitle}" th:text="${formTitle}"></h1>
+				<h1 class="mt-4" th:unless="${formTitle}">Add Product</h1>
+				<ol class="breadcrumb mb-4">
+					<li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+					<li class="breadcrumb-item"><a th:href="@{/admin/product}">Product Table</a></li>
+					<li class="breadcrumb-item" th:if="${formTitle}" th:text="${formTitle}"></li>
+					<li class="breadcrumb-item" th:unless="${formTitle}">Add Product</li>
+				</ol>
+				<div class="card shadow-lg border-0 rounded-lg mt-5">
+					<div class="card-body">
+						<form id="variantsForm" th:action="@{${formAction}}" th:object="${productDto}" method="post" novalidate>
+							<div class="row mt-3 p-2">
+								<div class="col-12">
+									<!-- text / number / password -->
+									<label class="form-label" for="title">
+										Title
+									</label> 
+									<input class="form-control"
+										type="text" 
+										th:field="*{title}"
+										maxlength="150"
+										th:classappend="${#fields.hasErrors('title')} ? ' is-invalid'">
+									<div class="invalid-feedback"
+										th:if="${#fields.hasErrors('title')}"
+										th:errors="*{title}"></div>
+								</div>
+							</div>
+							<div class="row mt-3 p-2">
+								<div class="col-3 toggle-input-wrapper" data-toggle-name="material">
+							  		<label class="form-label" th:for="*{material}">Material</label>
+							    	<select class="form-select"
+							            th:field="*{material}"
+							            data-type="dropdown">
+								      	<option selected disabled th:value="${null}">Select Material</option>
+								      	<option th:each="material : ${materials}"
+								              th:value="${material}"
+								              th:text="${material}">
+								      	</option>
+							    	</select>
+							    	<button class="icon-btn" data-type="add" type="button">+</button>
+							    	<input class="form-control d-none"
+							           th:field="*{material}"
+							           th:value="*{material}"
+							           data-type="input"
+							           placeholder="Enter new material"
+							           th:classappend="${#fields.hasErrors('material')} ? ' is-invalid'"
+							           disabled/>
+							        <!-- 
+							        <div class="invalid-feedback"
+										th:if="${#fields.hasErrors('material')}"
+										th:errors="*{material}"></div>
+							    	 -->
+							    	<button class="icon-btn d-none" data-type="remove" type="button">−</button>
+							  	</div>
+							
+							  	<div class="col-3 toggle-input-wrapper" data-toggle-name="material">
+							    	<label class="form-label" th:for="*{occasion}">Occasion</label>
+							    	<select class="form-select"
+							            th:field="*{occasion}"
+							            data-type="dropdown">
+							      		<option selected disabled th:value="${null}">Select Occasion</option>
+							      		<option th:each="occasion : ${occasions}"
+							              th:value="${occasion}"
+							              th:text="${occasion}">
+							      		</option>
+							    	</select>
+								    <button class="icon-btn" data-type="add" type="button">+</button>
+								    <input class="form-control d-none"
+								           th:field="*{occasion}"
+								           th:value="*{occasion}"
+								           data-type="input"
+								           placeholder="Enter new occasion"
+								           th:classappend="${#fields.hasErrors('occasion')} ? ' is-invalid'"
+								           disabled/>
+								    <!-- 
+								    <div class="invalid-feedback"
+										th:if="${#fields.hasErrors('occasion')}"
+										th:errors="*{occasion}"></div>
+								     -->
+								    <button class="icon-btn d-none" data-type="remove" type="button">−</button>
+							  	</div>
+							  	<div class="col-3 toggle-input-wrapper" data-toggle-name="themes">
+							    	<label class="form-label" th:for="*{theme}">Theme</label>
+							    	<select class="form-select"
+							            th:field="*{theme}"
+							            data-type="dropdown">
+							      		<option selected disabled th:value="${null}">Select Theme</option>
+							      		<option th:each="theme : ${themes}"
+							              th:value="${theme}"
+							              th:text="${theme}">
+							      		</option>
+							    	</select>
+								    <button class="icon-btn" data-type="add" type="button">+</button>
+								    <input class="form-control d-none"
+								           th:field="*{theme}"
+								           th:value="*{theme}"
+								           data-type="input"
+								           placeholder="Enter new theme"
+								           th:classappend="${#fields.hasErrors('theme')} ? ' is-invalid'"
+								           disabled/>
+								    <!-- 
+								    <div class="invalid-feedback"
+										th:if="${#fields.hasErrors('theme')}"
+										th:errors="*{theme}"></div>
+										 -->
+								    <button class="icon-btn d-none" data-type="remove" type="button">−</button>
+							  	</div>
+							  	<div th:object="${categoryDto}" class="col-3 toggle-input-wrapper" data-toggle-name="categories">
+							    	<label class="form-label">Category</label>
+							    	<select class="form-select"
+							            th:field="${categoryDto.categoryName}"
+							            data-type="dropdown">
+							      		<option selected disabled th:value="${null}">Select Category</option>
+							      		<option th:each="category : ${categories}"
+							              th:value="${category.categoryName}"
+							              th:text="${category.categoryName}">
+							      		</option>
+							    	</select>
+								    <button class="icon-btn" data-type="add" type="button">+</button>
+								    <input class="form-control d-none"
+								           th:field="${categoryDto.categoryName}"
+								           th:value="*{categoryName}"
+								           data-type="input"
+								           placeholder="Enter new Category"
+								           th:classappend="${#fields.hasErrors('categoryName')} ? ' is-invalid'"
+								           disabled/>
+								    <!-- 
+								    <div class="invalid-feedback"
+										th:if="${#fields.hasErrors('categoryName')}"
+										th:errors="*{categoryName}"></div>
+									 -->
+								    <button class="icon-btn d-none" data-type="remove" type="button">−</button>
+							  	</div>
+							</div>
+							<div class="row mt-3 p-2">
+								<div class="col-12">
+									<label class="form-label" for="*{description}">Description</label>
+									<textarea class="form-control" rows="6"
+										th:field="*{description}"
+										th:value="*{description}"
+										maxlength=150
+										required
+										th:classappend="${#fields.hasErrors('description')} ? ' is-invalid'"></textarea>
+									<div class="invalid-feedback"
+										th:if="${#fields.hasErrors('description')}"
+										th:errors="*{description}">Error</div>
+								</div>
+							</div>
+							<div th:if="${addAction} != true"></div>
+							<div th:unless="${addAction} != true" >
+								<div class="row g-3 align-items-end">
+							    	<div class="col-md-4">
+							      		<label class="form-label fw-semibold">Number of Width Variations</label>
+							      		<input type="number" id="widthCount" class="form-control" min="0">
+							    	</div>
+								    <div class="col-md-4">
+								      	<label class="form-label fw-semibold">Number of Length Variations</label>
+								      	<input type="number" id="lengthCount" class="form-control" min="0">
+								    </div>
+								    <div class="col-md-4">
+								      	<button id="build" type="button" class="btn btn-primary w-100">Generate Table</button>
+								    </div>
+							 	</div>
+							  	<div class="row mt-4">
+							    	<div class="col-12">
+								      	<div class="table-responsive">
+								        	<table id="variantsTable" class="table table-bordered table-hover align-middle w-100 text-center">
+								          		<thead class="table-dark">
+								            		<tr>
+								              			<th>Width</th>
+								              			<th>Length</th>
+								              			<th>Price</th>
+								            		</tr>
+								          		</thead>
+								          		<tbody></tbody>
+								        	</table>
+								      	</div>
+							    	</div>
+							  	</div>
+							</div>
+							<div class="mt-4 mb-0">
+								<button class="btn btn-primary" type="submit" th:if="${formTitle}" th:text="${formTitle}"></button>
+								<button class="btn btn-primary" type="submit" th:unless="${formTitle}">Add Product</button>
+							</div>
+						</form>
+					</div>
+
+					<div class="card-footer text-center py-3">
+						<div class="small">
+							<a th:href="@{/admin/dashboard}">Back to dashboard</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</th:block>
+</body>
+
+</html>

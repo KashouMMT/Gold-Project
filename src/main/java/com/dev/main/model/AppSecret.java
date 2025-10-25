@@ -2,8 +2,10 @@ package com.dev.main.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.PreUpdate;
@@ -18,7 +20,8 @@ public class AppSecret {
 	private String name;
 	
 	@Lob
-	@Column(nullable = false)
+	@Basic(fetch=FetchType.LAZY)
+	@Column(nullable = false, unique = true)
 	private String value;
 	
 	@Column(name = "updated_at",nullable = false)
