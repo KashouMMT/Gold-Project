@@ -74,7 +74,7 @@ public class AuthenticationController {
 		
 		logger.debug("Payload received: {}",userDto);
 		
-		userService.createUser(userDto);
+		userService.createUser(userDto,false);
 		
 		logger.info("User successfully created");
 		logger.info("Redirecting back to /auth/login");

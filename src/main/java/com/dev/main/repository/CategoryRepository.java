@@ -18,4 +18,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 	@EntityGraph(attributePaths = "products")
 	@Query("select distinct c from Category c order by c.id asc")
 	List<Category> findAllWithProducts();
+	
+	Long countById(Long id);
 }

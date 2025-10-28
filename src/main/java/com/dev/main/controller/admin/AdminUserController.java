@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dev.main.model.User;
@@ -47,8 +48,10 @@ public class AdminUserController {
 		List<String> columns = List.of("ID","Name","Email","Enabled","Actions");
 		List<User> users = userService.getAllUsers();
 	    Map<String, Object> buttonActions = new HashMap<>();
-	    buttonActions.put("deleteAction", "/admin/delete-user/{id}");
-	    buttonActions.put("deleteActionText", "Delete User");
+	    buttonActions.put("deleteAction", "/admin/disable-user/{id}");
+	    buttonActions.put("deleteActionText", "Disable User");
+	    buttonActions.put("editAction", "/admin/enable-user/{id}");
+	    buttonActions.put("editActionText", "Enable User");
 		List<Map<String,Object>> items = users.stream()
 			    .filter(u -> u.getRoles().stream()
 			        .anyMatch(r -> r.getRoleName().equals("ROLE_USER")))
@@ -81,5 +84,17 @@ public class AdminUserController {
 		logger.info("GET request received for /admin/add-user-why-not-just-redirect");
 		
 		return "redirect:/auth/sign-up";
+	}
+	
+	@GetMapping("/disable-user/{id}")
+	public String disableUser(@PathVariable Long id) {
+		userService.disableUser(id);
+		return "redirect:/admin/user";
+	}
+	
+	@GetMapping("/enable-user/{id}")
+	public String enableUser(@PathVariable Long id) {
+		userService.enableUser(id);
+		return "redirect:/admin/user";
 	}
 }

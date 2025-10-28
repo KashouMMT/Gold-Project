@@ -12,4 +12,6 @@ public interface CategoryService {
 	Category getCategoryByCategoryName(String categoryName);
 	boolean isCategoryPresent(CategoryDto categoryDto);
 	Category createCategory(CategoryDto categoryDto);
+	boolean deleteCategoryIfEmpty(Long id);
+	void editCategory(Long id,CategoryDto categoryDto);
 }

@@ -35,7 +35,30 @@
 											th:if="${#fields.hasErrors('__${f.name()}__')}"
 											th:errors="*{__${f.name()}__}">Error</div>
 									</div>
-
+									<!-- email -->
+									<div th:case="'email'">
+										<label class="form-label" th:for="${f.name()}" th:text="${f.label()}"></label>
+										<input class="form-control"
+											type="email"
+											th:field="*{__${f.name()}__}"
+											th:attr="maxlength=${f.maxLength()}, required=${f.required()} ? 'required' : null"
+											th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'">
+										<div class="invalid-feedback"
+											th:if="${#fields.hasErrors('__${f.name()}__')}"
+											th:errors="*{__${f.name()}__}">Error</div>
+									</div>
+									<!-- password -->
+									<div th:case="'password'">
+										<label class="form-label" th:for="${f.name()}" th:text="${f.label()}"></label>
+										<input class="form-control"
+											type="password"
+											th:field="*{__${f.name()}__}"
+											th:attr="maxlength=${f.maxLength()}, required=${f.required()} ? 'required' : null"
+											th:classappend="${#fields.hasErrors('__${f.name()}__')} ? ' is-invalid'">
+										<div class="invalid-feedback"
+											th:if="${#fields.hasErrors('__${f.name()}__')}"
+											th:errors="*{__${f.name()}__}">Error</div>
+									</div>
 									<div th:case="'number'">
 										<label class="form-label" th:for="${f.name()}"
 											th:text="${f.label()}"></label> <input class="form-control"

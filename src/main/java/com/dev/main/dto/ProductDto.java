@@ -1,9 +1,8 @@
 package com.dev.main.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 import com.dev.main.model.Category;
-import com.dev.main.validation.FileSize;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -13,6 +12,8 @@ public class ProductDto {
 	private Long id;
 	
 	private Category category;
+	
+	private List<String> imageNames;
 	
 	@NotBlank(message = "Title is required")
 	@Size(message = "Title must be less than 150",max = 150)
@@ -32,30 +33,25 @@ public class ProductDto {
 	@Size(message = "Occasion must be less than 100",max=100)
 	private String occasion;
 	
-	//@NotBlank(message = "Product image is required")
-	//@FileSize(max = 10 * 1024 * 1024, message = "Image must be less than 10MB")
-	private MultipartFile productImage;
-	
 	public ProductDto() {
 		
 	}
 
-	public ProductDto(Long id, Category category,
+	public ProductDto(Long id, Category category, List<String> imageNames,
 			@NotBlank(message = "Title is required") @Size(message = "Title must be less than 150", max = 150) String title,
 			@Size(message = "Description must be less than 255", max = 255) String description,
 			@NotBlank(message = "Material is required") String material,
 			@NotBlank(message = "Theme is required") @Size(message = "Theme must be less than 100", max = 100) String theme,
-			@NotBlank(message = "Occasion is required") @Size(message = "Occasion must be less than 100", max = 100) String occasion,
-			@NotBlank(message = "Product image is required") MultipartFile productImage) {
+			@NotBlank(message = "Occasion is required") @Size(message = "Occasion must be less than 100", max = 100) String occasion) {
 		super();
 		this.id = id;
 		this.category = category;
+		this.imageNames = imageNames;
 		this.title = title;
 		this.description = description;
 		this.material = material;
 		this.theme = theme;
 		this.occasion = occasion;
-		this.productImage = productImage;
 	}
 
 	public Long getId() {
@@ -72,6 +68,14 @@ public class ProductDto {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public List<String> getImageNames() {
+		return imageNames;
+	}
+
+	public void setImageNames(List<String> imageNames) {
+		this.imageNames = imageNames;
 	}
 
 	public String getTitle() {
@@ -112,14 +116,6 @@ public class ProductDto {
 
 	public void setOccasion(String occasion) {
 		this.occasion = occasion;
-	}
-
-	public MultipartFile getProductImage() {
-		return productImage;
-	}
-
-	public void setProductImage(MultipartFile productImage) {
-		this.productImage = productImage;
 	}
 }
 

@@ -15,7 +15,7 @@ import jakarta.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FileSize {
 	String message() default "File size exceeds the maximum limit";
-	Class<?>[] group() default {};
+	Class<?>[] groups() default {};
 	Class<? extends Payload>[] payload() default {};
 	
 	long max() default 10 * 1024 * 1024;

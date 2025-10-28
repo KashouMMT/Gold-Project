@@ -6,7 +6,7 @@ public class CategoryDto {
 
 	private Long id;
 	
-	@NotBlank(message = "category is required")
+	@NotBlank(message = "Category is required")
 	private String categoryName;
 	
 	public CategoryDto() {

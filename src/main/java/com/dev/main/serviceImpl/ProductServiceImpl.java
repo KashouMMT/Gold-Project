@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.main.dto.CategoryDto;
 import com.dev.main.dto.ProductDto;
@@ -22,6 +23,7 @@ import com.dev.main.model.ProductWidth;
 import com.dev.main.repository.CategoryRepository;
 import com.dev.main.repository.ProductRepository;
 import com.dev.main.service.CategoryService;
+import com.dev.main.service.ProductImageService;
 import com.dev.main.service.ProductLengthService;
 import com.dev.main.service.ProductService;
 import com.dev.main.service.ProductWidthService;
@@ -41,13 +43,20 @@ public class ProductServiceImpl implements ProductService{
 	
 	private final ProductLengthService productLengthService;
 	
+	private final FileStorageService fileStorageService;
+	
+	private final ProductImageService productImageService;
+	
 	public ProductServiceImpl(ProductRepository productRepo,CategoryRepository categoryRepo,CategoryService categoryService,
-			ProductWidthService productWidthService,ProductLengthService productLengthService) {
+			ProductWidthService productWidthService,ProductLengthService productLengthService,
+			FileStorageService fileStorageService,ProductImageService productImageService) {
 		this.productRepo = productRepo;
 		this.categoryRepo = categoryRepo;
 		this.categoryService = categoryService;
 		this.productWidthService = productWidthService;
 		this.productLengthService = productLengthService;
+		this.fileStorageService = fileStorageService;
+		this.productImageService = productImageService;
 	}
 
 	@Override
@@ -61,7 +70,7 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<Product> getAllForTable() {
-		return productRepo.findAllProductsWithCategories();
+		return productRepo.findAllWithCategoryAndImages();
 	}
 
 	@Override
@@ -90,16 +99,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	@Transactional
-	public Product createProduct(ProductDto productDto) {
-//		private Long id;
-//		private String title;
-//		private String description;
-//		private String material;
-//		private String theme;
-//		private String occasion;
-//		private String productImage;
-//		private Category category;
-//		private List<ProductWidth> productWidths = new ArrayList<>();
+	public Product createProduct(ProductDto productDto,MultipartFile[] images) {
 		Product product = new Product();
 		product.setTitle(productDto.getTitle());
 		product.setDescription(productDto.getDescription());
@@ -107,12 +107,22 @@ public class ProductServiceImpl implements ProductService{
 		product.setTheme(productDto.getTheme());
 		product.setOccasion(productDto.getOccasion());
 		product.setCategory(productDto.getCategory());
-		return productRepo.save(product);
+		product = productRepo.save(product);
+		for (int i = 0; i < images.length; i++) {
+	        MultipartFile file = images[i];
+	        if (file != null && !file.isEmpty()) {
+	            String stored = fileStorageService.save(file);
+	            if (stored != null) {
+	                productImageService.createProductImages(stored, product, i);
+	            }
+	        }
+	    }
+		return product;
 	}
 
 	@Override
 	@Transactional
-	public void createForTable(ProductDto productDto, CategoryDto categoryDto, VariationDto variationDto) {
+	public void createForTable(ProductDto productDto, CategoryDto categoryDto, VariationDto variationDto,MultipartFile[] images) {
 		Category category = categoryRepo.findByCategoryName(categoryDto.getCategoryName())
 			.orElseGet(() -> {
 				try {
@@ -122,8 +132,9 @@ public class ProductServiceImpl implements ProductService{
 						.orElseThrow(() -> new IllegalStateException("Category just created but not found"));
 				}
 		});
+		
 		productDto.setCategory(category);
-		Product product = createProduct(productDto);
+		Product product = createProduct(productDto,images);
 	    BigDecimal[]   width  = variationDto.getWidth();
 	    BigDecimal[][] length = variationDto.getLength();
 	    BigDecimal[][] price  = variationDto.getPrice();
@@ -148,18 +159,13 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<Product> getAllProductsWithCategories() {
-		return productRepo.findAllProductsWithCategories();
-	}
-
-	@Override
 	public Product getProductWithCategoryById(Long id) {
 		return productRepo.findWithCategoryById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
-	public void editProductWithCategory(Long id, ProductDto productDto, CategoryDto categoryDto) {
+	public void editProductWithCategory(Long id, ProductDto productDto, CategoryDto categoryDto,MultipartFile[] images) {
 		Category category = categoryRepo.findByCategoryName(categoryDto.getCategoryName()).orElse(null);
 		if(Objects.isNull(category)) {
 			category = new Category();
@@ -173,6 +179,17 @@ public class ProductServiceImpl implements ProductService{
 		product.setTheme(productDto.getTheme());
 		product.setOccasion(productDto.getOccasion());
 		product.setCategory(category);
+		for(int i = 0; i < images.length; i++) {
+			String stored = fileStorageService.save(images[i]);
+			if(stored != null) {
+				productImageService.createProductImages(stored, product, i);
+			}
+		}
 		productRepo.save(product);
+	}
+
+	@Override
+	public void deleteProduct(Long id) {
+		productRepo.deleteById(id);
 	}
 }

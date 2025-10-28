@@ -11858,3 +11858,25 @@ html, body {
   width: var(--box-size);
   flex: 0 0 var(--box-size);
 }
+
+#hidden-inputs,
+#hidden-inputs input[type="file"] { display: none !important; }
+
+.image-upload-box {
+  border: 2px dashed #aaa; border-radius: 12px; padding: 1rem;
+  text-align: center; background: #fafafa; transition: border-color .25s, background .25s;
+  cursor: pointer;
+}
+.image-upload-box:hover { border-color: #26adb8; background: #f0faff; }
+.image-upload-box input { display: none; }
+
+.preview-img { width: 200px; height: 200px; object-fit: cover; border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: transform .25s, box-shadow .25s; }
+.preview-img:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+
+.product-image-gallery { display:flex; flex-wrap:wrap; gap:16px; }
+.preview-wrapper { width:200px; height:200px; position:relative; overflow:hidden; border-radius:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15); transition: transform .25s, box-shadow .25s; flex:0 0 auto; }
+.preview-wrapper img.preview-image { width:100%; height:100%; object-fit:cover; display:block; border-radius:12px; }
+.preview-wrapper:hover { transform: scale(1.03); box-shadow:0 4px 14px rgba(0,0,0,0.25); }
+

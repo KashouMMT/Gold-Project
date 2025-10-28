@@ -8,5 +8,15 @@
     "name": "security.rememberme.key",
     "type": "java.lang.String",
     "description": "A description for 'security.rememberme.key'"
+  },
+  {
+    "name": "app.storage.path",
+    "type": "java.lang.String",
+    "description": "A description for 'app.storage.path'"
+  },
+  {
+    "name": "app.files.public-prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'app.files.public-prefix'"
   }
 ]}

@@ -2,6 +2,8 @@ package com.dev.main.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.dev.main.dto.CategoryDto;
 import com.dev.main.dto.ProductDto;
 import com.dev.main.dto.VariationDto;
@@ -13,10 +15,10 @@ public interface ProductService {
 	List<String> getAllOccasion();
 	List<String> getAllTheme();
 	List<Product> getAllForTable();
-	List<Product> getAllProductsWithCategories();
 	Product getProductById(Long id);
 	Product getProductWithCategoryById(Long id);
-	void createForTable(ProductDto productDto, CategoryDto categoryDto, VariationDto variationDto);
-	void editProductWithCategory(Long id,ProductDto productDto, CategoryDto cateogry);
-	Product createProduct(ProductDto productDto);
+	void createForTable(ProductDto productDto, CategoryDto categoryDto, VariationDto variationDto,MultipartFile[] images);
+	void editProductWithCategory(Long id,ProductDto productDto, CategoryDto cateogry,MultipartFile[] images);
+	Product createProduct(ProductDto productDto,MultipartFile[] images);
+	void deleteProduct(Long id);
 }

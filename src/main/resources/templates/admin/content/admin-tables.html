@@ -13,6 +13,8 @@
 					<i class="fas fa-table me-1"></i> <span th:text="${tableName}"></span>
 				</div>
 				<div class="card-body">
+					<div th:if="${error}" class="alert alert-warning" role="alert" th:text="${error}"></div>
+					<div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
 					<table id="datatablesSimple">
 						<thead>
 							<tr>
@@ -40,18 +42,21 @@
 							        <!-- If the value is a list -->
 							        <th:block th:case="'LIST'">
 						          		<ul class="list mb-0">
-						            		<li th:each="p : ${val}" th:text="${p.title}"></li>
+						            		<li th:each="p : ${val}">
+						            			<a th:href="@{/admin/edit-product/{id}(id=${p.id})}" th:text="${p.title}"></a>
+						            		</li>
 						          		</ul>
 							        </th:block>
 							        <th:block th:case="'MAP'">
 							        	<a 
 							        	class="fw-semibold hover-glow"
 							        	th:href="@{${val['editAction']}(id=${item['id']})}">
-							        		<span th:text="${val['editActionText']}"></span>
+											<span th:text="${val['editActionText']}"></span>
 							        	</a>
 							        	<br>
 							        	<a class="fw-semibold hover-glow"
-							        	th:href="@{${val['deleteAction']}(id=${item['id']})}">
+							        	th:href="@{${val['deleteAction']}(id=${item['id']})}"
+							        	onclick="return confirm('Are you sure do you want to delete/disable?')">
 							        		<span th:text="${val['deleteActionText']}"></span>
 							        	</a>
 							        </th:block>

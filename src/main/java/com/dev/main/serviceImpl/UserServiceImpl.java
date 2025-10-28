@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void createUser(UserDto userDto) {
+	public void createUser(UserDto userDto,boolean isAdminRole) {
 		logger.info("Creating new user with email: {}", userDto.getEmail());
 		User user = new User();
 		user.setName(userDto.getName());
@@ -92,10 +92,30 @@ public class UserServiceImpl implements UserService{
 		user.setPassword(encoder.encode(userDto.getPassword()));
 		user.setEnabled(true);
 		Set<Role> role = new HashSet<>();
-		role.add(roleRepo.findByRoleName("ROLE_USER").orElse(null));
+		if(isAdminRole) role.add(roleRepo.findByRoleName("ROLE_ADMIN").orElse(null));
+		else role.add(roleRepo.findByRoleName("ROLE_USER").orElse(null));
 		user.setRoles(role);
 		userRepo.save(user);
 		logger.info("User [{}] created successfully.", userDto.getEmail());
         logger.debug("User details: name={}, enabled={}, roles={}", userDto.getName(), true, role);
+	}
+
+	@Override
+	public void disableUser(Long id) {
+		User user = getUserById(id);
+		user.setEnabled(false);
+		userRepo.save(user);
+	}
+
+	@Override
+	public User getUserById(Long id) {
+		return userRepo.findById(id).orElse(null);
+	}
+
+	@Override
+	public void enableUser(Long id) {
+		User user = getUserById(id);
+		user.setEnabled(true);
+		userRepo.save(user);
 	}
 }

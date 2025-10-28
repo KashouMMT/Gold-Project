@@ -50,34 +50,36 @@ public class Product {
 	@Column(nullable = false, length = 100)
 	private String occasion;
 	
-	// For testing purposes
-	//@NotBlank
-	//@Column(name="product_image",nullable = false, length = 1000)
-	@Column(nullable = true)
-	private String productImage;
-	
 	// Many products belong to one category
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(
 		name = "category_id",
 		nullable = false, 
-		foreignKey = @ForeignKey(name = "fk_product_category")
-	)
+		foreignKey = @ForeignKey(name = "fk_product_category"))
 	@JsonBackReference
 	private Category category;
 	
 	@OneToMany(
 		mappedBy = "product",
-		cascade = {CascadeType.PERSIST,CascadeType.MERGE},
-		orphanRemoval = false
-	)
+		cascade = CascadeType.ALL,
+		orphanRemoval = false)
 	@OrderBy("width ASC")
 	@JsonManagedReference
 	private List<ProductWidth> productWidths = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "product",
+	           cascade = CascadeType.ALL,
+	           orphanRemoval = true)
+	@OrderBy("sortOrder ASC, id ASC")
+	private List<ProductImage> productImages = new ArrayList<>();
+
+	public Product() {
+		
+	}
+	
 	public Product(Long id, @NotBlank String title, @Size(max = 255) String description, @NotBlank String material,
-			@NotBlank String theme, @NotBlank String occasion, @NotBlank String productImage, Category category,
-			List<ProductWidth> productWidths) {
+			@NotBlank String theme, @NotBlank String occasion, Category category, List<ProductWidth> productWidths,
+			List<ProductImage> productImages) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -85,13 +87,9 @@ public class Product {
 		this.material = material;
 		this.theme = theme;
 		this.occasion = occasion;
-		this.productImage = productImage;
 		this.category = category;
 		this.productWidths = productWidths;
-	}
-
-	public Product() {
-		
+		this.productImages = productImages;
 	}
 
 	public Long getId() {
@@ -142,14 +140,6 @@ public class Product {
 		this.occasion = occasion;
 	}
 
-	public String getProductImage() {
-		return productImage;
-	}
-
-	public void setProductImage(String productImage) {
-		this.productImage = productImage;
-	}
-
 	public Category getCategory() {
 		return category;
 	}
@@ -164,5 +154,13 @@ public class Product {
 
 	public void setProductWidths(List<ProductWidth> productWidths) {
 		this.productWidths = productWidths;
+	}
+
+	public List<ProductImage> getProductImages() {
+		return productImages;
+	}
+
+	public void setProductImages(List<ProductImage> productImages) {
+		this.productImages = productImages;
 	}
 }

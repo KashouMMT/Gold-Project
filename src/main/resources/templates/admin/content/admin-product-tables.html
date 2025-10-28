@@ -13,11 +13,13 @@
 					<i class="fas fa-table me-1"></i> <span>Product Table</span>
 				</div>
 				<div class="card-body">
+					<div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
 					<table id="datatablesSimple">
 						<thead>
 							<tr>
 								<th>ID</th>
 								<th>Title</th>
+								<th>Image</th>
 								<th>Material</th>
 								<th>Occasion</th>
 								<th>Theme</th>
@@ -30,6 +32,7 @@
 							<tr>
 								<th>ID</th>
 								<th>Title</th>
+								<th>Image</th>
 								<th>Material</th>
 								<th>Occasion</th>
 								<th>Theme</th>
@@ -42,6 +45,20 @@
 						  <tr th:each="p : ${products}">
 						    <td th:text="${p.id}"></td>
 						    <td th:text="${p.title}"></td>
+						    <td>
+						    	<ul>
+						    		<li th:each="i: ${p.productImages}">
+						    			<div th:if="${i.filename != null}">
+						    				<span th:text="${i.filename}"></span>
+										    <a th:href="@{/files/{fn}(fn=${i.filename})}" target="_blank"><i class="fa-solid fa-magnifying-glass"></i></a>
+										    <a th:href="@{/files/{fn}(fn=${i.filename})}" th:download="${i.filename}"
+									       		class="btn btn-sm btn-outline-primary">
+									       		<i class="fa-solid fa-download"></i>
+									    	</a>
+										</div>
+						    		</li>
+						    	</ul>
+						    </td>
 						    <td th:text="${p.material}"></td>
 						    <td th:text="${p.occasion}"></td>
 						    <td th:text="${p.theme}"></td>
@@ -62,7 +79,8 @@
 								<br>
 								<a
 									class="mt-2 px-5 py-2 fw-semibold hover-glow"
-									th:href="@{/admin/delete-product/{id}(id=${p.id})}">
+									th:href="@{/admin/delete-product/{id}(id=${p.id})}"
+									onclick="return confirm('Are you sure do you want to delete?')">
 									<span>Delete Product</span>
 								</a>
 								<br>

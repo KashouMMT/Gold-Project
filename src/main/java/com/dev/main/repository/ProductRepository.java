@@ -13,10 +13,12 @@ import com.dev.main.model.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>{
 	
-	@EntityGraph(attributePaths = {"category"})
-	@Query("select distinct p from Product p order by p.id asc")
-	List<Product> findAllProductsWithCategories();
+	@EntityGraph(attributePaths = {"category", "productImages"})
+	@Query("select p from Product p order by p.id asc")
+	List<Product> findAllWithCategoryAndImages();
 	
     @EntityGraph(attributePaths = {"category"})
     Optional<Product> findWithCategoryById(Long id);
+    
+    Long countByCategoryId(Long id);
 }

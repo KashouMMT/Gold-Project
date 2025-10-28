@@ -56,3 +56,6 @@ Gold_Project/logs/*.log
 # Keys 
 Gold_Project/keys/
 Gold_Project/keys/*key
+
+# Image Upload
+/uploads

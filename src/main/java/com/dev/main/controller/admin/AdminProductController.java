@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.main.dto.CategoryDto;
+import com.dev.main.dto.ImageDto;
 import com.dev.main.dto.ProductDto;
 import com.dev.main.dto.ProductLengthDto;
 import com.dev.main.dto.ProductWidthDto;
@@ -23,9 +27,11 @@ import com.dev.main.model.Product;
 import com.dev.main.model.ProductLength;
 import com.dev.main.model.ProductWidth;
 import com.dev.main.service.CategoryService;
+import com.dev.main.service.ProductImageService;
 import com.dev.main.service.ProductLengthService;
 import com.dev.main.service.ProductService;
 import com.dev.main.service.ProductWidthService;
+import com.dev.main.serviceImpl.FileStorageService;
 import com.dev.main.utils.FieldSpec;
 import com.dev.main.utils.OtherUtility;
 
@@ -37,22 +43,25 @@ public class AdminProductController {
 	
     private final Logger logger = LoggerFactory.getLogger(AdminDashboardController.class);
 	
-    private ProductService productService;
-	private CategoryService categoryService;
-	private ProductWidthService productWidthService;
-	private ProductLengthService productLengthService;
-	private OtherUtility otherUtility;
+    private final ProductService productService;
+	private final CategoryService categoryService;
+	private final ProductWidthService productWidthService;
+	private final ProductLengthService productLengthService;
+	private final ProductImageService productImageService;
+	private final OtherUtility otherUtility;
 	
 	public AdminProductController(ProductService productService,
 		CategoryService categoryService,
 		ProductWidthService productWidthService,
 		OtherUtility otherUtility,
-		ProductLengthService productLengthService) {
+		ProductLengthService productLengthService,
+		ProductImageService productImageService) {
 		this.productService = productService;
 		this.otherUtility = otherUtility;
 		this.categoryService = categoryService;
 		this.productWidthService = productWidthService;
 		this.productLengthService = productLengthService;
+		this.productImageService = productImageService;
 	}
 	
 	@GetMapping("/product")
@@ -92,7 +101,7 @@ public class AdminProductController {
 		model.addAttribute("themes",productService.getAllTheme());
 		model.addAttribute("categories",categoryService.getAllCategories());
 		model.addAttribute("addAction",true);
-		model.addAttribute("content","admin/content/admin-add-product");
+		model.addAttribute("content","admin/content/admin-product-form");
 		model.addAttribute("formAction","/admin/add-product");
 
 	    return "admin/admin-layout";
@@ -105,6 +114,7 @@ public class AdminProductController {
         @Valid @ModelAttribute("categoryDto") CategoryDto categoryDto,
         BindingResult result2,
         @ModelAttribute VariationDto variationDto,
+        @RequestParam(name = "images", required = false) MultipartFile[] images,
         Model model) {
 		
 		if(result1.hasErrors() || result2.hasErrors()) {
@@ -117,13 +127,14 @@ public class AdminProductController {
 			model.addAttribute("categories",categoryService.getAllCategories());
 			model.addAttribute("addAction",true);
 			model.addAttribute("formAction","/admin/add-product");
+			model.addAttribute("images",images);
 			
-			model.addAttribute("content","admin/content/admin-add-product");
+			model.addAttribute("content","admin/content/admin-product-form");
 			
 			return "admin/admin-layout";
 		}
 		
-		productService.createForTable(productDto, categoryDto, variationDto);
+		productService.createForTable(productDto, categoryDto, variationDto,images);
 		
 		return "redirect:/admin/product";
 	}
@@ -149,6 +160,7 @@ public class AdminProductController {
 		productDto.setCategory(product.getCategory());
 		categoryDto.setCategoryName(product.getCategory().getCategoryName());
 		
+		model.addAttribute("productImages",productImageService.getAllProductImages());
 		model.addAttribute("productDto",productDto);
 		model.addAttribute("categoryDto",categoryDto);
 		model.addAttribute("materials",productService.getAllMaterials());
@@ -159,7 +171,7 @@ public class AdminProductController {
 		model.addAttribute("formTitle","Edit Product");
 		model.addAttribute("formAction",String.format("/admin/edit-product/%d",id));
 		
-		model.addAttribute("content","admin/content/admin-add-product");
+		model.addAttribute("content","admin/content/admin-product-form");
 		
 		return "admin/admin-layout";
 	}
@@ -182,7 +194,7 @@ public class AdminProductController {
 			model.addAttribute("formTitle","Edit Product");
 			model.addAttribute("formAction",String.format("/admin/edit-product/%d",id));
 			
-			model.addAttribute("content","admin/content/admin-add-product");
+			model.addAttribute("content","admin/content/admin-product-form");
 			
 			return "admin/admin-layout";
 		}
@@ -239,6 +251,8 @@ public class AdminProductController {
 		);
 	    model.addAttribute("fields", fields);
 		model.addAttribute("formTitle","Edit Width");
+		model.addAttribute("tableName","Edit Product Variation");
+		model.addAttribute("tableLink",String.format("/admin/product/view-variation/%d", productId));
 		model.addAttribute("formAction",String.format("/admin/product/view-variation/edit-width/%d/%d",productId,widthId));
 	    model.addAttribute("submitLabel","Save Wdith");
 		
@@ -264,6 +278,8 @@ public class AdminProductController {
 			model.addAttribute("formTitle","Edit Width");
 			model.addAttribute("formAction",String.format("/admin/product/view-variation/edit-width/%d/%d",productId,widthId));
 		    model.addAttribute("submitLabel","Save Wdith");
+			model.addAttribute("tableName","Edit Product Variation");
+			model.addAttribute("tableLink",String.format("/admin/product/view-variation/%d", productId));
 			
 			return "admin/admin-layout";
 		}
@@ -296,6 +312,8 @@ public class AdminProductController {
 		model.addAttribute("formTitle","Edit Variation");
 		model.addAttribute("formAction",String.format("/admin/product/view-variation/edit-length/%d/%d/%d",productId,widthId,lengthId));
 	    model.addAttribute("submitLabel","Save Variation");
+		model.addAttribute("tableName","Edit Product Variation");
+		model.addAttribute("tableLink",String.format("/admin/product/view-variation/%d", productId));
 		
 		return "admin/admin-layout";
 	}
@@ -322,11 +340,22 @@ public class AdminProductController {
 			model.addAttribute("formTitle","Edit Variation");
 			model.addAttribute("formAction",String.format("/admin/product/view-variation/edit-length/%d/%d/%d",productId,widthId,lengthId));
 		    model.addAttribute("submitLabel","Save Variation");
+			model.addAttribute("tableName","Edit Product Variation");
+			model.addAttribute("tableLink",String.format("/admin/product/view-variation/%d", productId));
 			
 			return "admin/admin-layout";
 		}
 		productLengthService.editProductLength(lengthId, productLengthDto);
 		
 		return String.format("redirect:/admin/product/view-variation/%d",productId);
+	}
+	
+	@GetMapping("/delete-product/{id}")
+	public String deleteProduct(@PathVariable Long id,RedirectAttributes ra) {
+		
+		productService.deleteProduct(id);
+		ra.addFlashAttribute("success","Product deleted successfully.");
+		
+		return "redirect:/admin/product";
 	}
 }

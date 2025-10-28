@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dev.main.dto.CategoryDto;
 import com.dev.main.model.Category;
 import com.dev.main.repository.CategoryRepository;
+import com.dev.main.repository.ProductRepository;
 import com.dev.main.service.CategoryService;
 
 @Service
@@ -20,8 +21,11 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	private final CategoryRepository categoryRepo;
 	
-	public CategoryServiceImpl(CategoryRepository categoryRepo) {
+	private final ProductRepository productRepo;
+	
+	public CategoryServiceImpl(CategoryRepository categoryRepo,ProductRepository productRepo) {
 		this.categoryRepo = categoryRepo;
+		this.productRepo = productRepo;
 	}
 
 	@Override
@@ -59,5 +63,20 @@ public class CategoryServiceImpl implements CategoryService{
 	@Override
 	public List<Category> getAllCategoriesWithProducts() {
 		return categoryRepo.findAllWithProducts();
+	}
+
+	@Override
+	public boolean deleteCategoryIfEmpty(Long id) {
+		Long count = productRepo.countByCategoryId(id);
+		if(count > 0) return false;
+		categoryRepo.deleteById(id);
+		return true;
+	}
+
+	@Override
+	public void editCategory(Long id,CategoryDto categoryDto) {
+		Category category = getCategoryById(id);
+		category.setCategoryName(categoryDto.getCategoryName());
+		categoryRepo.save(category);
 	}
 }
