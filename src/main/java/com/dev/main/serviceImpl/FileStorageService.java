@@ -58,6 +58,14 @@ public class FileStorageService {
         if (storedName == null || storedName.isBlank()) return;
         try { Files.deleteIfExists(root.resolve(storedName)); } catch (IOException ignored) {}
     }
+    
+    public boolean isExist(String filename) {
+        if (filename == null || filename.isBlank()) {
+            return false;
+        }
+        Path target = root.resolve(filename).normalize();
+        return Files.exists(target);
+    }
 
     public Path getPath(String storedName) { return root.resolve(storedName); }
     public Path getRoot() { return root; }

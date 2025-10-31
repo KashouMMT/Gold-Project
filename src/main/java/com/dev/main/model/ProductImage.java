@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "product_image",
+@Table(name = "product_images",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"product_id","sort_order"})
 )
 public class ProductImage {

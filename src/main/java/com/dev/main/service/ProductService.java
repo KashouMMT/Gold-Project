@@ -14,11 +14,16 @@ public interface ProductService {
 	List<String> getAllMaterials();
 	List<String> getAllOccasion();
 	List<String> getAllTheme();
-	List<Product> getAllForTable();
+	List<Product> getAllWithCategoryAndImage();
+	
 	Product getProductById(Long id);
 	Product getProductWithCategoryById(Long id);
+	Product createProduct(ProductDto productDto,MultipartFile[] images);
+	
 	void createForTable(ProductDto productDto, CategoryDto categoryDto, VariationDto variationDto,MultipartFile[] images);
 	void editProductWithCategory(Long id,ProductDto productDto, CategoryDto cateogry,MultipartFile[] images);
-	Product createProduct(ProductDto productDto,MultipartFile[] images);
 	void deleteProduct(Long id);
+	void updateMinMaxPrice(Long id);
+	
+	//Page<Product> searchProduct(ProductSearchFormDto form);
 }

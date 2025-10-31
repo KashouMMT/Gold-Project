@@ -36,4 +36,9 @@ public class ProductImageServiceImpl implements ProductImageService {
 	public List<ProductImage> getAllProductImages() {
 		return productImageRepo.findAll();
 	}
+
+	@Override
+	public ProductImage getFirstProductImageByProductId(Long id) {
+		return productImageRepo.findByProductIdOrderBySortOrderAsc(id).getFirst();
+	}
 }

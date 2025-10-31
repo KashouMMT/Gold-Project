@@ -297,7 +297,7 @@
     // =========================
     {
       const form = document.getElementById('variantsForm');
-      if (form) {
+      if (document.getElementById('addActionFlag').value === 'true' && form) {
         form.addEventListener('submit', (e) => {
           const hasWidth = !!document.querySelector('#variantsTable tbody input[name^="width["]');
           const hasLen   = !!document.querySelector('#variantsTable tbody input[name^="length["]');

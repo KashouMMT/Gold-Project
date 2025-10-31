@@ -1,5 +1,6 @@
 package com.dev.main.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -50,6 +52,14 @@ public class Product {
 	@Column(nullable = false, length = 100)
 	private String occasion;
 	
+	@Digits(integer=8, fraction=2)
+	@Column(name = "min_price", precision=10, scale=2)
+	private BigDecimal minPrice;
+	
+	@Digits(integer=8, fraction=2)
+	@Column(name = "max_price", precision=10, scale=2)
+	private BigDecimal maxPrice;
+	
 	// Many products belong to one category
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(
@@ -67,19 +77,31 @@ public class Product {
 	@JsonManagedReference
 	private List<ProductWidth> productWidths = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "product",
-	           cascade = CascadeType.ALL,
-	           orphanRemoval = true)
+	@OneToMany(
+		mappedBy = "product",
+	    cascade = CascadeType.ALL,
+	    orphanRemoval = true)
 	@OrderBy("sortOrder ASC, id ASC")
 	private List<ProductImage> productImages = new ArrayList<>();
-
+	
+	@OneToMany(mappedBy = "product")
+	private List<CartItem> cartItems = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "product")
+	private List<OrderItem> orderItems = new ArrayList<>();
+	
+	public String getMainProductImage() {
+		return productImages.getFirst().getFilename();
+	}
+	
 	public Product() {
 		
 	}
-	
+
 	public Product(Long id, @NotBlank String title, @Size(max = 255) String description, @NotBlank String material,
-			@NotBlank String theme, @NotBlank String occasion, Category category, List<ProductWidth> productWidths,
-			List<ProductImage> productImages) {
+			@NotBlank String theme, @NotBlank String occasion, @Digits(integer = 8, fraction = 2) BigDecimal minPrice,
+			@Digits(integer = 8, fraction = 2) BigDecimal maxPrice, Category category, List<ProductWidth> productWidths,
+			List<ProductImage> productImages, List<CartItem> cartItems, List<OrderItem> orderItems) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -87,9 +109,13 @@ public class Product {
 		this.material = material;
 		this.theme = theme;
 		this.occasion = occasion;
+		this.minPrice = minPrice;
+		this.maxPrice = maxPrice;
 		this.category = category;
 		this.productWidths = productWidths;
 		this.productImages = productImages;
+		this.cartItems = cartItems;
+		this.orderItems = orderItems;
 	}
 
 	public Long getId() {
@@ -140,6 +166,22 @@ public class Product {
 		this.occasion = occasion;
 	}
 
+	public BigDecimal getMinPrice() {
+		return minPrice;
+	}
+
+	public void setMinPrice(BigDecimal minPrice) {
+		this.minPrice = minPrice;
+	}
+
+	public BigDecimal getMaxPrice() {
+		return maxPrice;
+	}
+
+	public void setMaxPrice(BigDecimal maxPrice) {
+		this.maxPrice = maxPrice;
+	}
+
 	public Category getCategory() {
 		return category;
 	}
@@ -162,5 +204,21 @@ public class Product {
 
 	public void setProductImages(List<ProductImage> productImages) {
 		this.productImages = productImages;
+	}
+
+	public List<CartItem> getCartItems() {
+		return cartItems;
+	}
+
+	public void setCartItems(List<CartItem> cartItems) {
+		this.cartItems = cartItems;
+	}
+
+	public List<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 }

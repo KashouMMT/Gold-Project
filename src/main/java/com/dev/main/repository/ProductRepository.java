@@ -17,8 +17,14 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 	@Query("select p from Product p order by p.id asc")
 	List<Product> findAllWithCategoryAndImages();
 	
+	@EntityGraph(attributePaths = {
+	        "productWidths",
+	        "productWidths.productLengths"
+	})
+	Optional<Product> findById(Long id);
+	
     @EntityGraph(attributePaths = {"category"})
     Optional<Product> findWithCategoryById(Long id);
-    
+   
     Long countByCategoryId(Long id);
 }

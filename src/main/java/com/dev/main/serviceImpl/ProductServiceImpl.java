@@ -19,8 +19,11 @@ import com.dev.main.dto.ProductWidthDto;
 import com.dev.main.dto.VariationDto;
 import com.dev.main.model.Category;
 import com.dev.main.model.Product;
+import com.dev.main.model.ProductImage;
 import com.dev.main.model.ProductWidth;
 import com.dev.main.repository.CategoryRepository;
+import com.dev.main.repository.ProductImageRepository;
+import com.dev.main.repository.ProductLengthRepository;
 import com.dev.main.repository.ProductRepository;
 import com.dev.main.service.CategoryService;
 import com.dev.main.service.ProductImageService;
@@ -34,24 +37,25 @@ public class ProductServiceImpl implements ProductService{
 	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 	
 	private final ProductRepository productRepo;
-	
 	private final CategoryRepository categoryRepo;
-	
+	private final ProductImageRepository productImageRepo;
+	private final ProductLengthRepository productLengthRepo;
 	private final CategoryService categoryService;
-	
 	private final ProductWidthService productWidthService;
-	
 	private final ProductLengthService productLengthService;
-	
 	private final FileStorageService fileStorageService;
-	
 	private final ProductImageService productImageService;
-	
-	public ProductServiceImpl(ProductRepository productRepo,CategoryRepository categoryRepo,CategoryService categoryService,
-			ProductWidthService productWidthService,ProductLengthService productLengthService,
-			FileStorageService fileStorageService,ProductImageService productImageService) {
+
+	public ProductServiceImpl(ProductRepository productRepo, CategoryRepository categoryRepo,
+			ProductImageRepository productImageRepo, ProductLengthRepository productLengthRepo,
+			CategoryService categoryService, ProductWidthService productWidthService,
+			ProductLengthService productLengthService, FileStorageService fileStorageService,
+			ProductImageService productImageService) {
+		super();
 		this.productRepo = productRepo;
 		this.categoryRepo = categoryRepo;
+		this.productImageRepo = productImageRepo;
+		this.productLengthRepo = productLengthRepo;
 		this.categoryService = categoryService;
 		this.productWidthService = productWidthService;
 		this.productLengthService = productLengthService;
@@ -69,7 +73,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Product> getAllForTable() {
+	public List<Product> getAllWithCategoryAndImage() {
 		return productRepo.findAllWithCategoryAndImages();
 	}
 
@@ -143,14 +147,29 @@ public class ProductServiceImpl implements ProductService{
 	    	widthDto.setWidth(width[i]);
 	    	widthDto.setProduct(product);
 	    	ProductWidth productWidth = productWidthService.createProductWidth(widthDto);
-	    	for(int j = 0; j < length[i].length; j++) {
-	    		ProductLengthDto lengthDto = new ProductLengthDto();
-	    		lengthDto.setLength(length[i][j]);
-	    		lengthDto.setPrice(price[i][j]);
-	    		lengthDto.setWidth(productWidth);
-	    		productLengthService.createProductLength(lengthDto);
-	    	}
+	    	for (int j = 0; j < length[i].length; j++) {
+	            BigDecimal L = length[i][j];
+	            BigDecimal P = price[i][j];
+
+	            productLengthRepo.findByProductWidthIdAndLength(productWidth.getId(), L)
+	                .ifPresentOrElse(existing -> {
+	                    existing.setPrice(P);
+	                    productLengthRepo.save(existing);
+	                }, () -> {
+	                    ProductLengthDto lengthDto = new ProductLengthDto();
+	                    lengthDto.setLength(L);
+	                    lengthDto.setPrice(P);
+	                    lengthDto.setWidth(productWidth);
+	                    productLengthService.createProductLength(lengthDto);
+	                });
+	        }
 	    }
+	    BigDecimal min = productLengthRepo.findMinPriceByProductId(product.getId());
+	    BigDecimal max = productLengthRepo.findMaxPriceByProductId(product.getId());
+	    product.setMinPrice(min);
+	    product.setMaxPrice(max);
+	    
+	    productRepo.save(product);
 	}
 
 	@Override
@@ -173,23 +192,54 @@ public class ProductServiceImpl implements ProductService{
 			categoryRepo.save(category);
 		} 
 		Product product = getProductById(id);
-		product.setTitle(productDto.getTitle());
-		product.setDescription(productDto.getDescription());
-		product.setMaterial(productDto.getMaterial());
-		product.setTheme(productDto.getTheme());
-		product.setOccasion(productDto.getOccasion());
-		product.setCategory(category);
-		for(int i = 0; i < images.length; i++) {
-			String stored = fileStorageService.save(images[i]);
-			if(stored != null) {
-				productImageService.createProductImages(stored, product, i);
-			}
-		}
-		productRepo.save(product);
+
+	    // 1) Remove old files + rows
+	    List<ProductImage> old = productImageRepo.findByProductIdOrderBySortOrderAsc(id);
+	    for (ProductImage pi : old) fileStorageService.deleteIfExists(pi.getFilename());
+	    product.getProductImages().clear(); 
+	    productImageRepo.deleteByProductId(id);
+
+	    // 2) Add new images
+	    int order = 0;
+	    if (images != null) {
+	        for (MultipartFile f : images) {
+	            if (f == null || f.isEmpty()) continue;
+	            String stored = fileStorageService.save(f);
+	            ProductImage pi = new ProductImage();
+	            pi.setFilename(stored);
+	            pi.setAltText(stored);
+	            pi.setSortOrder(order);
+	            pi.setPrimaryImage(order == 0);
+	            pi.setProduct(product);
+	            product.getProductImages().add(pi);
+	            order++;
+	        }
+	    }
+	    
+	    BigDecimal min = productLengthRepo.findMinPriceByProductId(product.getId());
+	    BigDecimal max = productLengthRepo.findMaxPriceByProductId(product.getId());
+	    product.setMinPrice(min);
+	    product.setMaxPrice(max);
+	    
+	    productRepo.save(product);
 	}
 
 	@Override
 	public void deleteProduct(Long id) {
+		List<ProductImage> images = productImageRepo.findByProductIdOrderBySortOrderAsc(id);
+		for(ProductImage pi : images) {
+			fileStorageService.deleteIfExists(pi.getFilename());
+		}
 		productRepo.deleteById(id);
+	}
+
+	@Override
+	public void updateMinMaxPrice(Long id) {
+		Product product = productRepo.findById(id).orElse(null);
+	    BigDecimal min = productLengthRepo.findMinPriceByProductId(id);
+	    BigDecimal max = productLengthRepo.findMaxPriceByProductId(id);
+	    product.setMinPrice(min);
+	    product.setMaxPrice(max);
+	    productRepo.save(product);
 	}
 }

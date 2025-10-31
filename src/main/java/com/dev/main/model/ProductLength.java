@@ -14,17 +14,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(
-	name = "product_length",
-	uniqueConstraints = @UniqueConstraint(
-		name = "uk_width_length",
-		columnNames = {"product_width_id","length"}
-))
+@Table(name = "product_lengths")
 public class ProductLength {
 	
 	@Id

@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.main.dto.CategoryDto;
-import com.dev.main.dto.ImageDto;
 import com.dev.main.dto.ProductDto;
 import com.dev.main.dto.ProductLengthDto;
 import com.dev.main.dto.ProductWidthDto;
@@ -31,7 +30,6 @@ import com.dev.main.service.ProductImageService;
 import com.dev.main.service.ProductLengthService;
 import com.dev.main.service.ProductService;
 import com.dev.main.service.ProductWidthService;
-import com.dev.main.serviceImpl.FileStorageService;
 import com.dev.main.utils.FieldSpec;
 import com.dev.main.utils.OtherUtility;
 
@@ -74,7 +72,7 @@ public class AdminProductController {
 			return "redirect:/auth/login";
 		}
 		
-		List<Product> products = productService.getAllForTable();
+		List<Product> products = productService.getAllWithCategoryAndImage();
 		model.addAttribute("products",products);
 		model.addAttribute("username",username);
 		model.addAttribute("content","admin/content/admin-product-tables");
@@ -182,6 +180,7 @@ public class AdminProductController {
 	        @Valid @ModelAttribute("categoryDto") CategoryDto categoryDto,
 	        BindingResult result2,
 	        @PathVariable Long id,
+	        @RequestParam(name = "images", required = false) MultipartFile[] images,
 	        Model model) {
 		
 		if(result1.hasErrors() || result2.hasErrors()) {			
@@ -199,7 +198,7 @@ public class AdminProductController {
 			return "admin/admin-layout";
 		}
 		
-		productService.editProductWithCategory(id, productDto, categoryDto);
+		productService.editProductWithCategory(id, productDto, categoryDto,images);
 		
 		return "redirect:/admin/product";
 	}

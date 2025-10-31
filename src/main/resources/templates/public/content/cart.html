@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="public-collection">
+	<main id="collection">
+		<!-- Title Section (kept) -->
+		<section id="page-title" class="bg-dark py-5 anim" data-anim="fade-up"
+			data-duration="1s">
+			<div class="container px-4 px-lg-5 my-5">
+				<div class="justify-content-center text-center text-white">
+					<h1 class="display-4 fw-bolder anim" data-anim="fade-right"
+						data-duration="1s" data-delay="0.2s">Cart</h1>
+				</div>
+			</div>
+		</section>
+		<section id="our-collections" class="py-5 anim" data-anim="fade-up"
+			data-duration="1s">
+			<div class="container px-4 px-lg-5 mt-5">
+				<div
+					class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+					<!-- Card 1 -->
+					<div class="col mb-5">
+						<div
+							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+							<!-- Image (fixed ratio like Categories) -->
+							<div class="ratio ratio-4x3">
+								<img class="card-img object-fit-cover"
+									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
+									alt="Fancy Product">
+							</div>
+
+							<!-- Overlay (like Categories) -->
+							<div
+								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
+								<div
+									class="d-flex justify-content-between align-items-start mb-1">
+									<h5 class="fw-bold mb-0">Fancy Product</h5>
+								</div>
+
+								<div class="small opacity-75">Premium picks for everyday
+									style.</div>
+
+								<!-- Price row -->
+								<div class="mt-2">
+									<span class="fw-semibold">$40.00 – $80.00</span>
+								</div>
+
+								<!-- Make whole card clickable -->
+								<a class="stretched-link" href="#"
+									aria-label="View Fancy Product options"></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 2 (with SALE + stars + crossed price) -->
+					<div class="col mb-5">
+						<div
+							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+							<!-- Sale badge (kept from your original) -->
+							<div class="badge bg-dark text-white position-absolute"
+								style="top: .5rem; right: .5rem;">Sale</div>
+
+							<div class="ratio ratio-4x3">
+								<img class="card-img object-fit-cover"
+									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
+									alt="Special Item">
+							</div>
+
+							<div
+								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
+								<h5 class="fw-bold mb-1">Special Item</h5>
+
+								<!-- Stars -->
+								<div
+									class="d-flex justify-content-start small text-warning mb-1">
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+								</div>
+
+								<!-- Price -->
+								<div>
+									<span class="text-muted text-decoration-line-through me-2">$20.00</span>
+									<span class="fw-semibold">$18.00</span>
+								</div>
+
+								<a class="stretched-link" href="#"
+									aria-label="Add Special Item to cart"></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 3 -->
+					<div class="col mb-5">
+						<div
+							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+							<div class="badge bg-dark text-white position-absolute"
+								style="top: .5rem; right: .5rem;">Sale</div>
+
+							<div class="ratio ratio-4x3">
+								<img class="card-img object-fit-cover"
+									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
+									alt="Sale Item">
+							</div>
+
+							<div
+								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
+								<h5 class="fw-bold mb-1">Sale Item</h5>
+								<div>
+									<span class="text-muted text-decoration-line-through me-2">$50.00</span>
+									<span class="fw-semibold">$25.00</span>
+								</div>
+								<a class="stretched-link" href="#"
+									aria-label="Add Sale Item to cart"></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 4 -->
+					<div class="col mb-5">
+						<div
+							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+							<div class="ratio ratio-4x3">
+								<img class="card-img object-fit-cover"
+									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
+									alt="Popular Item">
+							</div>
+
+							<div
+								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
+								<h5 class="fw-bold mb-1">Popular Item</h5>
+								<!-- Stars -->
+								<div
+									class="d-flex justify-content-start small text-warning mb-1">
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+								</div>
+								<div>
+									<span class="fw-semibold">$40.00</span>
+								</div>
+								<a class="stretched-link" href="#"
+									aria-label="Add Popular Item to cart"></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 5 -->
+					<div class="col mb-5">
+						<div
+							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+							<div class="badge bg-dark text-white position-absolute"
+								style="top: .5rem; right: .5rem;">Sale</div>
+
+							<div class="ratio ratio-4x3">
+								<img class="card-img object-fit-cover"
+									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
+									alt="Sale Item">
+							</div>
+
+							<div
+								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
+								<h5 class="fw-bold mb-1">Sale Item</h5>
+								<div>
+									<span class="text-muted text-decoration-line-through me-2">$50.00</span>
+									<span class="fw-semibold">$25.00</span>
+								</div>
+								<a class="stretched-link" href="#"
+									aria-label="Add Sale Item to cart"></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 6 -->
+					<div class="col mb-5">
+						<div
+							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+							<div class="ratio ratio-4x3">
+								<img class="card-img object-fit-cover"
+									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
+									alt="Fancy Product">
+							</div>
+
+							<div
+								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
+								<h5 class="fw-bold mb-1">Fancy Product</h5>
+								<div>
+									<span class="fw-semibold">$120.00 – $280.00</span>
+								</div>
+								<a class="stretched-link" href="#"
+									aria-label="View Fancy Product options"></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 7 -->
+					<div class="col mb-5">
+						<div
+							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+							<div class="badge bg-dark text-white position-absolute"
+								style="top: .5rem; right: .5rem;">Sale</div>
+
+							<div class="ratio ratio-4x3">
+								<img class="card-img object-fit-cover"
+									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
+									alt="Special Item">
+							</div>
+
+							<div
+								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
+								<h5 class="fw-bold mb-1">Special Item</h5>
+								<div
+									class="d-flex justify-content-start small text-warning mb-1">
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+								</div>
+								<div>
+									<span class="text-muted text-decoration-line-through me-2">$20.00</span>
+									<span class="fw-semibold">$18.00</span>
+								</div>
+								<a class="stretched-link" href="#"
+									aria-label="Add Special Item to cart"></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 8 -->
+					<div class="col mb-5">
+						<div
+							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
+							<div class="ratio ratio-4x3">
+								<img class="card-img object-fit-cover"
+									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
+									alt="Popular Item">
+							</div>
+
+							<div
+								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
+								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
+								<h5 class="fw-bold mb-1">Popular Item</h5>
+								<div
+									class="d-flex justify-content-start small text-warning mb-1">
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+								</div>
+								<div>
+									<span class="fw-semibold">$40.00</span>
+								</div>
+								<a class="stretched-link" href="#"
+									aria-label="Add Popular Item to cart"></a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	</main>
+</th:block>
+</html>

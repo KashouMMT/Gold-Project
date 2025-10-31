@@ -26,7 +26,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(
-	name="product_width",
+	name = "product_widths",
 	uniqueConstraints = @UniqueConstraint(
 		name = "uk_product_width",
 		columnNames = {"product_id","width"}

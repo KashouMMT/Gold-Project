@@ -8,4 +8,5 @@ import com.dev.main.model.ProductImage;
 public interface ProductImageService {
 	void createProductImages(String imageName,Product product,int sortOrder);
 	List<ProductImage> getAllProductImages();
+	ProductImage getFirstProductImageByProductId(Long id);
 }

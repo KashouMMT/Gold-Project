@@ -14,7 +14,8 @@
 				</ol>
 				<div class="card shadow-lg border-0 rounded-lg mt-5">
 					<div class="card-body">
-						<form id="variantsForm" th:action="@{${formAction}}" th:object="${productDto}" method="post" 
+					<input type="hidden" th:value="${addAction}" id="addActionFlag"/>
+					<form id="variantsForm" th:action="@{${formAction}}" th:object="${productDto}" method="post" 
 						enctype="multipart/form-data" novalidate>
 							<div class="row mt-3 p-2" data-component="image-uploader">
 							  <div class="col-12">

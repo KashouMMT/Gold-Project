@@ -1,22 +1,29 @@
 package com.dev.main.serviceImpl;
 
+import java.math.BigDecimal;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dev.main.dto.ProductLengthDto;
+import com.dev.main.model.Product;
 import com.dev.main.model.ProductLength;
 import com.dev.main.repository.ProductLengthRepository;
+import com.dev.main.repository.ProductRepository;
 import com.dev.main.service.ProductLengthService;
 
 @Service
 public class ProductLengthServiceImpl implements ProductLengthService{
 
+	private final ProductRepository productRepo;
 	private final ProductLengthRepository productLengthRepo;
 	
-	public ProductLengthServiceImpl(ProductLengthRepository productLengthRepo) {
+	public ProductLengthServiceImpl(ProductRepository productRepo, ProductLengthRepository productLengthRepo) {
+		super();
+		this.productRepo = productRepo;
 		this.productLengthRepo = productLengthRepo;
 	}
-	
+
 	@Override
 	@Transactional
 	public ProductLength createProductLength(ProductLengthDto productLengthDto) {
@@ -34,6 +41,7 @@ public class ProductLengthServiceImpl implements ProductLengthService{
 	}
 
 	@Override
+	@Transactional
 	public void editProductLength(Long id,ProductLengthDto productLengthDto) {
 		ProductLength productLength = getProductLengthById(id);
 	    if (productLengthDto.getLength() != null) {
@@ -43,6 +51,14 @@ public class ProductLengthServiceImpl implements ProductLengthService{
 	    if (productLengthDto.getPrice() != null) {
 	        productLength.setPrice(productLengthDto.getPrice());
 	    }
+
 		productLengthRepo.save(productLength);
+		
+	    Product product = productLength.getProductWidth().getProduct();
+	    BigDecimal min = productLengthRepo.findMinPriceByProductId(product.getId());
+	    BigDecimal max = productLengthRepo.findMaxPriceByProductId(product.getId());
+	    product.setMinPrice(min);
+	    product.setMaxPrice(max);
+	    productRepo.save(product);
 	}
 }

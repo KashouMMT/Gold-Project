@@ -6,8 +6,11 @@ import com.dev.main.dto.ProductWidthDto;
 import com.dev.main.model.ProductWidth;
 
 public interface ProductWidthService {
-	ProductWidth createProductWidth(ProductWidthDto productWidthDto);
-	void editProductWidth(Long id,ProductWidthDto productWidthDto);
-	ProductWidth getProductWidthById(Long id);
+	
 	List<ProductWidth> getProductWidthByProductId(Long id);
+	
+	ProductWidth createProductWidth(ProductWidthDto productWidthDto);
+	ProductWidth getProductWidthById(Long id);
+
+	void editProductWidth(Long id,ProductWidthDto productWidthDto);
 }

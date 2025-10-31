@@ -63,6 +63,7 @@ public class SecurityConfig{
 			logger.info("Configuring public and secure endpoints");
 				auth 
 				.requestMatchers("/",
+								 "/files/**",
 								 "/public/**","/public/assets/**","/public/assets/images/**",
 									          "/public/frontend/**","/public/frontend/css/**","/public/frontend/js/**",
 							     "/private/**","/private/product-images","/private/user-images",

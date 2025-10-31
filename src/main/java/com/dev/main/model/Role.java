@@ -3,6 +3,7 @@ package com.dev.main.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "role_name",nullable = false,length = 20)
 	private String roleName;
 
 	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
