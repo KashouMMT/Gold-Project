@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.dev.main.utils.OtherUtility;
+import com.dev.main.utils.AuthenticationUtility;
 
 @Controller
 @RequestMapping("/admin")
@@ -17,9 +17,9 @@ public class AdminDashboardController {
 	
 	private final Logger logger = LoggerFactory.getLogger(AdminDashboardController.class);
 	
-	private OtherUtility otherUtility;
+	private AuthenticationUtility otherUtility;
 	
-	public AdminDashboardController(OtherUtility otherUtility) {
+	public AdminDashboardController(AuthenticationUtility otherUtility) {
 		this.otherUtility = otherUtility;
 	}
 	

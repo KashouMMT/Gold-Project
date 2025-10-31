@@ -654,3 +654,48 @@ body {
     aspect-ratio: 5 / 6; /* slightly wider */
   }
 }
+
+#gallery .thumb { box-shadow: 0 0 0 2px transparent; transition: box-shadow .15s; }
+#gallery .thumb:focus-visible { box-shadow: 0 0 0 2px #0d6efd; }
+#gallery .thumb-active { box-shadow: 0 0 0 2px #212529; }
+#qtyDisplay { min-width: 2rem; text-align: center; }
+
+/* Mobile: stacked */
+.spec-grid{
+  display:flex;
+  flex-direction:column;     /* ← stacks on phones */
+  gap:.2rem;
+}
+
+.spec-item{
+  display:flex;
+  gap:.25rem;
+  align-items:baseline;
+  flex-wrap:wrap;
+}
+
+.spec-k{ font-weight:500; opacity:.9; }
+.spec-v{ font-weight:400; }
+
+/* Desktop+: horizontal inline with separators */
+@media (min-width:768px){
+  .spec-grid{
+    flex-direction:row;      /* ← KEY change */
+    flex-wrap:wrap;
+    column-gap:1.25rem;
+    row-gap:.25rem;
+    align-items:center;
+  }
+
+  .spec-item{
+    display:inline-flex;
+    flex:0 0 auto;
+    white-space:nowrap;      /* keep each pair on one line */
+  }
+
+}
+
+/* Optional: a touch more space on xl */
+@media (min-width:1200px){
+  .spec-grid{ column-gap:1.5rem; }
+}

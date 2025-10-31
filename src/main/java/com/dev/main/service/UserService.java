@@ -9,9 +9,9 @@ public interface UserService {
 	List<User>getAllUsers();
 	List<User> getAllUsersByName(String name);
 	User getUserByEmail(String email);
+	User getUserById(Long id);
 	void createUser(UserDto userDto,boolean isAdminRole);
 	void initializeDefaultAdminUser(String name);
 	void disableUser(Long id);
 	void enableUser(Long id);
-	User getUserById(Long id);
 }

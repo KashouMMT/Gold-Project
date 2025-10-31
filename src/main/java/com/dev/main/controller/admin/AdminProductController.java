@@ -31,7 +31,7 @@ import com.dev.main.service.ProductLengthService;
 import com.dev.main.service.ProductService;
 import com.dev.main.service.ProductWidthService;
 import com.dev.main.utils.FieldSpec;
-import com.dev.main.utils.OtherUtility;
+import com.dev.main.utils.AuthenticationUtility;
 
 import jakarta.validation.Valid;
 
@@ -46,12 +46,12 @@ public class AdminProductController {
 	private final ProductWidthService productWidthService;
 	private final ProductLengthService productLengthService;
 	private final ProductImageService productImageService;
-	private final OtherUtility otherUtility;
+	private final AuthenticationUtility otherUtility;
 	
 	public AdminProductController(ProductService productService,
 		CategoryService categoryService,
 		ProductWidthService productWidthService,
-		OtherUtility otherUtility,
+		AuthenticationUtility otherUtility,
 		ProductLengthService productLengthService,
 		ProductImageService productImageService) {
 		this.productService = productService;

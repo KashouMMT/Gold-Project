@@ -23,7 +23,7 @@ import com.dev.main.dto.CategoryDto;
 import com.dev.main.model.Category;
 import com.dev.main.service.CategoryService;
 import com.dev.main.utils.FieldSpec;
-import com.dev.main.utils.OtherUtility;
+import com.dev.main.utils.AuthenticationUtility;
 import jakarta.validation.Valid;
 
 @Controller
@@ -32,11 +32,11 @@ public class AdminCategoryController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminCategoryController.class);
 	
-	private OtherUtility otherUtility;
+	private AuthenticationUtility otherUtility;
 	
 	private CategoryService categoryService;
 	
-	public AdminCategoryController(CategoryService categoryService, OtherUtility otherUtility) {
+	public AdminCategoryController(CategoryService categoryService, AuthenticationUtility otherUtility) {
 		this.categoryService = categoryService;
 		this.otherUtility = otherUtility;
 	}

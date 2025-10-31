@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dev.main.model.User;
 import com.dev.main.service.UserService;
-import com.dev.main.utils.OtherUtility;
+import com.dev.main.utils.AuthenticationUtility;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,9 +27,9 @@ public class AdminUserController {
 
 	private UserService userService;
 	
-	private OtherUtility otherUtility;
+	private AuthenticationUtility otherUtility;
 	
-	public AdminUserController(UserService userService, OtherUtility otherUtility) {
+	public AdminUserController(UserService userService, AuthenticationUtility otherUtility) {
 		this.userService = userService;
 		this.otherUtility = otherUtility;
 	}

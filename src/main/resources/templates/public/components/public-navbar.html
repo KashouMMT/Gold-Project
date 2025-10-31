@@ -72,14 +72,18 @@
 									<li><a class="dropdown-item" href="/language?lang=th">Thai</a></li>
 								</ul></li>
 						</ul>
-						<a th:href="@{/home/cart}" class="btn icon-btn" aria-label="Shopping Cart">
+						<a th:href="@{/user/cart}" class="btn icon-btn" aria-label="Shopping Cart">
 							<i class="bi bi-cart"></i>
 						</a>
 						<!-- Profile image placeholder -->
 						<a href="/profile" class="btn icon-btn" aria-label="Profile"
-							sec:authorize="isAuthenticated()"> <img
-							src="/images/profile-placeholder.jpg" alt="Profile"
+							sec:authorize="isAuthenticated()"> 
+						<!-- 
+						<img th:src="@{/public/assets/images/user-solid-full.svg}"alt="Profile"
 							class="rounded-circle" width="28" height="28">
+						 -->
+						<i class="fa-solid fa-user text-white"></i>
+
 						</a> <a href="/register" class="btn btn-secondary btn-outline-light"
 							sec:authorize="isAnonymous()"> Sign Up </a>
 					</div>

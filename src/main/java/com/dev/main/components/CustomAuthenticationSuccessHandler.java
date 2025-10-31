@@ -42,7 +42,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 					user.getName(),
 					user.getEmail(),
 					new java.util.Date());
-			response.sendRedirect("/user/dashboard");
+			response.sendRedirect("/home");
 		} else {
 			logger.warn("Login Success: IP [{}], Username: [{}], Email: [{}] with [UNKNOWN ROLE] at: {}",
 					request.getRemoteAddr(),

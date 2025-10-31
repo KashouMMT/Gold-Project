@@ -56,17 +56,21 @@ public class ProductWidth {
 	@JsonManagedReference
 	private List<ProductLength> productLengths = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "productWidth",orphanRemoval = true)
+	private List<CartItem> cartItems = new ArrayList<>();
+	
 	public ProductWidth() {
 		
 	}
 
 	public ProductWidth(Long id, @NotNull @Digits(integer = 5, fraction = 2) BigDecimal width, Product product,
-			List<ProductLength> productLengths) {
+			List<ProductLength> productLengths, List<CartItem> cartItems) {
 		super();
 		this.id = id;
 		this.width = width;
 		this.product = product;
 		this.productLengths = productLengths;
+		this.cartItems = cartItems;
 	}
 
 	public Long getId() {
@@ -99,5 +103,13 @@ public class ProductWidth {
 
 	public void setProductLengths(List<ProductLength> productLengths) {
 		this.productLengths = productLengths;
+	}
+
+	public List<CartItem> getCartItems() {
+		return cartItems;
+	}
+
+	public void setCartItems(List<CartItem> cartItems) {
+		this.cartItems = cartItems;
 	}
 }

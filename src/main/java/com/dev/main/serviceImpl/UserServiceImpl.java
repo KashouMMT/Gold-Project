@@ -25,13 +25,14 @@ public class UserServiceImpl implements UserService{
 	private final UserRepository userRepo;
 	private final RoleRepository roleRepo;
 	private final PasswordEncoder encoder;
-	
-	public UserServiceImpl(UserRepository userRepo,RoleRepository roleRepo,PasswordEncoder encoder) {
+
+	public UserServiceImpl(UserRepository userRepo, RoleRepository roleRepo, PasswordEncoder encoder) {
+		super();
 		this.userRepo = userRepo;
 		this.roleRepo = roleRepo;
 		this.encoder = encoder;
 	}
-	
+
 	@Override
 	public List<User> getAllUsers() {
 		logger.info("Fetching all users from the database.");

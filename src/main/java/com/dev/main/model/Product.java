@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -80,15 +82,16 @@ public class Product {
 	@OneToMany(
 		mappedBy = "product",
 	    cascade = CascadeType.ALL,
+	    fetch = FetchType.EAGER,
 	    orphanRemoval = true)
 	@OrderBy("sortOrder ASC, id ASC")
 	private List<ProductImage> productImages = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "product")
-	private List<CartItem> cartItems = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "product")
 	private List<OrderItem> orderItems = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "product",orphanRemoval = true)
+	private List<CartItem> cartItems = new ArrayList<>();
 	
 	public String getMainProductImage() {
 		return productImages.getFirst().getFilename();
@@ -101,7 +104,7 @@ public class Product {
 	public Product(Long id, @NotBlank String title, @Size(max = 255) String description, @NotBlank String material,
 			@NotBlank String theme, @NotBlank String occasion, @Digits(integer = 8, fraction = 2) BigDecimal minPrice,
 			@Digits(integer = 8, fraction = 2) BigDecimal maxPrice, Category category, List<ProductWidth> productWidths,
-			List<ProductImage> productImages, List<CartItem> cartItems, List<OrderItem> orderItems) {
+			List<ProductImage> productImages, List<OrderItem> orderItems, List<CartItem> cartItems) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -114,8 +117,8 @@ public class Product {
 		this.category = category;
 		this.productWidths = productWidths;
 		this.productImages = productImages;
-		this.cartItems = cartItems;
 		this.orderItems = orderItems;
+		this.cartItems = cartItems;
 	}
 
 	public Long getId() {
@@ -206,6 +209,14 @@ public class Product {
 		this.productImages = productImages;
 	}
 
+	public List<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
+	}
+
 	public List<CartItem> getCartItems() {
 		return cartItems;
 	}
@@ -214,11 +225,4 @@ public class Product {
 		this.cartItems = cartItems;
 	}
 
-	public List<OrderItem> getOrderItems() {
-		return orderItems;
-	}
-
-	public void setOrderItems(List<OrderItem> orderItems) {
-		this.orderItems = orderItems;
-	}
 }

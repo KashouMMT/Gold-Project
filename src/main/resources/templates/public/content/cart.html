@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="public-collection">
 	<main id="collection">
-		<!-- Title Section (kept) -->
+		<!-- Title Section (kept) 
 		<section id="page-title" class="bg-dark py-5 anim" data-anim="fade-up"
 			data-duration="1s">
 			<div class="container px-4 px-lg-5 my-5">
@@ -12,263 +12,130 @@
 				</div>
 			</div>
 		</section>
-		<section id="our-collections" class="py-5 anim" data-anim="fade-up"
-			data-duration="1s">
+		-->
+		<section id="our-cart" class="py-5 anim" data-anim="fade-up" data-duration="1s">
 			<div class="container px-4 px-lg-5 mt-5">
-				<div
-					class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
-					<!-- Card 1 -->
-					<div class="col mb-5">
-						<div
-							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
-							<!-- Image (fixed ratio like Categories) -->
-							<div class="ratio ratio-4x3">
-								<img class="card-img object-fit-cover"
-									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
-									alt="Fancy Product">
-							</div>
-
-							<!-- Overlay (like Categories) -->
-							<div
-								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
-								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
-								<div
-									class="d-flex justify-content-between align-items-start mb-1">
-									<h5 class="fw-bold mb-0">Fancy Product</h5>
+				<!-- 🔹 MOBILE floating total bar (visible only on small screens) -->
+			    <div class="d-lg-none sticky-top bg-white border-top p-2 shadow-sm">
+			      <div class="d-flex justify-content-between align-items-center">
+			        <span class="fw-semibold">Total:</span>
+			        <span th:text="${cart.totalPrice}" class="fw-bold text-success">£59.99</span>
+			        <button class="btn btn-success btn-sm ms-2">Checkout</button>
+			      </div>
+			    </div>
+				<div class="row g-4">
+				  <div class="col-12 col-lg-8">
+				    <div th:each="item : ${cart.cartItems}" class="box border rounded-3 shadow-sm p-3 mt-2">
+				      <div class="row g-3 align-items-center">
+				        <div class="col-auto">
+				          <img th:src="@{'/files/' + ${item.product.getMainProductImage}}"
+				               alt="Fancy Product" class="rounded-2" style="width:120px;height:90px;object-fit:cover;">
+				        </div>
+				        <div class="col">
+				          <!-- Title -->
+						  <div th:text="${item.product.title}" class="fw-semibold mb-1"></div>
+				          <!-- Short description (optional) -->
+						  <div class="text-muted small mb-2">
+						    <span th:text="${item.product.description}"></span>
+						  </div>
+				          <!-- Responsive specs -->
+					      <div class="spec-grid text-muted small mb-0">
+							  <div class="spec-item">
+							    <span class="spec-k">Material:</span>
+							    <span class="spec-v" th:text="${item.product.material}"></span>
+							  </div>
+							  <div class="spec-item">
+							    <span class="spec-k">Theme:</span>
+							    <span class="spec-v" th:text="${item.product.theme}"></span>
+							  </div>
+							  <div class="spec-item">
+							    <span class="spec-k">Occasion:</span>
+							    <span class="spec-v" th:text="${item.product.occasion}"></span>
+							  </div>
+							  <div class="spec-item">
+							    <span class="spec-k">Width:</span>
+							    <span class="spec-v" th:text="${item.productWidth.width}"></span>
+							  </div>
+							  <div class="spec-item">
+							    <span class="spec-k">Length:</span>
+							    <span class="spec-v" th:text="${item.productLength.length}"></span>
+							  </div>
+							  <div class="spec-item">
+							    <span class="spec-k">Qty:</span>
+							    <span class="spec-v" th:text="${item.quantity}"></span>
+							  </div>
 								</div>
-
-								<div class="small opacity-75">Premium picks for everyday
-									style.</div>
-
-								<!-- Price row -->
-								<div class="mt-2">
-									<span class="fw-semibold">$40.00 – $80.00</span>
-								</div>
-
-								<!-- Make whole card clickable -->
-								<a class="stretched-link" href="#"
-									aria-label="View Fancy Product options"></a>
-							</div>
+				        </div>
+				        <div class="col-auto">
+				          <div th:text="${item.itemPrice}"class="fw-bold">00.00</div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				  <div class="col-12 col-lg-4">
+				    <div class="position-sticky" style="top:1rem;">
+				    	<div class="box border rounded-3 shadow-sm">
+  							<!-- Header -->
+						  <div class="border-bottom p-3">
+						    <h5 class="mb-0 fw-semibold">Order Summary</h5>
+						  </div>
+						  <!-- Body -->
+						  <div class="p-3">
+						    <!-- Subtotal -->
+						    <div class="d-flex justify-content-between py-1">
+						      <span class="text-muted">Subtotal</span>
+						      <span th:text="${cart.totalPrice}"></span>
+						    </div>
+						    <!-- Delivery -->
+						    <div class="d-flex justify-content-between py-1">
+						      <span class="text-muted">Delivery</span>
+						      <span class="text-success">Free</span>
+						    </div>
+						    <!-- Discount 
+						    <div class="d-flex justify-content-between py-1">
+						      <span class="text-muted">Discount</span>
+						      <span>-£0.00</span>
+						    </div> -->
+						    <!-- Divider -->
+						    <hr class="my-3">
+						    <!-- Total -->
+						    <div class="d-flex justify-content-between fw-semibold fs-5">
+						      <span>Total</span>
+						      <span th:text="${cart.totalPrice}"></span>
+						    </div>
+						  </div>
+						  <!-- Footer -->
+						  <div class="border-top p-3">
+						    <!-- Promo code 
+						    <div class="input-group mb-3">
+						      <input type="text" class="form-control" placeholder="Promo code" aria-label="Promo code">
+						      <button class="btn btn-outline-secondary" type="button">Apply</button>
+						    </div>
+						    -->
+						
+						    <!-- Checkout buttons -->
+						    <div class="d-grid gap-2">
+						      <button class="btn btn-success fw-semibold" type="button">
+						        <i class="bi-lock-fill me-1"></i> Checkout Securely
+						      </button>
+						      <button class="btn btn-outline-dark" type="button">
+						        <i class="bi-google me-1"></i> Pay with Google Pay
+						      </button>
+						      <button class="btn btn-outline-primary" type="button">
+						        <i class="bi-paypal me-1"></i> Pay with PayPal
+						      </button>
+						    </div>
+						
+						    <!-- Small print -->
+						    <p class="text-muted small mt-3 mb-0">
+						      By placing the order, you agree to our 
+						      <a href="#" class="link-secondary text-decoration-underline">Terms &amp; Conditions</a> 
+						      and <a href="#" class="link-secondary text-decoration-underline">Privacy Policy</a>.
+						    </p>
+						  </div>
 						</div>
-					</div>
-
-					<!-- Card 2 (with SALE + stars + crossed price) -->
-					<div class="col mb-5">
-						<div
-							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
-							<!-- Sale badge (kept from your original) -->
-							<div class="badge bg-dark text-white position-absolute"
-								style="top: .5rem; right: .5rem;">Sale</div>
-
-							<div class="ratio ratio-4x3">
-								<img class="card-img object-fit-cover"
-									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
-									alt="Special Item">
-							</div>
-
-							<div
-								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
-								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
-								<h5 class="fw-bold mb-1">Special Item</h5>
-
-								<!-- Stars -->
-								<div
-									class="d-flex justify-content-start small text-warning mb-1">
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-								</div>
-
-								<!-- Price -->
-								<div>
-									<span class="text-muted text-decoration-line-through me-2">$20.00</span>
-									<span class="fw-semibold">$18.00</span>
-								</div>
-
-								<a class="stretched-link" href="#"
-									aria-label="Add Special Item to cart"></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Card 3 -->
-					<div class="col mb-5">
-						<div
-							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
-							<div class="badge bg-dark text-white position-absolute"
-								style="top: .5rem; right: .5rem;">Sale</div>
-
-							<div class="ratio ratio-4x3">
-								<img class="card-img object-fit-cover"
-									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
-									alt="Sale Item">
-							</div>
-
-							<div
-								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
-								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
-								<h5 class="fw-bold mb-1">Sale Item</h5>
-								<div>
-									<span class="text-muted text-decoration-line-through me-2">$50.00</span>
-									<span class="fw-semibold">$25.00</span>
-								</div>
-								<a class="stretched-link" href="#"
-									aria-label="Add Sale Item to cart"></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Card 4 -->
-					<div class="col mb-5">
-						<div
-							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
-							<div class="ratio ratio-4x3">
-								<img class="card-img object-fit-cover"
-									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
-									alt="Popular Item">
-							</div>
-
-							<div
-								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
-								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
-								<h5 class="fw-bold mb-1">Popular Item</h5>
-								<!-- Stars -->
-								<div
-									class="d-flex justify-content-start small text-warning mb-1">
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-								</div>
-								<div>
-									<span class="fw-semibold">$40.00</span>
-								</div>
-								<a class="stretched-link" href="#"
-									aria-label="Add Popular Item to cart"></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Card 5 -->
-					<div class="col mb-5">
-						<div
-							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
-							<div class="badge bg-dark text-white position-absolute"
-								style="top: .5rem; right: .5rem;">Sale</div>
-
-							<div class="ratio ratio-4x3">
-								<img class="card-img object-fit-cover"
-									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
-									alt="Sale Item">
-							</div>
-
-							<div
-								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
-								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
-								<h5 class="fw-bold mb-1">Sale Item</h5>
-								<div>
-									<span class="text-muted text-decoration-line-through me-2">$50.00</span>
-									<span class="fw-semibold">$25.00</span>
-								</div>
-								<a class="stretched-link" href="#"
-									aria-label="Add Sale Item to cart"></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Card 6 -->
-					<div class="col mb-5">
-						<div
-							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
-							<div class="ratio ratio-4x3">
-								<img class="card-img object-fit-cover"
-									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
-									alt="Fancy Product">
-							</div>
-
-							<div
-								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
-								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
-								<h5 class="fw-bold mb-1">Fancy Product</h5>
-								<div>
-									<span class="fw-semibold">$120.00 – $280.00</span>
-								</div>
-								<a class="stretched-link" href="#"
-									aria-label="View Fancy Product options"></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Card 7 -->
-					<div class="col mb-5">
-						<div
-							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
-							<div class="badge bg-dark text-white position-absolute"
-								style="top: .5rem; right: .5rem;">Sale</div>
-
-							<div class="ratio ratio-4x3">
-								<img class="card-img object-fit-cover"
-									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
-									alt="Special Item">
-							</div>
-
-							<div
-								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
-								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
-								<h5 class="fw-bold mb-1">Special Item</h5>
-								<div
-									class="d-flex justify-content-start small text-warning mb-1">
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-								</div>
-								<div>
-									<span class="text-muted text-decoration-line-through me-2">$20.00</span>
-									<span class="fw-semibold">$18.00</span>
-								</div>
-								<a class="stretched-link" href="#"
-									aria-label="Add Special Item to cart"></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Card 8 -->
-					<div class="col mb-5">
-						<div
-							class="card position-relative overflow-hidden rounded-3 shadow hover-zoom-blur">
-							<div class="ratio ratio-4x3">
-								<img class="card-img object-fit-cover"
-									src="https://dummyimage.com/800x600/dee2e6/6c757d.jpg"
-									alt="Popular Item">
-							</div>
-
-							<div
-								class="card-img-overlay d-flex flex-column justify-content-end text-white fade-overlay"
-								style="background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .65));">
-								<h5 class="fw-bold mb-1">Popular Item</h5>
-								<div
-									class="d-flex justify-content-start small text-warning mb-1">
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-								</div>
-								<div>
-									<span class="fw-semibold">$40.00</span>
-								</div>
-								<a class="stretched-link" href="#"
-									aria-label="Add Popular Item to cart"></a>
-							</div>
-						</div>
-					</div>
-
+				    </div>
+				  </div>
 				</div>
 			</div>
 		</section>

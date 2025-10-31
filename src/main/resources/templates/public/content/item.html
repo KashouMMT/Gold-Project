@@ -6,7 +6,41 @@
         <section id="shop-item" class="py-5 anim" data-anim="fade-up" data-duration="1s">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" th:src="@{'/files/' + ${productImage.filename}}" alt="..." /></div>
+                    <div class="col-md-6" id="gallery">
+					  <!-- Main image -->
+					  <div class="position-relative mb-3">
+					    <img
+					      id="mainImage"
+					      class="img-fluid rounded w-100"
+					      th:src="@{'/files/' + ${#lists.isEmpty(productImages) ? productImage.filename : productImages[0].filename}}"
+					      th:alt="${#lists.isEmpty(productImages) ? (productImage.altText != null ? productImage.altText : 'Product image') : (productImages[0].altText != null ? productImages[0].altText : 'Product image')}"
+					      loading="eager"
+					      decoding="async"
+					      style="object-fit: cover;"
+					    />
+					  </div>
+					
+					  <!-- Thumbnails -->
+					  <div class="d-flex flex-wrap gap-2" role="list" aria-label="Image thumbnails">
+					    <button
+					      type="button"
+					      class="thumb btn p-0 border-0"
+					      th:each="img, iter : ${#lists.isEmpty(productImages) ? {productImage} : productImages}"
+					      th:classappend="${iter.index == 0} ? ' thumb-active' : ''"
+					      th:attr="data-full=${'/files/' + img.filename}, aria-label=${'Show image ' + (iter.index + 1)}"
+					      style="width:72px;height:72px;overflow:hidden;border-radius:.5rem;outline:none;"
+					    >
+					      <img
+					        class="w-100 h-100"
+					        th:src="@{'/files/' + ${img.filename}}"
+					        th:alt="${img.altText != null ? img.altText : 'Thumbnail'}"
+					        loading="lazy"
+					        decoding="async"
+					        style="object-fit: cover;"
+					      />
+					    </button>
+					  </div>
+					</div>
                     <div class="col-md-6">
                         <div class="small mb-1">SKU: BST-498</div>
                         <h1 class="display-5 fw-bolder" th:text="${product.title}">Product Title</h1>
@@ -39,13 +73,22 @@
 							</div>
 						</th:block>
 						<th:block th:if="${length != null}">
-							<div class="d-flex">
-                            	<input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                            	<button class="btn btn-outline-dark flex-shrink-0" type="button">
-                                	<i class="bi-cart-fill me-1"></i>
-                                	Add to cart
-                            	</button>
-                        	</div>
+						<form th:action="@{/home/item/{productId}(productId=${product.id}, widthId=${width.id}, lengthId=${length.id})}" method="post">
+						  <div class="d-flex align-items-center">
+						    <!-- Quantity selector -->
+						    <div class="input-group flex-shrink-0" style="width:auto;">
+						      <button class="btn btn-outline-secondary btn-qty" type="button" data-action="minus">−</button>
+						      <span id="qtyDisplay" class="px-3 mt-1 fw-semibold justify-content-center align-text-center">1</span>
+						      <button class="btn btn-outline-secondary btn-qty" type="button" data-action="plus">+</button>
+						    </div>
+							<input type="hidden" name="quantity" id="qtyInput" value="1">
+						    <!-- Add to Cart -->
+						    <button class="btn btn-outline-dark ms-3 flex-shrink-0" type="submit">
+						      <i class="bi-cart-fill me-1"></i>
+						      Add to cart
+						    </button>
+						  </div>
+						</form>
 						</th:block>
                     </div>
                 </div>

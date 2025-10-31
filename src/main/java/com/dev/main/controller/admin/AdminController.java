@@ -20,7 +20,7 @@ import com.dev.main.dto.UserDto;
 import com.dev.main.model.User;
 import com.dev.main.service.UserService;
 import com.dev.main.utils.FieldSpec;
-import com.dev.main.utils.OtherUtility;
+import com.dev.main.utils.AuthenticationUtility;
 
 import jakarta.validation.Valid;
 
@@ -32,9 +32,9 @@ public class AdminController {
 	
 	private UserService userService;
 	
-	private OtherUtility otherUtility;
+	private AuthenticationUtility otherUtility;
 	
-	public AdminController(UserService userService,OtherUtility otherUtility) {
+	public AdminController(UserService userService,AuthenticationUtility otherUtility) {
 		this.userService = userService;
 		this.otherUtility = otherUtility;
 	}

@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,13 +20,16 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "cart_items",
 	uniqueConstraints = @UniqueConstraint(
 		name = "uk_cart_cart_items",
-		columnNames = {"cart_id","product_id"}
+		columnNames = {"cart_id","product_id","product_width_id","product_length_id"}
 	)
 )
 public class CartItem {
@@ -36,11 +38,12 @@ public class CartItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull @Digits(integer = 8, fraction = 0)
+	@Positive @Min(1) @Digits(integer = 8, fraction = 0)
 	@Column(nullable = false)
 	private int quantity;
 	
 	@NotNull @Digits(integer=8, fraction=2)
+	@PositiveOrZero
 	@Column(name= "item_price",nullable=false, precision=10, scale=2)
 	private BigDecimal itemPrice;
 	
@@ -54,18 +57,26 @@ public class CartItem {
 	@Version
 	private Long version;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "cart_id", nullable = false,
 		foreignKey = @ForeignKey(name="fk_cart_item_cart"))
 	@JsonBackReference
 	private Cart cart;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_cart_item_product"))
+	@JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_cart_item_product_id"),nullable = false)
 	private Product product;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_width_id", foreignKey = @ForeignKey(name ="fk_cart_item_product_width_id"), nullable = false)
+	private ProductWidth productWidth;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_length_id", foreignKey = @ForeignKey(name = "fk_cart_item_product_length_id"), nullable = false)
+	private ProductLength productLength;
+
 	@PrePersist
-	public void prePersit() {
+	public void prePersist() {
 		createdAt = LocalDateTime.now();
 	}
 	
@@ -77,10 +88,11 @@ public class CartItem {
 	public CartItem() {
 		
 	}
-	
+
 	public CartItem(Long id, @NotNull @Digits(integer = 8, fraction = 0) int quantity,
 			@NotNull @Digits(integer = 8, fraction = 2) BigDecimal itemPrice, @NotNull LocalDateTime createdAt,
-			LocalDateTime updatedAt, Long version, Cart cart, Product product) {
+			LocalDateTime updatedAt, Long version, Cart cart, Product product, ProductWidth productWidth,
+			ProductLength productLength) {
 		super();
 		this.id = id;
 		this.quantity = quantity;
@@ -90,6 +102,8 @@ public class CartItem {
 		this.version = version;
 		this.cart = cart;
 		this.product = product;
+		this.productWidth = productWidth;
+		this.productLength = productLength;
 	}
 
 	public Long getId() {
@@ -154,5 +168,21 @@ public class CartItem {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+	public ProductWidth getProductWidth() {
+		return productWidth;
+	}
+
+	public void setProductWidth(ProductWidth productWidth) {
+		this.productWidth = productWidth;
+	}
+
+	public ProductLength getProductLength() {
+		return productLength;
+	}
+
+	public void setProductLength(ProductLength productLength) {
+		this.productLength = productLength;
 	}
 }

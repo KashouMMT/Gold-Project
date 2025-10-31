@@ -6,7 +6,8 @@ import com.dev.main.model.Product;
 import com.dev.main.model.ProductImage;
 
 public interface ProductImageService {
-	void createProductImages(String imageName,Product product,int sortOrder);
 	List<ProductImage> getAllProductImages();
+	List<ProductImage> getAllProductImagesByProductId(Long id);
 	ProductImage getFirstProductImageByProductId(Long id);
+	void createProductImages(String imageName,Product product,int sortOrder);
 }
